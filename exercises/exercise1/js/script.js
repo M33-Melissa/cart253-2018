@@ -19,14 +19,21 @@ var feltTextureImage;
 var feltTextureImageX;
 var feltTextureImageY;
 
+// Image going across
+var acrossImage;
+// The current position of the image going across
+var acrossImageX;
+var acrossImageY;
+
 
 // preload()
 //
-// Load the two images we're using before the program starts
+// Load the three images we're using before the program starts
 
 function preload() {
   clownImage = loadImage("assets/images/clown.png");
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
+  acrossImage = loadImage("assets/images/depression-bird.png")
 }
 
 
@@ -46,6 +53,10 @@ function setup() {
   feltTextureImageX = width/2;
   feltTextureImageY = 0 - feltTextureImage.height/2;
 
+  // Start the across image on the left of the screen
+  acrossImageX = 0 - acrossImage.height/2;
+  acrossImageY = width/2;
+
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
 }
@@ -61,8 +72,14 @@ function draw() {
   // Move the felt image down by increasing its y position
   feltTextureImageY += 1;
 
+  // Move the across image from left to right on its x position
+  acrossImageX += 1;
+
   // Display the felt image
   image(feltTextureImage,feltTextureImageX,feltTextureImageY);
+
+  // Display across image
+  image(acrossImage,acrossImageX,acrossImageY);
 
   // Move the clown by moving it 1/10th of its current distance from the mouse
 
