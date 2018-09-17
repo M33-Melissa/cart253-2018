@@ -19,12 +19,17 @@ var feltTextureImage;
 var feltTextureImageX;
 var feltTextureImageY;
 
-// Image going across
+// Image of a balloon going across the canvas
 var balloonImage;
-// The current position of the image going across
+// The current position of the balloon image
 var balloonImageX;
 var balloonImageY;
 
+// The image of a bowtie
+var bowtieImage;
+// The current position of the bowtie image
+var bowtieImageX;
+var bowtieImageY;
 
 // preload()
 //
@@ -35,6 +40,7 @@ function preload() {
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
   balloonImage = loadImage("assets/images/balloon.png");
   scaredImage = loadImage("assets/images/scared.png");
+  bowtieImage = loadImage("assets/images/bowtie.png");
 }
 
 
@@ -62,6 +68,10 @@ function setup() {
   scaredImageX = width/2;
   scaredImageY = height/2;
 
+  // Start the bowtie image at the center of the canvas, below the clown
+  bowtieImageX = width/2;
+  bowtieImageY = height/2 + clownImage.height/2;
+
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
 }
@@ -77,14 +87,31 @@ function draw() {
   // Move the felt image down by increasing its y position
   feltTextureImageY += 1;
 
-  // Move the across image from left to right on its x position
-  balloonImageX += 1;
-
   // Display the felt image
   image(feltTextureImage,feltTextureImageX,feltTextureImageY);
 
+  // Move the across image from left to right on its x position
+  balloonImageX += 1;
+
   // Display across image
   image(balloonImage,balloonImageX,balloonImageY);
+
+  // Move the bowtie by moving it 1/30th of its current distance from the mouse
+  // While keeping the bowtie below the clown
+
+  // Calculate the distance between the mouse and the bowtie in X and in Y
+  var xDistanceBowtie = mouseX - bowtieImageX;
+  var yDistanceBowtie = mouseY - bowtieImageY + clownImage.height/2;
+  // Add 1/30th of the X and Y distance to the bowtie's current (x,y) location
+  bowtieImageX += xDistanceBowtie/30;
+  bowtieImageY += yDistanceBowtie/30;
+
+  // Place scared image on the x and y positions of the mouse
+  scaredImageX = mouseX;
+  scaredImageY = mouseY;
+
+  // Display the bowtie image
+  image(bowtieImage,bowtieImageX,bowtieImageY);
 
   // Move the clown by moving it 1/10th of its current distance from the mouse
 
