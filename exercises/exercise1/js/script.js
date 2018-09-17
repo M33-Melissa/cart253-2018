@@ -20,10 +20,10 @@ var feltTextureImageX;
 var feltTextureImageY;
 
 // Image going across
-var acrossImage;
+var balloonImage;
 // The current position of the image going across
-var acrossImageX;
-var acrossImageY;
+var balloonImageX;
+var balloonImageY;
 
 
 // preload()
@@ -33,7 +33,8 @@ var acrossImageY;
 function preload() {
   clownImage = loadImage("assets/images/clown.png");
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
-  acrossImage = loadImage("assets/images/depression-bird.png")
+  balloonImage = loadImage("assets/images/balloon.png");
+  scaredImage = loadImage("assets/images/scared.png");
 }
 
 
@@ -54,8 +55,12 @@ function setup() {
   feltTextureImageY = 0 - feltTextureImage.height/2;
 
   // Start the across image on the left of the screen
-  acrossImageX = 0 - acrossImage.height/2;
-  acrossImageY = width/2;
+  balloonImageX = 0 - balloonImage.height/2;
+  balloonImageY = width/2;
+
+  // Start the scared image at the center of the canvas
+  scaredImageX = width/2;
+  scaredImageY = height/2;
 
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
@@ -73,13 +78,13 @@ function draw() {
   feltTextureImageY += 1;
 
   // Move the across image from left to right on its x position
-  acrossImageX += 1;
+  balloonImageX += 1;
 
   // Display the felt image
   image(feltTextureImage,feltTextureImageX,feltTextureImageY);
 
   // Display across image
-  image(acrossImage,acrossImageX,acrossImageY);
+  image(balloonImage,balloonImageX,balloonImageY);
 
   // Move the clown by moving it 1/10th of its current distance from the mouse
 
@@ -92,4 +97,11 @@ function draw() {
 
   // Display the clown image
   image(clownImage,clownImageX,clownImageY);
+
+  // Place scared image on the x and y positions of the mouse
+  scaredImageX = mouseX;
+  scaredImageY = mouseY;
+
+  // Display the scared image
+  image(scaredImage,scaredImageX,scaredImageY);
 }
