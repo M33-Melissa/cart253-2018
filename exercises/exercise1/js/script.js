@@ -1,10 +1,15 @@
 // Exercise 1 - Moving pictures
-// Pippin Barr
+// Melissa Lim
 //
-// Starter code for exercise 1.
-// It moves two pictures around on the canvas.
+// Code for exercise 1.
+// It moves five pictures around on the canvas.
 // One moves linearly down the screen.
-// One moves toward the mouse cursor.
+// One moves across from left to right of the screen in a sine wave fucntion
+// One moves toward the mouse cursor with a slight delay.
+// One moves along the mouse cursor.
+// One moves toward the mouse cursor with a longer delay.
+// Sine wave function inspired by this post
+//https://blog.kadenze.com/creative-technology/p5-js-crash-course-recreate-art-you-love/
 
 
 // The image of a clown face
@@ -90,8 +95,20 @@ function draw() {
   // Display the felt image
   image(feltTextureImage,feltTextureImageX,feltTextureImageY);
 
-  // Move the across image from left to right on its x position
+  // Setting up variables to use in the sinusoidal wave function
+  // Speed rate of the function
+  var speed = 0.03;
+  // Rate of change every frame count from 0 to the end
+  var phase = frameCount * speed;
+  // Amplitude, peak deviation (height variation) of the function from 0
+  var amp = 100;
+
+  // Balloon image moves the across image from left to right
+  // By increments of 1 on its X position
   balloonImageX += 1;
+  // Starting at the middle-left of the canvas
+  // Balloon moves up and down on a sinusoidal wave function
+  balloonImageY = height/2 + amp*sin(phase);
 
   // Display across image
   image(balloonImage,balloonImageX,balloonImageY);
@@ -101,6 +118,7 @@ function draw() {
 
   // Calculate the distance between the mouse and the bowtie in X and in Y
   var xDistanceBowtie = mouseX - bowtieImageX;
+  // Adding half of the clown image height keeps the bowtie right below
   var yDistanceBowtie = mouseY - bowtieImageY + clownImage.height/2;
   // Add 1/30th of the X and Y distance to the bowtie's current (x,y) location
   bowtieImageX += xDistanceBowtie/30;
