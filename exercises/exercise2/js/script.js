@@ -33,6 +33,11 @@ var enemySpeedIncrease = 0.5;
 // How many dodges the player has made
 var dodges = 0;
 
+// Ennemy default color is red
+var randR = 255;
+var randG = 0;
+var randB = 0;
+
 // setup()
 //
 // Make the canvas, position the avatar and anemy
@@ -118,6 +123,8 @@ function draw() {
     avatarY = height/2;
     // Reset the dodge counter
     dodges = 0;
+
+    randColor();
   }
 
   // Check if the avatar has gone off the screen (cheating!)
@@ -131,6 +138,8 @@ function draw() {
     avatarX = width/2;
     avatarY = height/2;
     dodges = 0;
+
+    randColor();
   }
 
   // Check if the enemy has moved all the way across the screen
@@ -145,6 +154,8 @@ function draw() {
     // Increase the enemy's speed and size to make the game harder
     enemySpeed = enemySpeed + enemySpeedIncrease;
     enemySize = enemySize + enemySizeIncrease;
+
+    randColor();
   }
 
   // Display the current number of successful in the console
@@ -156,7 +167,14 @@ function draw() {
   ellipse(avatarX,avatarY,avatarSize,avatarSize);
 
   // The enemy is red
-  fill(255,0,0);
+  fill(randR,randG,randB);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
+}
+
+function randColor() {
+
+      randR = random(100,255);
+      randG = random(100,255);
+      randB = random(100,255);
 }
