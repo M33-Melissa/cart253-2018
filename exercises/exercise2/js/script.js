@@ -1,11 +1,14 @@
-/*********************************************************
+/*******************************************************************
 
 Exercise 2 - The Artful Dodger
-Pippin Barr
+Melissa Lim
 
-Starter code for exercise 2.
+Code for exercise 2.
+Reverse Bowling Game.
+You're a bowling pin that tries to avoid incoming bowling balls.
+The last pin standing, avoiding the SPARE.
 
-*********************************************************/
+*******************************************************************/
 
 // The position and size of our avatar circle
 var avatarX;
@@ -33,10 +36,15 @@ var enemySpeedIncrease = 0.5;
 // How many dodges the player has made
 var dodges = 0;
 
-// Ennemy default color is red
-var randR = 255;
-var randG = 0;
-var randB = 0;
+// Background RGB
+var bgR = 33;
+var bgG = 17;
+var bgB = 99;
+
+// Enemy default color is grey
+var randR = 50;
+var randG = 50;
+var randB = 50;
 
 // setup()
 //
@@ -54,8 +62,8 @@ function setup() {
   enemyY = random(0,height);
 
   // Score text typography settings
-  textSize(100);
-  textAlign(LEFT,CENTER);
+  textSize(60);
+  textAlign(CENTER,CENTER);
 
   // No stroke so it looks cleaner
   noStroke();
@@ -66,12 +74,21 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-  // A magenta background
-  background(155,50,120);
+  // A magenta background with darker lane borders
+  background(bgR,bgG,bgB);
+  fill(bgR-20,bgG-20,bgB-20);
+  rect(0,height-height/15,width,height/15);
+  rect(0,0,width,height/15);
 
-  // Display number of dodges on the upper right corner of the canvas
-  fill(255,150,150,150);
-  text(dodges,10,height-50);
+  // Displays a rectangle background for the Score
+  // On the upper center of the canvas
+  fill(62,33,183,80);
+  rect(width/2-70,0,140,75);
+  fill(62,33,183);
+  rect(width/2-60,0,120,65);
+  // Display number of dodges in white
+  fill(240);
+  text(dodges,width/2,35);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -123,7 +140,7 @@ function draw() {
     avatarY = height/2;
     // Reset the dodge counter
     dodges = 0;
-
+    // Resets to a random color
     randColor();
   }
 
@@ -138,7 +155,7 @@ function draw() {
     avatarX = width/2;
     avatarY = height/2;
     dodges = 0;
-
+    // Resets to a random color
     randColor();
   }
 
@@ -154,26 +171,37 @@ function draw() {
     // Increase the enemy's speed and size to make the game harder
     enemySpeed = enemySpeed + enemySpeedIncrease;
     enemySize = enemySize + enemySizeIncrease;
-
+    // Resets to a random color
     randColor();
   }
 
   // Display the current number of successful in the console
   console.log(dodges);
 
-  // The player is white
+  // The player has a red border
+  fill(255,0,0);
+  // Draw the border as a circle
+  ellipse(avatarX,avatarY,avatarSize,avatarSize);
+  // The player is a white pin seen from the top view
   fill(230);
   // Draw the player as a circle
-  ellipse(avatarX,avatarY,avatarSize,avatarSize);
+  ellipse(avatarX,avatarY,avatarSize/1.4,avatarSize/1.4);
 
-  // The enemy is red
+  // The enemy starts off grey
   fill(randR,randG,randB);
-  // Draw the enemy as a circle
+  // Draw the enemy as a circle bowling ball
   ellipse(enemyX,enemyY,enemySize,enemySize);
+  // Adds bowling ball details as 3 darker circles on the top
+  fill(randR-50,randG-50,randB-50);
+  ellipse(enemyX+enemySize/3.5,enemyY-enemySize/4,enemySize/5,enemySize/5);
+  ellipse(enemyX+enemySize/11,enemyY-enemySize/9,enemySize/5,enemySize/5);
+  ellipse(enemyX,enemyY-enemySize/3,enemySize/5,enemySize/5);
 }
 
+// randColor()
+//
+// Creates random RGB values to generate random colors.
 function randColor() {
-
       randR = random(100,255);
       randG = random(100,255);
       randB = random(100,255);
