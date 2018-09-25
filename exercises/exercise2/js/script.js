@@ -137,6 +137,11 @@ function draw() {
   // Update the enemy's position based on its velocity
   enemyX += enemyVX;
 
+  for(var x = 0; x < touches.length; x++) {
+    avatarX = mouseX;
+    avatarY = mouseY;
+  }
+
   // Check if the enemy and avatar overlap - if they do the player loses
   // We do this by checking if the distance between the centre of the enemy
   // and the centre of the avatar is less that their combined radii
@@ -276,16 +281,16 @@ function keyPressed() {
   return false;
 }
 
-function touchMoved() {
-  avatarX = mouseX;
-  avatarY = mouseY;
-  return false;
-}
+// function touchMoved() {
+//   avatarX = mouseX;
+//   avatarY = mouseY;
+//   return false;
+// }
 
 function mouseDragged() {
   return false;
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth-3.5, windowHeight-3.5);
-}
+// function windowResized() {
+//   resizeCanvas(windowWidth-3.5, windowHeight-3.5);
+// }
