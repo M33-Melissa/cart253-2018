@@ -15,10 +15,14 @@ var avatarX;
 var avatarY;
 var avatarSize = 50;
 
+var avatarSizeIncrease = 0;
+
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
 var avatarVX = 0;
 var avatarVY = 0;
+
+var avatarSpeedIncrease = 0;
 
 // The position and size of the enemy circle
 var enemyX;
@@ -64,7 +68,10 @@ function setup() {
   // Score text typography settings
   textSize(60);
   textAlign(CENTER,CENTER);
+  textFont('Courier New');
+  textStyle(BOLD);
 
+  // ellipseMode(RADIUS);
   // No stroke so it looks cleaner
   noStroke();
 }
@@ -132,9 +139,11 @@ function draw() {
     // Reset the enemy's position
     enemyX = 0;
     enemyY = random(0,height);
-    // Reset the enemy's size and speed
+    // Reset the avatar and enemy's sizes and speeds
     enemySize = 50;
+    avatarSize = 50;
     enemySpeed = 5;
+    avatarSpeed = 5;
     // Reset the avatar's position
     avatarX = width/2;
     avatarY = height/2;
@@ -151,7 +160,9 @@ function draw() {
     enemyX = 0;
     enemyY = random(0,height);
     enemySize = 50;
+    avatarSize = 50;
     enemySpeed = 5;
+    avatarSpeed = 5;
     avatarX = width/2;
     avatarY = height/2;
     dodges = 0;
@@ -162,15 +173,19 @@ function draw() {
   // Check if the enemy has moved all the way across the screen
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
-    dodges = dodges + 1;
+    dodges += 1;
     // Tell them how many dodges they have made
     console.log(dodges + " DODGES!");
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
     // Increase the enemy's speed and size to make the game harder
-    enemySpeed = enemySpeed + enemySpeedIncrease;
-    enemySize = enemySize + enemySizeIncrease;
+    randSpeed();
+    enemySpeed += enemySpeedIncrease;
+    avatarSpeed += avatarSpeedIncrease;
+    randSize();
+    enemySize += enemySizeIncrease;
+    avatarSize += avatarSizeIncrease;
     // Resets to a random color
     randColor();
   }
@@ -185,7 +200,7 @@ function draw() {
   // The player is a white pin seen from the top view
   fill(230);
   // Draw the player as a circle
-  ellipse(avatarX,avatarY,avatarSize/1.4,avatarSize/1.4);
+  ellipse(avatarX,avatarY-avatarSize/12,avatarSize/1.3,avatarSize/1.3);
 
   // The enemy starts off grey
   fill(randR,randG,randB);
@@ -202,7 +217,23 @@ function draw() {
 //
 // Creates random RGB values to generate random colors.
 function randColor() {
-      randR = random(100,255);
-      randG = random(100,255);
-      randB = random(100,255);
+      randR = random(80,255);
+      randG = random(80,255);
+      randB = random(80,255);
+}
+
+// randSpeed()
+//
+// Creates a random number to generate random speed increments
+function randSpeed() {
+  enemySpeedIncrease = random(-1,2);
+  avatarSpeedIncrease = random(-1,2);
+}
+
+// randSize()
+//
+// Creates a random number to generate random size increments
+function randSize() {
+  enemySizeIncrease = random(-10,20);
+  avatarSizeIncrease = random(-10,20);
 }
