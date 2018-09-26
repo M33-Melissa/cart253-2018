@@ -56,7 +56,7 @@ var randB = 50;
 // Make the canvas, position the avatar and anemy
 function setup() {
   // Create our playing area
-  createCanvas(windowWidth-3.5, windowHeight-3.5);
+  createCanvas(windowWidth-3.5, 500);
 
   // Put the avatar in the centre
   avatarX = width/2;
@@ -128,6 +128,11 @@ function draw() {
     avatarVY = avatarSpeed;
   }
 
+  for (var i = 0; i < touches.length; i++) {
+    avatarX = mouseX;
+    avatarY = mouseY;
+  }
+
   // Move the avatar according to its calculated velocity
   avatarX += avatarVX;
   avatarY += avatarVY;
@@ -136,11 +141,6 @@ function draw() {
   enemyVX = enemySpeed;
   // Update the enemy's position based on its velocity
   enemyX += enemyVX;
-
-  for(var x = 0; x < touches.length; x++) {
-    avatarX = mouseX;
-    avatarY = mouseY;
-  }
 
   // Check if the enemy and avatar overlap - if they do the player loses
   // We do this by checking if the distance between the centre of the enemy
@@ -271,7 +271,7 @@ function randSpeedSize() {
 //
 // Activates Disco Mode, changing background colors and speeds up
 function keyPressed() {
-  if (key === 'd') {
+  if (key === 'd' || touches[1] != 0) {
     avatarSpeed++;
     enemySpeed++;
     bgR = random(10,150);
@@ -281,16 +281,14 @@ function keyPressed() {
   return false;
 }
 
-// function touchMoved() {
-//   avatarX = mouseX;
-//   avatarY = mouseY;
-//   return false;
-// }
+function touchMoved() {
+  return false;
+}
 
 function mouseDragged() {
   return false;
 }
 
-// function windowResized() {
-//   resizeCanvas(windowWidth-3.5, windowHeight-3.5);
-// }
+function windowResized() {
+  resizeCanvas(windowWidth-3.5, windowHeight-3.5);
+}
