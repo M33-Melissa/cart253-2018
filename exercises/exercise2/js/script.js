@@ -50,13 +50,14 @@ var randR = 50;
 var randG = 50;
 var randB = 50;
 
+var isOnButton = false;
 
 // setup()
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
   // Create our playing area
-  createCanvas(500, windowHeight-3.5);
+  createCanvas(windowWidth-3.5, windowHeight-3.5);
 
   // Put the avatar in the centre
   avatarX = width/2;
@@ -210,6 +211,15 @@ function draw() {
   ellipse(enemyX+enemySize/11,enemyY-enemySize/9,enemySize/5,enemySize/5);
   ellipse(enemyX,enemyY-enemySize/3,enemySize/5,enemySize/5);
 
+//   if (dist < 20) {
+//     isOnButton = true;
+//   } else {
+//     isOnButton = false;
+//   }
+//   fill(bgR*2,bgG*2,bgB*2);
+//   ellipse(15,height-15,20,20);
+//   fill(250);
+//   text('D',20,height-13);
 }
 
 // reset()
@@ -267,11 +277,12 @@ function randSpeedSize() {
     avatarSizeIncrease = random(-15,20);
   }
 }
+
 // keyPressed()
 //
 // Activates Disco Mode, changing background colors and speeds up
 function keyPressed() {
-  if (key === 'd' || touches[1].x != 0) {
+  if (key === 'd' || touches.length >= 2) {
     avatarSpeed++;
     enemySpeed++;
     bgR = random(10,150);
@@ -290,5 +301,5 @@ function mouseDragged() {
 }
 
 function windowResized() {
-  resizeCanvas(500, windowHeight-3.5);
+  resizeCanvas(windowWidth-3.5, windowHeight-3.5);
 }
