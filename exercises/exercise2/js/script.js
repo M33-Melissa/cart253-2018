@@ -109,7 +109,7 @@ function draw() {
   fill(240);
   text(dodges,width/2,35);
   // Display Disco Mode prompt on the bottom right
-  textSize(height/15/2);
+  textSize(height/15/3.5);
   textAlign(RIGHT,CENTER);
   text('Press \'D\' or 2-finger tap on mobile for Disco Mode',width-10,height-height/30);
 
