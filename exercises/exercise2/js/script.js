@@ -56,7 +56,7 @@ var randB = 50;
 // Make the canvas, position the avatar and anemy
 function setup() {
   // Create our playing area
-  createCanvas(500, windowHeight-3.5);
+  createCanvas(windowWidth-3.5, windowHeight-3.5);
 
   // Put the avatar in the centre
   avatarX = width/2;
@@ -290,5 +290,5 @@ function mouseDragged() {
 }
 
 function windowResized() {
-  resizeCanvas(500, windowHeight-3.5);
+  resizeCanvas(windowWidth-3.5, windowHeight-3.5);
 }
