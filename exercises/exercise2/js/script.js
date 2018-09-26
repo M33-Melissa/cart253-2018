@@ -271,7 +271,7 @@ function randSpeedSize() {
 //
 // Activates Disco Mode, changing background colors and speeds up
 function keyPressed() {
-  if (key === 'd' || touches[1] != 0) {
+  if (key === 'd' || touches[1].x != 0) {
     avatarSpeed++;
     enemySpeed++;
     bgR = random(10,150);
@@ -290,5 +290,5 @@ function mouseDragged() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth-3.5, windowHeight-3.5);
+  resizeCanvas(500, windowHeight-3.5);
 }
