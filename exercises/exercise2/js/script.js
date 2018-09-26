@@ -278,21 +278,27 @@ function randSpeedSize() {
   }
 }
 
+function discoMode() {
+  avatarSpeed++;
+  enemySpeed++;
+  bgR = random(10,150);
+  bgG = random(10,150);
+  bgB = random(10,150);
+}
 // keyPressed()
 //
 // Activates Disco Mode, changing background colors and speeds up
 function keyPressed() {
-  if (key === 'd' || touches.length >= 2) {
-    avatarSpeed++;
-    enemySpeed++;
-    bgR = random(10,150);
-    bgG = random(10,150);
-    bgB = random(10,150);
+  if (key === 'd') {
+    discoMode();
   }
   return false;
 }
 
 function touchMoved() {
+  if (touches.length >= 3) {
+    discoMode();
+  }
   return false;
 }
 
