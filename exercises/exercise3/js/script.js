@@ -108,6 +108,13 @@ function setup() {
   targetY = random(0,height);
   // And draw it (this means it will always be on top)
   image(targetImage,targetX,targetY);
+
+  strokeWeight(5);
+  stroke(100,150);
+  fill(255,150);
+  rect(width-152.5,0,150,100);
+  tint(255,200);
+  image(targetImage, width-targetImage.width/2-10, targetImage.height/2.5);
 }
 
 function draw() {
