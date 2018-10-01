@@ -115,6 +115,8 @@ function setup() {
   rect(width-152.5,0,150,100);
   tint(255,200);
   image(targetImage, width-targetImage.width/2-10, targetImage.height/2.5);
+  textSize(25);
+  text("WANTED",width-targetImage.width, targetImage.height/2);
 }
 
 function draw() {
