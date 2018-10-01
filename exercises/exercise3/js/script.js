@@ -104,16 +104,18 @@ function setup() {
   }
 
   // Once we've displayed all decoys, we choose a location for the target
-  targetX = random(0,width);
-  targetY = random(0,height);
+  while (targetX > width-153 && targetY < 102) {
+    targetX = random(0,width);
+    targetY = random(0,height);
+  }
+  
   // And draw it (this means it will always be on top)
   image(targetImage,targetX,targetY);
 
   strokeWeight(5);
-  stroke(100,150);
-  fill(255,150);
-  rect(width-152.5,0,150,100);
-  tint(255,200);
+  stroke(100);
+  fill(255);
+  rect(width-153,2,150,100);
   image(targetImage, width-targetImage.width/2-10, targetImage.height/2.5);
   textSize(25);
   text("WANTED",width-targetImage.width, targetImage.height/2);
