@@ -14,6 +14,16 @@ https://creativenerds.co.uk/freebies/80-free-wildlife-icons-the-best-ever-animal
 var targetX;
 var targetY;
 var targetImage;
+var targetVX;
+var targetVY;
+var targetSize;
+var targetW;
+var targetH;
+var targetSpeed = 0;
+
+// Time variables for noise function
+var timeX;
+var timeY;
 
 // The ten decoy images
 var decoyImage1;
@@ -61,6 +71,9 @@ function setup() {
   background("#ffff00");
   imageMode(CENTER);
 
+  targetW = targetImage.width;
+  targetH = targetImage.height;
+
   // Use a for loop to draw as many decoys as we need
   for (var i = 0; i < numDecoys; i++) {
     // Choose a random location for this decoy
@@ -104,40 +117,85 @@ function setup() {
   }
 
   // Once we've displayed all decoys, we choose a location for the target
-  while (targetX > width-153 && targetY < 102) {
+  do {
     targetX = random(0,width);
     targetY = random(0,height);
   }
-  
+  while (targetX > (width-153) && targetY < 102);
+
   // And draw it (this means it will always be on top)
   image(targetImage,targetX,targetY);
+  console.log("X = " + targetX,"; Y = " + targetY);
 
+  // Wanted Poster (target indication)
   strokeWeight(5);
   stroke(100);
   fill(255);
   rect(width-153,2,150,100);
-  image(targetImage, width-targetImage.width/2-10, targetImage.height/2.5);
+  image(targetImage, width-targetW/2-10, targetH/2.5);
   textSize(25);
-  text("WANTED",width-targetImage.width, targetImage.height/2);
+  text("WANTED",width-targetW, targetH/2);
+
+  // Setting up target random movement at game over screen
+  timeX = random(0,1000);
+  timeY = random(0,1000);
 }
 
 function draw() {
   if (gameOver) {
-    // Prepare our typography
-    textFont("Helvetica");
-    textSize(128);
-    textAlign(CENTER,CENTER);
-    noStroke();
-    fill(random(255));
-    // Tell them they won!
-    text("YOU WINNED!",width/2,height/2);
-
-    noFill();
-    stroke(random(255));
-    strokeWeight(10);
-    ellipse(targetX,targetY,targetImage.width,targetImage.height);
+    gameOverScreen();
   }
 }
+
+function gameOverScreen() {
+  // Prepare our typography
+  textFont("Helvetica");
+  textSize(128);
+  textAlign(CENTER,CENTER);
+  noStroke();
+  fill(random(255));
+  // Tell them they won!
+  text("YOU WINNED!",width/2,height/2);
+
+  //Circle Around Target
+  noFill();
+  stroke(random(255));
+  strokeWeight(10);
+  ellipse(targetX,targetY,targetW,targetH);
+
+  // Target movement settings
+  targetSpeed += random(-1,1);
+  targetVX = random(-20,20);
+  targetVY = random(-20,20);
+  targetX += targetVX*noise(timeX)*targetSpeed;
+  targetY += targetVY*noise(timeY)*targetSpeed;
+  timeX += 0.01;
+  timeY += 0.01;
+
+  // Randomize size
+  targetSize = random(-10,10);
+  targetW += targetSize;
+  targetH += targetSize;
+
+  // Moving target at the game over screen
+  image(targetImage,targetX,targetY,targetW,targetH);
+
+  // Screen wrapping
+  if (targetX + targetW/2 < 0) {
+    targetX += width;
+  } else if (targetX - targetW/2 > width) {
+    targetX -= width;
+  }
+  if (targetY + targetH/2 < 0) {
+    targetY += height;
+  } else if (targetY - targetH/2 > height) {
+    targetY -= height;
+  }
+}
+
+// function restartMenu() {
+//
+// }
 
 // mousePressed()
 //
