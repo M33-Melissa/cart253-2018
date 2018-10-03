@@ -25,6 +25,9 @@ var targetSpeed = 0;
 var targetSize;
 var targetW;
 var targetH;
+// Target modified proportions
+var targetMW;
+var targetMH;
 
 // Time variables for noise function
 var timeX;
@@ -80,10 +83,118 @@ function setup() {
   // Setting up variables for target width, height and number of decoys
   targetW = targetImage.width;
   targetH = targetImage.height;
+  targetMW = targetImage.width;
+  targetMH = targetImage.height;
   numDecoys = random(100,200);
   // Randomized variable used for target and decoy sizes
   s = random(0.5,1.5);
 
+  // Draws decoys
+  drawDecoy();
+
+  // Draws target
+  drawTarget();
+
+  // Wanted Poster (target indication) UI element
+  wantedPoster();
+
+  // Setting up target random movement at game over screen
+  timeX = random(0,1000);
+  timeY = random(0,1000);
+}
+
+// draw()
+//
+// displays screens according to actions took
+function draw() {
+  if (gameOver) {
+    gameOverScreen();
+  }
+}
+
+// gameOverScreen()
+//
+// displays winning/game over screen, "YOU WINNED!" text with moving target
+function gameOverScreen() {
+  // Prepare our typography
+  textFont("Helvetica");
+  textSize(width/7.5);
+  textAlign(CENTER,CENTER);
+
+  // Circle Around Target
+  noFill();
+  stroke(random(255));
+  strokeWeight(width/130);
+  ellipse(targetX,targetY,targetMW,targetMH);
+
+  // Target movement settings
+  targetSpeed += random(-1,1);
+  targetVX = random(-20,20);
+  targetVY = random(-20,20);
+  targetX += targetVX*noise(timeX)*targetSpeed;
+  targetY += targetVY*noise(timeY)*targetSpeed;
+  timeX += 0.01;
+  timeY += 0.01;
+
+  // Randomize size
+  targetSize = random(-10,10);
+  targetMW += targetSize;
+  targetMH += targetSize;
+
+  // Moving target at the game over screen
+  image(targetImage,targetX,targetY,targetMW,targetMH);
+
+  // Screen wrapping
+  if (targetX + targetMW/2 < 0) {
+    targetX += width;
+  } else if (targetX - targetMW/2 > width) {
+    targetX -= width;
+  }
+  if (targetY + targetMH/2 < 0) {
+    targetY += height;
+  } else if (targetY - targetMH/2 > height) {
+    targetY -= height;
+  }
+
+  // Tell them they won!
+  if (gameOver===true) {
+    text("YOU WINNED!",width/2,height/2);
+    textSize(width/15);
+    strokeWeight(width/300);
+    text("Press P to play again",width/2,height/4);
+  }
+}
+
+// newGame()
+//
+// Resets for a new game screen, takes element from the setup() function
+function newGame() {
+  gameOver=false;
+  createCanvas(windowWidth,windowHeight);
+  background("#ffff00");
+  // Setting up variables for target width, height and number of decoys
+  numDecoys = random(100,200);
+  // Randomized variable used for target and decoy sizes
+  s = random(0.5,1.5);
+
+  // Draws decoys
+  drawDecoy();
+
+  // Draws target
+  drawTarget();
+
+  // Wanted Poster (target indication) UI element
+  wantedPoster();
+
+  // Setting up target random movement at game over screen
+  timeX = random(0,1000);
+  timeY = random(0,1000);
+}
+
+// drawDecoy()
+//
+// draws a random number of decoys in random places
+function drawDecoy() {
   // Use a for loop to draw as many decoys as we need
   for (var i = 0; i < numDecoys; i++) {
     // Choose a random location for this decoy
@@ -125,7 +236,12 @@ function setup() {
       image(decoyImage10,x,y,decoyImage10.width*s,decoyImage10.height*s);
     }
   }
+}
 
+// drawTarget()
+//
+// Draws target in random location
+function drawTarget() {
   // Once we've displayed all decoys, we choose a location for the target
   // Doesn't appear underneath the wanted poster UI
   do {
@@ -137,8 +253,13 @@ function setup() {
   // And draw it (this means it will always be on top)
   image(targetImage,targetX,targetY,targetW*s,targetH*s);
   console.log("X = " + targetX,"; Y = " + targetY);
+  console.log("W = " + targetW,"; H = " + targetH);
+}
 
-  // Wanted Poster (target indication)
+// wantedPoster()
+//
+// Function for UI element, displays wanted poster, information on target
+function wantedPoster() {
   strokeWeight(5);
   stroke(100);
   fill(255);
@@ -146,67 +267,16 @@ function setup() {
   image(targetImage,width-targetW/2-10,targetH/2.5);
   textSize(25);
   text("WANTED",width-targetW,targetH/2);
-
-  // Setting up target random movement at game over screen
-  timeX = random(0,1000);
-  timeY = random(0,1000);
 }
 
-// draw()
+// keyPressed()
 //
-// displays screens according to actions took
-function draw() {
-  if (gameOver) {
-    gameOverScreen();
+// Creates new game when p is pressed on the keyboard
+function keyPressed() {
+  if (key === 'p' || key === 'P') {
+    newGame();
   }
-}
-
-// gameOverScreen()
-//
-// displays winning/game over screen, "YOU WINNED!" text with moving target
-function gameOverScreen() {
-  // Prepare our typography
-  textFont("Helvetica");
-  textSize(width/7.5);
-  textAlign(CENTER,CENTER);
-
-  // Circle Around Target
-  noFill();
-  stroke(random(255));
-  strokeWeight(width/130);
-  ellipse(targetX,targetY,targetW,targetH);
-
-  // Target movement settings
-  targetSpeed += random(-1,1);
-  targetVX = random(-20,20);
-  targetVY = random(-20,20);
-  targetX += targetVX*noise(timeX)*targetSpeed;
-  targetY += targetVY*noise(timeY)*targetSpeed;
-  timeX += 0.01;
-  timeY += 0.01;
-
-  // Randomize size
-  targetSize = random(-10,10);
-  targetW += targetSize;
-  targetH += targetSize;
-
-  // Moving target at the game over screen
-  image(targetImage,targetX,targetY,targetW,targetH);
-
-  // Screen wrapping
-  if (targetX + targetW/2 < 0) {
-    targetX += width;
-  } else if (targetX - targetW/2 > width) {
-    targetX -= width;
-  }
-  if (targetY + targetH/2 < 0) {
-    targetY += height;
-  } else if (targetY - targetH/2 > height) {
-    targetY -= height;
-  }
-
-  // Tell them they won!
-  text("YOU WINNED!",width/2,height/2);
+  return false;
 }
 
 // mousePressed()
