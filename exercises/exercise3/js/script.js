@@ -254,6 +254,11 @@ function drawTarget() {
   image(targetImage,targetX,targetY,targetW*s,targetH*s);
   console.log("X = " + targetX,"; Y = " + targetY);
   console.log("W = " + targetW,"; H = " + targetH);
+
+  // Re-initialize values
+  targetMH = targetH*s;
+  targetMW = targetW*s;
+  targetSpeed = 0;
 }
 
 // wantedPoster()
