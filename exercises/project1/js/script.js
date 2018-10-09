@@ -26,6 +26,12 @@ var playerMaxHealth = 255;
 // Player fill color
 var playerFill = 50;
 
+///////////////
+var playerMaxSpeedDouble;
+var playerHealthDecrease = 0.5;
+var playerHealthDecreaseFast;
+//////////////
+
 // Prey position, size, velocity
 var preyX;
 var preyY;
@@ -57,9 +63,11 @@ function setup() {
   setupPrey();
   setupPlayer();
 
-  //
+  ////////////
+  // Random time values for noise functions
   tx = random(0,1000);
   ty = random(0,1000);
+  ////////////
 }
 
 // setupPrey()
@@ -80,6 +88,10 @@ function setupPlayer() {
   playerX = 4*width/5;
   playerY = height/2;
   playerHealth = playerMaxHealth;
+  /////////////////
+  playerHealthDecreaseFast = playerHealthDecrease*2;
+  playerMaxSpeedDouble = playerMaxSpeed*2;
+  /////////////////
 }
 
 // draw()
@@ -134,6 +146,18 @@ function handleInput() {
   else {
     playerVY = 0;
   }
+
+  /////////////////////////////
+  // Sprint Ability
+  if (keyIsDown(SHIFT)) {
+    playerMaxSpeed = playerMaxSpeedDouble;
+    playerHealthDecrease = playerHealthDecreaseFast;
+  }
+  else {
+    playerMaxSpeed = playerMaxSpeedDouble/2;
+    playerHealthDecrease = playerHealthDecreaseFast/2;
+  }
+  ////////////////////////////
 }
 
 // movePlayer()
@@ -167,7 +191,9 @@ function movePlayer() {
 // Check if the player is dead
 function updateHealth() {
   // Reduce player health, constrain to reasonable range
-  playerHealth = constrain(playerHealth - 0.5,0,playerMaxHealth);
+  ////////////////
+  playerHealth = constrain(playerHealth - playerHealthDecrease,0,playerMaxHealth);
+  ////////////////
   // Check if the player is dead
   if (playerHealth === 0) {
     // If so, the game is over
@@ -213,12 +239,13 @@ function movePrey() {
   // and speed of movement
   // Use map() to convert from the 0-1 range of the random() function
   // to the appropriate range of velocities for the prey
+  ///////////////////
   preyVX = map(noise(tx),0,1,-preyMaxSpeed,preyMaxSpeed);
   preyVY = map(noise(ty),0,1,-preyMaxSpeed,preyMaxSpeed);
 
   preyX += preyVX;
   preyY += preyVY;
-
+  //////////////////
 
   // Screen wrapping
   if (preyX < 0) {
@@ -235,8 +262,10 @@ function movePrey() {
     preyY -= height;
   }
 
+  /////////////
   tx += 0.01;
   ty += 0.01;
+  ///////////////
 }
 
 // drawPrey()
