@@ -1,12 +1,14 @@
 /******************************************************
 
 Game - Chaser
-Pippin Barr
+Melissa Lim
 
-A simple game of cat and mouse.
+A simple game of cat and mouse, music edition.
 
 Physics-based movement, keyboard controls, health/stamina,
 sprinting, random movement, screen wrap.
+
+Catch the notes before they fade away!
 
 ******************************************************/
 
@@ -24,12 +26,14 @@ var playerMaxSpeed = 2;
 var playerHealth;
 var playerMaxHealth = 255;
 // Player fill color
-var playerFill = 50;
+var playerFill = 250;
 
 ///////////////
 var playerMaxSpeedDouble;
 var playerHealthDecrease = 0.5;
 var playerHealthDecreaseFast;
+
+var preyMaxSpeedDouble;
 //////////////
 
 // Prey position, size, velocity
@@ -45,12 +49,23 @@ var ty;
 var preyHealth;
 var preyMaxHealth = 100;
 // Prey fill color
-var preyFill = 200;
+var preyFill = 0;
 
 // Amount of health obtained per frame of "eating" the prey
 var eatHealth = 10;
 // Number of prey eaten during the game
 var preyEaten = 0;
+
+///////////////
+var bgRed = 100;
+var bgGreen = 100;
+var bgBlue = 200;
+var notesDrawn = 0;
+var numSegments = 5;
+var noteRange = 20;
+var segmentsX = playerX*2;
+var segmentsY = playerY;
+///////////////
 
 // setup()
 //
@@ -79,6 +94,9 @@ function setupPrey() {
   preyVX = -preyMaxSpeed;
   preyVY = preyMaxSpeed;
   preyHealth = preyMaxHealth;
+  ////////////////////////
+  preyMaxSpeedDouble = preyMaxSpeed*1.5;
+  ////////////////////////
 }
 
 // setupPlayer()
@@ -102,7 +120,7 @@ function setupPlayer() {
 // displays the two agents.
 // When the game is over, shows the game over screen.
 function draw() {
-  background(100,100,200);
+  background(bgRed,bgGreen,bgBlue);
 
   if (!gameOver) {
     handleInput();
@@ -115,9 +133,12 @@ function draw() {
 
     drawPrey();
     drawPlayer();
+
+    preyPlayful();
   }
   else {
     showGameOver();
+    notesDrawn = 0;
   }
 }
 
@@ -223,6 +244,13 @@ function checkEating() {
       preyHealth = preyMaxHealth;
       // Track how many prey were eaten
       preyEaten++;
+
+      //////////////
+      bgRed = random(100,200);
+      bgGreen = random(100,200);
+      bgBlue = random(100,200);
+      preyRadius = constrain(random(-10,10), 20, width/5);
+      /////////////
     }
   }
 }
@@ -263,26 +291,52 @@ function movePrey() {
   }
 
   /////////////
+  // Increasing time for noise functions
   tx += 0.01;
   ty += 0.01;
   ///////////////
 }
 
+///////////MOD//////////////
 // drawPrey()
 //
 // Draw the prey as an ellipse with alpha based on health
 function drawPrey() {
-  fill(preyFill,preyHealth);
-  ellipse(preyX,preyY,preyRadius*2);
+  fill(preyFill,preyHealth*2);
+  ellipse(preyX,preyY,preyRadius*2,preyRadius*1.6);
+  // push();
+  // stroke(preyFill,preyHealth*2);
+  // strokeWeight(5);
+  // line(preyX+preyRadius-2.5,preyY,preyX+preyRadius,preyY-80);
+  // pop();
 }
+///////////MOD/////////////
 
 // drawPlayer()
 //
 // Draw the player as an ellipse with alpha based on health
 function drawPlayer() {
   fill(playerFill,playerHealth);
+  // push();
   ellipse(playerX,playerY,playerRadius*2);
+  // while (preyEaten <= numSegments) {
+  //     ellipse(segmentsX,segmentsY,preyRadius,preyRadius*0.6);
+  //     segmentsX += preyRadius;
+  //     segmentsY = playerY + (sin(theta) * noteRange);
+  //     theta++;
+  //     notesDrawn++;
+  // }
+  // segmentsX -= preyRadius;
+  // pop();
 }
+
+//////////////////
+function preyPlayful() {
+  if (preyEaten >= 2) {
+    preyMaxSpeed = preyMaxSpeedDouble;
+  }
+}
+//////////////////
 
 // showGameOver()
 //
