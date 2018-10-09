@@ -21,7 +21,7 @@ var playerY;
 var playerRadius = 25;
 var playerVX = 0;
 var playerVY = 0;
-var playerMaxSpeed = 2;
+var playerMaxSpeed = 3;
 // Player health
 var playerHealth;
 var playerMaxHealth = 255;
@@ -30,7 +30,7 @@ var playerFill = 250;
 
 ///////////////
 var playerMaxSpeedDouble;
-var playerHealthDecrease = 0.5;
+var playerHealthDecrease = 0.2;
 var playerHealthDecreaseFast;
 
 var preyMaxSpeedDouble;
@@ -42,7 +42,7 @@ var preyY;
 var preyRadius = 25;
 var preyVX;
 var preyVY;
-var preyMaxSpeed = 4;
+var preyMaxSpeed = 6;
 var tx;
 var ty;
 // Prey health
@@ -60,18 +60,18 @@ var preyEaten = 0;
 var bgRed = 100;
 var bgGreen = 100;
 var bgBlue = 200;
-var notesDrawn = 0;
-var numSegments = 5;
-var noteRange = 20;
-var segmentsX = playerX*2;
-var segmentsY = playerY;
+// var notesDrawn = 0;
+// var numSegments = 5;
+// var noteRange = 20;
+// var segmentsX = playerX*2;
+// var segmentsY = playerY;
 ///////////////
 
 // setup()
 //
 // Sets up the basic elements of the game
 function setup() {
-  createCanvas(500,500);
+  createCanvas(windowWidth,windowHeight);
 
   noStroke();
 
@@ -246,9 +246,9 @@ function checkEating() {
       preyEaten++;
 
       //////////////
-      bgRed = random(100,200);
-      bgGreen = random(100,200);
-      bgBlue = random(100,200);
+      bgRed = random(150,200);
+      bgGreen = random(150,200);
+      bgBlue = random(150,200);
       preyRadius = constrain(random(-10,10), 20, width/5);
       /////////////
     }
@@ -292,8 +292,8 @@ function movePrey() {
 
   /////////////
   // Increasing time for noise functions
-  tx += 0.01;
-  ty += 0.01;
+  tx += 0.02;
+  ty += 0.02;
   ///////////////
 }
 
