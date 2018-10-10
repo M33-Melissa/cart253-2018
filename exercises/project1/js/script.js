@@ -74,6 +74,8 @@ var note4;
 var note5;
 var note6;
 var note7;
+var note8;
+var note9;
 var gameOverSound;
 // Array with the height of the notes on the sheet music
 var noteHeights = [6.5, 5.5, 5, 3.5, 4, 5, 4.5, 5, 6, 7, 7.5, 7, 6, 7];
@@ -83,13 +85,15 @@ var noteHeights = [6.5, 5.5, 5, 3.5, 4, 5, 4.5, 5, 6, 7, 7.5, 7, 6, 7];
 // Preload sound files
 function preload() {
   gameOverSound = new Audio("assets/sounds/piano_slam.mp3");
-  note1 = new Audio("assets/sounds/fa.wav");
-  note2 = new Audio("assets/sounds/do.wav");
-  note3 = new Audio("assets/sounds/re.wav");
-  note4 = new Audio("assets/sounds/mi.wav");
-  note5 = new Audio("assets/sounds/sol.wav");
-  note6 = new Audio("assets/sounds/la.wav");
+  note1 = new Audio("assets/sounds/fa.mp3");
+  note2 = new Audio("assets/sounds/do.mp3");
+  note3 = new Audio("assets/sounds/re.mp3");
+  note4 = new Audio("assets/sounds/mi.mp3");
+  note5 = new Audio("assets/sounds/sol.mp3");
+  note6 = new Audio("assets/sounds/la.mp3");
   note7 = new Audio("assets/sounds/si.mp3");
+  note8 = new Audio("assets/sounds/mi_grave.mp3");
+  note9 = new Audio("assets/sounds/re_grave.mp3");
 }
 ///////////////NEW//////////////
 
@@ -432,22 +436,22 @@ function playNote() {
       note5.play();
       break;
     case 10:
-      note4.play();
+      note8.play();
       break;
     case 11:
-      note3.play();
+      note9.play();
       break;
     case 12:
-      note4.play();
+      note8.play();
       break;
     case 13:
       note5.play();
       break;
     case 14:
-      note4.play();
+      note8.play();
       break;
     default:
-      note4.play();
+      note8.play();
       break;
   }
 }
