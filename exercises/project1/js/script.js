@@ -36,7 +36,7 @@ var playerFill = (245,245,220);
 // Acceleration variables
 // Health variables
 var playerMaxSpeedDouble;
-var playerHealthDecrease = 0.4;
+var playerHealthDecrease = 0.3;
 var playerHealthDecreaseFast;
 var preyMaxSpeedDouble;
 ///////////////NEW//////////////
