@@ -25,7 +25,7 @@ var playerY;
 var playerRadius = 25;
 var playerVX = 0;
 var playerVY = 0;
-var playerMaxSpeed = 3;
+var playerMaxSpeed = 4;
 // Player health
 var playerHealth;
 var playerMaxHealth = 255;
@@ -36,7 +36,7 @@ var playerFill = (245,245,220);
 // Acceleration variables
 // Health variables
 var playerMaxSpeedDouble;
-var playerHealthDecrease = 0.2;
+var playerHealthDecrease = 0.4;
 var playerHealthDecreaseFast;
 var preyMaxSpeedDouble;
 ///////////////NEW//////////////
@@ -47,7 +47,7 @@ var preyY;
 var preyRadius = 25;
 var preyVX;
 var preyVY;
-var preyMaxSpeed = 6;
+var preyMaxSpeed = 7;
 var tx;
 var ty;
 // Prey health
