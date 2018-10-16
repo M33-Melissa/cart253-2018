@@ -62,6 +62,8 @@ var rightPaddle = {
   upKeyCode: 38, // The key code for the UP ARROW
   downKeyCode: 40 // The key code for the DOWN ARROW
 }
+
+var ballOutRight = false;
 /////////////// END NEW ///////////////
 
 // A variable to hold the beep sound we will play on bouncing
@@ -262,27 +264,27 @@ function handleBallOffScreen() {
   // Check for ball going off the sides
   if (ballRight < 0) {
     // If it went off to the left side, reset it to the centre
-    ball.x = width/2;
-    ball.y = height/2;
+    ballOutRight = false;
+    reset();
     // NOTE that we don't change its velocity here so it just
     // carries on moving with the same velocity after its
     // position is reset.
 
     // This is where we count points for the right paddle!
     rightPaddle.score++;
-    console.log(rightPaddle.score);
-    displayScoreRight();
+    console.log("R: " + rightPaddle.score);
+    displayScore();
     console.log("Right Paddle Height = " + rightPaddle.h);
 
   } else if (ballLeft > width) {
     // If it went off to the right side, reset it to the centre
-    ball.x = width/2;
-    ball.y = height/2;
+    ballOutRight = true;
+    reset();
 
     // This is where we count points for the left paddle!
     leftPaddle.score++;
-    console.log(leftPaddle.score);
-    displayScoreLeft();
+    console.log("L: " + leftPaddle.score);
+    displayScore();
     console.log("Left Paddle Height = " + leftPaddle.h);
   }
 }
@@ -292,15 +294,26 @@ function handleBallOffScreen() {
 // displayScoreRight()
 //
 //
-function displayScoreRight() {
-  rightPaddle.h += 10;
+function displayScore() {
+  if (ballOutRight === true) {
+    leftPaddle.h += 10;
+  } else {
+    rightPaddle.h += 10;
+  }
 }
 
-// displayScoreLeft()
+// reset()
 //
 //
-function displayScoreLeft() {
-  leftPaddle.h += 10;
+function reset() {
+  ball.x = width/2;
+  ball.y = height/2;
+
+  if (ballOutRight === true) {
+    ball.vx = random(-10,-4);
+  } else {
+    ball.vx = random(4,10);
+  }
 }
 /////////////// END NEW ///////////////
 
