@@ -268,19 +268,39 @@ function handleBallOffScreen() {
     // carries on moving with the same velocity after its
     // position is reset.
 
-    // This is where we count points!
+    // This is where we count points for the right paddle!
     rightPaddle.score++;
     console.log(rightPaddle.score);
+    displayScoreRight();
+    console.log("Right Paddle Height = " + rightPaddle.h);
 
   } else if (ballLeft > width) {
     // If it went off to the right side, reset it to the centre
     ball.x = width/2;
     ball.y = height/2;
 
-    // This is where we count points!
+    // This is where we count points for the left paddle!
     leftPaddle.score++;
     console.log(leftPaddle.score);
+    displayScoreLeft();
+    console.log("Left Paddle Height = " + leftPaddle.h);
   }
+}
+/////////////// END NEW ///////////////
+
+///////////////// NEW /////////////////
+// displayScoreRight()
+//
+//
+function displayScoreRight() {
+  rightPaddle.h += 10;
+}
+
+// displayScoreLeft()
+//
+//
+function displayScoreLeft() {
+  leftPaddle.h += 10;
 }
 /////////////// END NEW ///////////////
 
