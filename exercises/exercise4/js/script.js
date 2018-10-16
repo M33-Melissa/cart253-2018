@@ -28,8 +28,9 @@ var paddleInset = 50;
 
 // LEFT PADDLE
 
+///////////////// NEW /////////////////
 // Basic definition of a left paddle object with its key properties of
-// position, size, velocity, and speed
+// position, size, velocity, speed, and score
 var leftPaddle = {
   x: 0,
   y: 0,
@@ -38,14 +39,17 @@ var leftPaddle = {
   vx: 0,
   vy: 0,
   speed: 5,
+  score: 0,
   upKeyCode: 87, // The key code for W
   downKeyCode: 83 // The key code for S
 }
+/////////////// END NEW ///////////////
 
 // RIGHT PADDLE
 
+///////////////// NEW /////////////////
 // Basic definition of a left paddle object with its key properties of
-// position, size, velocity, and speed
+// position, size, velocity, speed, and score
 var rightPaddle = {
   x: 0,
   y: 0,
@@ -54,9 +58,11 @@ var rightPaddle = {
   vx: 0,
   vy: 0,
   speed: 5,
+  score: 0,
   upKeyCode: 38, // The key code for the UP ARROW
   downKeyCode: 40 // The key code for the DOWN ARROW
 }
+/////////////// END NEW ///////////////
 
 // A variable to hold the beep sound we will play on bouncing
 var beepSFX;
@@ -242,6 +248,7 @@ function handleBallPaddleCollision(paddle) {
   }
 }
 
+///////////////// NEW /////////////////
 // handleBallOffScreen()
 //
 // Checks if the ball has gone off screen to the left or right
@@ -253,16 +260,29 @@ function handleBallOffScreen() {
   var ballRight = ball.x + ball.size/2;
 
   // Check for ball going off the sides
-  if (ballRight < 0 || ballLeft > width) {
-    // If it went off either side, reset it to the centre
+  if (ballRight < 0) {
+    // If it went off to the left side, reset it to the centre
     ball.x = width/2;
     ball.y = height/2;
     // NOTE that we don't change its velocity here so it just
     // carries on moving with the same velocity after its
     // position is reset.
-    // This is where we would count points etc!
+
+    // This is where we count points!
+    rightPaddle.score++;
+    console.log(rightPaddle.score);
+
+  } else if (ballLeft > width) {
+    // If it went off to the right side, reset it to the centre
+    ball.x = width/2;
+    ball.y = height/2;
+
+    // This is where we count points!
+    leftPaddle.score++;
+    console.log(leftPaddle.score);
   }
 }
+/////////////// END NEW ///////////////
 
 // displayBall()
 //
