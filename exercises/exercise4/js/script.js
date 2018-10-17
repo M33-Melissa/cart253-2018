@@ -75,18 +75,20 @@ var rightPaddle = {
 // Boolean value, checks if ball gave point to the right or left
 var ballOutRight = false;
 
-// A variable to hold the beep sound we will play on bouncing
+// A variable to hold the SFX sounds we will play
 var beepSFX;
 var pointSFX;
 var gameSFX;
+var collideSFX;
 
 // preload()
 //
-// Loads the beep audio for the sound of bouncing
+// Loads the SFX audios for the sound of bouncing, scoring, and winning
 function preload() {
   beepSFX = new Audio("assets/sounds/beep.wav");
   pointSFX = new Audio("assets/sounds/point.wav");
   gameSFX = new Audio("assets/sounds/game.wav");
+  collideSFX = new Audio("assets/sounds/collide.wav");
 }
 /////////////// END NEW ///////////////
 
@@ -266,11 +268,15 @@ function handleBallPaddleCollision(paddle) {
       // Then the ball is touching the paddle so reverse its vx
       ball.vx = -ball.vx;
       // Play our bouncing sound effect by rewinding and then playing
-      beepSFX.currentTime = 0;
-      beepSFX.play();
+      ///////////////// NEW /////////////////
+      collideSFX.currentTime = 0;
+      collideSFX.play();
+      /////////////// END NEW ///////////////
     }
   }
 }
+
+
 
 ///////////////// NEW /////////////////
 // handleBallOffScreen()
