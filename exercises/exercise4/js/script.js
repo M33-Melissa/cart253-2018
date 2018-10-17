@@ -1,15 +1,18 @@
-// Pong
-// by Pippin Barr
+// Pong Plus
+// by Melissa Lim
 //
-// A primitive implementation of Pong with no scoring system
+// A customized implementation of Pong with scoring system
 // just the ability to play the game with the keyboard.
 
-// Game colors
-var bgColor = 0;
+// Default game colors
+var bgRed = 0;
+var bgGreen = 0;
+var bgBlue = 0;
 var fgColor = 255;
 
 // BALL
 
+///////////////// NEW /////////////////
 // Basic definition of a ball object with its key properties of
 // position, size, velocity, and speed
 var ball = {
@@ -18,6 +21,9 @@ var ball = {
   size: 20,
   vx: 0,
   vy: 0,
+  red: 255,
+  green: 255,
+  blue: 255,
   speed: 5
 }
 
@@ -28,7 +34,6 @@ var paddleInset = 50;
 
 // LEFT PADDLE
 
-///////////////// NEW /////////////////
 // Basic definition of a left paddle object with its key properties of
 // position, size, velocity, speed, and score
 var leftPaddle = {
@@ -40,14 +45,15 @@ var leftPaddle = {
   vy: 0,
   speed: 5,
   score: 0,
+  red: 255,
+  green: 0,
+  blue: 0,
   upKeyCode: 87, // The key code for W
   downKeyCode: 83 // The key code for S
 }
-/////////////// END NEW ///////////////
 
 // RIGHT PADDLE
 
-///////////////// NEW /////////////////
 // Basic definition of a left paddle object with its key properties of
 // position, size, velocity, speed, and score
 var rightPaddle = {
@@ -59,22 +65,30 @@ var rightPaddle = {
   vy: 0,
   speed: 5,
   score: 0,
+  red: 0,
+  green: 0,
+  blue: 255,
   upKeyCode: 38, // The key code for the UP ARROW
   downKeyCode: 40 // The key code for the DOWN ARROW
 }
 
+// Boolean value, checks if ball gave point to the right or left
 var ballOutRight = false;
-/////////////// END NEW ///////////////
 
 // A variable to hold the beep sound we will play on bouncing
 var beepSFX;
+var pointSFX;
+var gameSFX;
 
 // preload()
 //
 // Loads the beep audio for the sound of bouncing
 function preload() {
   beepSFX = new Audio("assets/sounds/beep.wav");
+  pointSFX = new Audio("assets/sounds/point.wav");
+  gameSFX = new Audio("assets/sounds/game.wav");
 }
+/////////////// END NEW ///////////////
 
 // setup()
 //
@@ -83,8 +97,11 @@ function preload() {
 // and velocities.
 function setup() {
   // Create canvas and set drawing modes
-  createCanvas(640,480);
+  createCanvas(windowWidth-3,windowHeight-3);
   rectMode(CENTER);
+  ///////////////// NEW /////////////////
+  ellipseMode(CENTER);
+  /////////////// END NEW ///////////////
   noStroke();
   fill(fgColor);
 
@@ -115,12 +132,13 @@ function setupBall() {
   ball.vy = ball.speed;
 }
 
+///////////////// NEW /////////////////
 // draw()
 //
 // Calls the appropriate functions to run the game
 function draw() {
-  // Fill the background
-  background(bgColor);
+  // Fill the background with red, green, and blue variables
+  background(bgRed,bgGreen,bgBlue);
 
   // Handle input
   // Notice how we're using the SAME FUNCTION to handle the input
@@ -148,7 +166,7 @@ function draw() {
   displayPaddle(rightPaddle);
   displayBall();
 }
-
+/////////////// END NEW ///////////////
 
 // handleInput(paddle)
 //
@@ -183,6 +201,10 @@ function handleInput(paddle) {
     // Otherwise stop moving
     paddle.vy = 0;
   }
+
+  ///////////////// NEW /////////////////
+  handlePaddleOffscreen();
+  /////////////// END NEW ///////////////
 }
 
 // updatePosition(object)
@@ -264,28 +286,56 @@ function handleBallOffScreen() {
   // Check for ball going off the sides
   if (ballRight < 0) {
     // If it went off to the left side, reset it to the centre
+    // And randomizes its velocity
+    // Sets ball out to the right of the screen to true
     ballOutRight = false;
     reset();
+
     // NOTE that we don't change its velocity here so it just
     // carries on moving with the same velocity after its
     // position is reset.
 
-    // This is where we count points for the right paddle!
+    // This is where we count and display points for the right paddle!
     rightPaddle.score++;
     console.log("R: " + rightPaddle.score);
     displayScore();
-    console.log("Right Paddle Height = " + rightPaddle.h);
 
   } else if (ballLeft > width) {
     // If it went off to the right side, reset it to the centre
+    // And randomizes its velocity
+    // Sets ball out to the right of the screen to true
     ballOutRight = true;
     reset();
 
-    // This is where we count points for the left paddle!
+    // This is where we count and display points for the left paddle!
     leftPaddle.score++;
     console.log("L: " + leftPaddle.score);
     displayScore();
-    console.log("Left Paddle Height = " + leftPaddle.h);
+  }
+
+  // Winning condition: 10 score resets the game
+  if (leftPaddle.score > 10 || rightPaddle.score > 10) {
+    gameSFX.currentTime = 0;
+    gameSFX.play();
+    newGame();
+  }
+}
+
+// handlePaddleOffscreen()
+//
+// Paddle can't go further than the limits of the screen height
+function handlePaddleOffscreen() {
+  if (leftPaddle.y > height) {
+    leftPaddle.y = height;
+  }
+  if (rightPaddle.y > height) {
+    rightPaddle.y = height;
+  }
+  if (leftPaddle.y < 0) {
+    leftPaddle.y = 0;
+  }
+  if (rightPaddle.y < 0) {
+    rightPaddle.y = 0;
   }
 }
 /////////////// END NEW ///////////////
@@ -293,40 +343,83 @@ function handleBallOffScreen() {
 ///////////////// NEW /////////////////
 // displayScoreRight()
 //
-//
+// Changes height of paddle to display to represent score
+// Longest paddle has highest score
+// Theme changes colors of the previous score marked
 function displayScore() {
+
+  // Plays SFX of gaining a point
+  pointSFX.currentTime = 0;
+  pointSFX.play();
+
+  // Changes background and ball color, increments paddle height
   if (ballOutRight === true) {
     leftPaddle.h += 10;
+    ballColor(255,0,0);
+    bgRed = 80;
+    bgBlue = 0;
+
   } else {
     rightPaddle.h += 10;
+    ballColor(0,0,255);
+    bgRed = 0;
+    bgBlue = 80;
   }
 }
 
 // reset()
 //
-//
+// Repositions ball speed and position
 function reset() {
-  ball.x = width/2;
-  ball.y = height/2;
-
   if (ballOutRight === true) {
-    ball.vx = random(-10,-4);
+    ball.speed = random(-10,-4);
+    setupBall();
   } else {
-    ball.vx = random(4,10);
+    ball.speed = random(4,10);
+    setupBall();
   }
 }
-/////////////// END NEW ///////////////
+
+// newGame()
+//
+// Resets game attributes to begin new game
+function newGame() {
+  leftPaddle.h = 70;
+  rightPaddle.h = 70;
+  ball.speed = 5;
+  ballColor(255,255,255);
+  bgRed = 0;
+  bgBlue = 0;
+  ballOutRight = false;
+  leftPaddle.score = 0;
+  rightPaddle.score = 0;
+}
 
 // displayBall()
 //
 // Draws ball on screen based on its properties
 function displayBall() {
-  rect(ball.x,ball.y,ball.size,ball.size);
+  fill(ball.red,ball.green,ball.blue);
+  ellipse(ball.x,ball.y,ball.size,ball.size);
+}
+
+// ballColor(red,green,blue)
+//
+// Changes ball color attributes to given arguments
+function ballColor(red,green,blue) {
+    ball.red = red;
+    ball.green = green;
+    ball.blue = blue;
 }
 
 // displayPaddle(paddle)
 //
 // Draws the specified paddle on screen based on its properties
+// Left paddle is red, right paddle is blue
 function displayPaddle(paddle) {
+  push();
+  fill(paddle.red, paddle.green, paddle.blue);
   rect(paddle.x,paddle.y,paddle.w,paddle.h);
+  pop();
 }
+/////////////// END NEW ///////////////
