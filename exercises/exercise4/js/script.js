@@ -3,6 +3,10 @@
 //
 // A customized implementation of Pong with scoring system
 // just the ability to play the game with the keyboard.
+// Using the arrow keys and WASD.
+// Color theme changes depending on who's making points.
+// SFX for every collisions and events.
+// Ball size and velocity changes according to score.
 
 // Default game colors
 var bgRed = 0;
@@ -141,6 +145,14 @@ function setupBall() {
 function draw() {
   // Fill the background with red, green, and blue variables
   background(bgRed,bgGreen,bgBlue);
+  push();
+  fill(255,20);
+  ellipse(width/2,height/2,width/2,height);
+  fill(bgRed,bgGreen,bgBlue,100);
+  ellipse(width/2,height/2,width/3,height/1.5);
+  fill(bgRed,bgGreen,bgBlue);
+  ellipse(width/2,height/2,width/6,height/3);
+  pop();
 
   // Handle input
   // Notice how we're using the SAME FUNCTION to handle the input
@@ -265,18 +277,17 @@ function handleBallPaddleCollision(paddle) {
   if (ballBottom > paddleTop && ballTop < paddleBottom) {
     // Then check if it is touching the paddle horizontally
     if (ballLeft < paddleRight && ballRight > paddleLeft) {
-      // Then the ball is touching the paddle so reverse its vx
-      ball.vx = -ball.vx;
-      // Play our bouncing sound effect by rewinding and then playing
       ///////////////// NEW /////////////////
+      // Then the ball is touching the paddle so reverse its vx
+      // And speeds up a bit (by .03 speed)
+      ball.vx *= -1.03;
+      // Play our bouncing sound effect by rewinding and then playing
       collideSFX.currentTime = 0;
       collideSFX.play();
       /////////////// END NEW ///////////////
     }
   }
 }
-
-
 
 ///////////////// NEW /////////////////
 // handleBallOffScreen()
@@ -331,18 +342,8 @@ function handleBallOffScreen() {
 //
 // Paddle can't go further than the limits of the screen height
 function handlePaddleOffscreen() {
-  if (leftPaddle.y > height) {
-    leftPaddle.y = height;
-  }
-  if (rightPaddle.y > height) {
-    rightPaddle.y = height;
-  }
-  if (leftPaddle.y < 0) {
-    leftPaddle.y = 0;
-  }
-  if (rightPaddle.y < 0) {
-    rightPaddle.y = 0;
-  }
+  leftPaddle.y = constrain(leftPaddle.y,0,height);
+  rightPaddle.y = constrain(rightPaddle.y,0,height);
 }
 /////////////// END NEW ///////////////
 
@@ -376,29 +377,32 @@ function displayScore() {
 // reset()
 //
 // Repositions ball speed and position
+// Ball size increases every score gained
 function reset() {
+  ball.size += 2;
   if (ballOutRight === true) {
-    ball.speed = random(-10,-4);
+    ball.speed = random(-9,-5);
     setupBall();
   } else {
-    ball.speed = random(4,10);
+    ball.speed = random(5,9);
     setupBall();
   }
 }
 
 // newGame()
 //
-// Resets game attributes to begin new game
+// Resets all game attributes to begin new game
 function newGame() {
   leftPaddle.h = 70;
   rightPaddle.h = 70;
   ball.speed = 5;
-  ballColor(255,255,255);
+  ballColor(255);
   bgRed = 0;
   bgBlue = 0;
   ballOutRight = false;
   leftPaddle.score = 0;
   rightPaddle.score = 0;
+  ball.size = 20;
 }
 
 // displayBall()
@@ -424,7 +428,7 @@ function ballColor(red,green,blue) {
 // Left paddle is red, right paddle is blue
 function displayPaddle(paddle) {
   push();
-  fill(paddle.red, paddle.green, paddle.blue);
+  fill(paddle.red,paddle.green,paddle.blue);
   rect(paddle.x,paddle.y,paddle.w,paddle.h);
   pop();
 }
