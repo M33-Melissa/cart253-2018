@@ -28,7 +28,7 @@ var ball = {
   red: 255,
   green: 255,
   blue: 255,
-  speed: 5
+  speed: 6
 }
 
 // PADDLES
@@ -47,7 +47,7 @@ var leftPaddle = {
   h: 70,
   vx: 0,
   vy: 0,
-  speed: 10,
+  speed: 15,
   score: 0,
   red: 255,
   green: 0,
@@ -67,7 +67,7 @@ var rightPaddle = {
   h: 70,
   vx: 0,
   vy: 0,
-  speed: 10,
+  speed: 15,
   score: 0,
   red: 0,
   green: 0,
@@ -381,10 +381,10 @@ function displayScore() {
 function reset() {
   ball.size += 2;
   if (ballOutRight === true) {
-    ball.speed = random(-9,-5);
+    ball.speed = random(-9,-6);
     setupBall();
   } else {
-    ball.speed = random(5,9);
+    ball.speed = random(6,9);
     setupBall();
   }
 }
@@ -395,7 +395,7 @@ function reset() {
 function newGame() {
   leftPaddle.h = 70;
   rightPaddle.h = 70;
-  ball.speed = 5;
+  ball.speed = 6;
   ballColor(255);
   bgRed = 0;
   bgBlue = 0;
