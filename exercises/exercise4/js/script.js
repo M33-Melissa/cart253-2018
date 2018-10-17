@@ -151,7 +151,7 @@ function draw() {
   fill(bgRed,bgGreen,bgBlue,100);
   ellipse(width/2,height/2,width/3,height/1.5);
   fill(bgRed,bgGreen,bgBlue);
-  ellipse(width/2,height/2,width/6,height/3);
+  ellipse(width/2,height/2,width/4,height/2);
   pop();
 
   // Handle input
