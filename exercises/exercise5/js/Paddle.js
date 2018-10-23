@@ -13,6 +13,7 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.vy = 0;
   this.w = w;
   this.h = h;
+  this.score = 0;
   this.speed = speed;
   this.downKey = downKey;
   this.upKey = upKey;
@@ -48,4 +49,9 @@ Paddle.prototype.update = function() {
 Paddle.prototype.display = function() {
   fill(255);
   rect(this.x,this.y,this.w,this.h);
+}
+
+Paddle.prototype.addScore = function() {
+  this.score++;
+  console.log(this.score);
 }
