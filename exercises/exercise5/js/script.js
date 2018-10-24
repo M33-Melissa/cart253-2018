@@ -24,11 +24,12 @@ var bgBlue = 0;
 var paddleInset = 50;
 /////////////// END NEW ///////////////
 
+///////////////// NEW /////////////////
+
 // setup()
 //
 // Creates the ball and paddles
 function setup() {
-  ///////////////// NEW /////////////////
   createCanvas(windowWidth-3,windowHeight-3);
   rectMode(CENTER);
   ellipseMode(CENTER);
@@ -42,16 +43,18 @@ function setup() {
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
   leftPaddle = new Paddle(paddleInset,height/2,20,60,10,83,87,255,0);
-
-  /////////////// END NEW ///////////////
 }
+/////////////// END NEW ///////////////
 
 // draw()
 //
 // Handles input, updates all the elements, checks for collisions
 // and displays everything.
 function draw() {
+  ///////////////// NEW /////////////////
   background(bgRed,0,bgBlue);
+  addBgElements();
+  /////////////// END NEW ///////////////
 
   leftPaddle.handleInput();
   rightPaddle.handleInput();
@@ -61,21 +64,15 @@ function draw() {
   rightPaddle.update();
 
   ///////////////// NEW /////////////////
-  // Sets background to red or blue depending on who got the point
-  // Updates and display scores, resets the ball to the center
   if (ball.isOffScreen() === 1) {
-    ball.reset();
-    rightPaddle.updateScore();
-    console.log("R: " + rightPaddle.score);
-    bgRed = 0;
-    bgBlue = 80;
-
+    scoreRight();
   } else if (ball.isOffScreen() === 2) {
-    ball.reset();
-    leftPaddle.updateScore();
-    console.log("L: " + leftPaddle.score);
-    bgRed = 80;
-    bgBlue = 0;
+    scoreLeft();
+  }
+
+  // Winning condition: 10 score resets the game
+  if (leftPaddle.score > 10 || rightPaddle.score > 10) {
+    newGame();
   }
   /////////////// END NEW ///////////////
 
@@ -86,3 +83,54 @@ function draw() {
   leftPaddle.display();
   rightPaddle.display();
 }
+
+///////////////// NEW /////////////////
+// addBgElements()
+//
+// Add ellipses of different sizes and transparencies for background decoration.
+function addBgElements() {
+  push();
+  fill(255,20);
+  ellipse(width/2,height/2,width/2,height);
+  fill(bgRed,0,bgBlue,100);
+  ellipse(width/2,height/2,width/3,height/1.5);
+  fill(bgRed,0,bgBlue);
+  ellipse(width/2,height/2,width/4,height/2);
+  pop();
+}
+
+// scoreLeft()
+//
+// Sets background to red because the left paddle got the point
+// Updates and display scores, resets the ball to the center
+function scoreLeft() {
+  ball.reset();
+  leftPaddle.updateScore();
+  console.log("L: " + leftPaddle.score);
+  bgRed = 80;
+  bgBlue = 0;
+}
+
+// scoreRight()
+//
+// Sets background to blue because the right paddle got the point
+// Updates and display scores, resets the ball to the center
+function scoreRight() {
+  ball.reset();
+  rightPaddle.updateScore();
+  console.log("R: " + rightPaddle.score);
+  bgRed = 0;
+  bgBlue = 80;
+}
+
+// newGame()
+//
+// Resets all game attributes to begin new game
+function newGame() {
+  bgRed = 0;
+  bgBlue = 0;
+  // ball.gameOver();
+  // leftPaddle.gameOver();
+  // rightPaddle.gameOver();
+}
+/////////////// END NEW ///////////////

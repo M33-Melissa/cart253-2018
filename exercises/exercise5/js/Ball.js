@@ -4,6 +4,22 @@
 // and bottom edges of the canvas, going off the left and right sides,
 // and bouncing off paddles.
 
+// A variable to hold the SFX sounds we will play
+var beepSFX;
+var pointSFX;
+var gameSFX;
+var collideSFX;
+
+// preload()
+//
+// Loads the SFX audios for the sound of bouncing, scoring, and winning
+function preload() {
+  beepSFX = new Audio("assets/sounds/beep.wav");
+  pointSFX = new Audio("assets/sounds/point.wav");
+  gameSFX = new Audio("assets/sounds/game.wav");
+  collideSFX = new Audio("assets/sounds/collide.wav");
+}
+
 // Ball constructor
 //
 // Sets the properties with the provided arguments
@@ -29,6 +45,9 @@ Ball.prototype.update = function () {
   // Check for touching upper or lower edge and reverse velocity if so
   if (this.y - this.size/2 < 0 || this.y + this.size/2 > height) {
     this.vy = -this.vy;
+    // Play our bouncing sound effect by rewinding and then playing
+    beepSFX.currentTime = 0;
+    beepSFX.play();
   }
 }
 
@@ -45,9 +64,15 @@ Ball.prototype.isOffScreen = function () {
 
   // Check for going off screen and reset if so
   if (ballRight < 0) {
+    // Plays SFX of gaining a point
+    pointSFX.currentTime = 0;
+    pointSFX.play();
     return 1;
 
   } else if (ballLeft > width) {
+    // Plays SFX of gaining a point
+    pointSFX.currentTime = 0;
+    pointSFX.play();
     return 2;
 
   } else {
@@ -91,11 +116,15 @@ Ball.prototype.handleCollision = function(paddle) {
       if (ballLeft < paddleRight && ballRight > paddleLeft) {
       // Reverse x velocity to bounce
       this.vx *= -1.03;
+      // Play our bouncing sound effect by rewinding and then playing
+      collideSFX.currentTime = 0;
+      collideSFX.play();
     }
   }
 }
 /////////////// END NEW ///////////////
 
+///////////////// NEW /////////////////
 // reset()
 //
 // Set position back to the middle of the screen
@@ -116,3 +145,12 @@ Ball.prototype.reset = function () {
     this.vy = random(-9,9);
   }
 }
+
+// Ball.prototype.gameOver = function() {
+//   this.speed = 6;
+//   this.size = 20;
+//
+//   gameSFX.currentTime = 0;
+//   gameSFX.play();
+// }
+/////////////// END NEW ///////////////
