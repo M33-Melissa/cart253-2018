@@ -2,8 +2,9 @@
 //
 // A class to define how a ball behaves. Including bouncing on the top
 // and bottom edges of the canvas, going off the left and right sides,
-// and bouncing off paddles.
+// and bouncing off paddles. Adding sound effects.
 
+///////////////// NEW /////////////////
 // A variable to hold the SFX sounds we will play
 var beepSFX;
 var pointSFX;
@@ -19,6 +20,7 @@ function preload() {
   gameSFX = new Audio("assets/sounds/game.wav");
   collideSFX = new Audio("assets/sounds/collide.wav");
 }
+/////////////// END NEW ///////////////
 
 // Ball constructor
 //
@@ -30,6 +32,9 @@ function Ball(x,y,vx,vy,size,speed) {
   this.vy = vy;
   this.size = size;
   this.speed = speed;
+  this.red = 255;
+  this.green = 255;
+  this.blue = 255;
 }
 
 // update()
@@ -42,6 +47,7 @@ Ball.prototype.update = function () {
   this.x += this.vx;
   this.y += this.vy;
 
+  ///////////////// NEW /////////////////
   // Check for touching upper or lower edge and reverse velocity if so
   if (this.y - this.size/2 < 0 || this.y + this.size/2 > height) {
     this.vy = -this.vy;
@@ -49,13 +55,17 @@ Ball.prototype.update = function () {
     beepSFX.currentTime = 0;
     beepSFX.play();
   }
+  /////////////// END NEW ///////////////
 }
 
 ///////////////// NEW /////////////////
 // isOffScreen()
 //
-// Checks if the ball has moved off the screen and, if so, returns true.
-// Otherwise it returns false.
+// Checks if the ball has moved off the screen.
+// It returns a value from 0 to 2.
+// Value of 0 means ball not off screen.
+// Value of 1 means ball is off to the left.
+// Value of 2 means ball is off to the right.
 Ball.prototype.isOffScreen = function () {
 
   // Calculate edges of ball for clearer if statement below
@@ -70,7 +80,7 @@ Ball.prototype.isOffScreen = function () {
     return 1;
 
   } else if (ballLeft > width) {
-    // Plays SFX of gaining a point
+    // Plays SFX of gaining a point by rewinding and then playing
     pointSFX.currentTime = 0;
     pointSFX.play();
     return 2;
@@ -85,7 +95,7 @@ Ball.prototype.isOffScreen = function () {
 //
 // Draw the ball as a rectangle on the screen
 Ball.prototype.display = function () {
-  fill(255);
+  fill(this.red,this.green,this.blue);
   ///////////////// NEW /////////////////
   ellipse(this.x,this.y,this.size,this.size);
   /////////////// END NEW ///////////////
@@ -111,9 +121,12 @@ Ball.prototype.handleCollision = function(paddle) {
   var paddleRight = paddle.x + paddle.w/2;
 
   // First check it is in the vertical range of the paddle
-    if (ballBottom > paddleTop && ballTop < paddleBottom) {
-      // Then check if it is touching the paddle horizontally
-      if (ballLeft < paddleRight && ballRight > paddleLeft) {
+  if (ballBottom > paddleTop && ballTop < paddleBottom) {
+    // Then check if it is touching the paddle horizontally
+    if (ballLeft < paddleRight && ballRight > paddleLeft) {
+      this.red = paddle.red;
+      this.green = 0;
+      this.blue = paddle.blue;
       // Reverse x velocity to bounce
       this.vx *= -1.03;
       // Play our bouncing sound effect by rewinding and then playing
@@ -146,11 +159,15 @@ Ball.prototype.reset = function () {
   }
 }
 
-// Ball.prototype.gameOver = function() {
-//   this.speed = 6;
-//   this.size = 20;
+// gameOver()
 //
-//   gameSFX.currentTime = 0;
-//   gameSFX.play();
-// }
+// Game over reset values of speed and size to default.
+Ball.prototype.gameOver = function() {
+  this.speed = 7;
+  this.size = 20;
+
+  // Play winning sound effect by rewinding and then playing
+  gameSFX.currentTime = 0;
+  gameSFX.play();
+}
 /////////////// END NEW ///////////////

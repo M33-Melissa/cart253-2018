@@ -1,11 +1,15 @@
 // OOP Pong
-// by Pippin Barr
+// by Melissa Lim
 //
-// A primitive implementation of Pong with no scoring system
+// An implementation of Pong with a scoring system using sizes and colors
 // just the ability to play the game with the keyboard.
 //
 // Arrow keys control the right hand paddle, W and S control
 // the left hand paddle.
+//
+// Color theme changes depending on who's making points.
+// SFX for every collisions and events.
+// Ball size and velocity changes according to score.
 //
 // Written with JavaScript OOP.
 
@@ -129,8 +133,8 @@ function scoreRight() {
 function newGame() {
   bgRed = 0;
   bgBlue = 0;
-  // ball.gameOver();
-  // leftPaddle.gameOver();
-  // rightPaddle.gameOver();
+  ball.gameOver();
+  leftPaddle.gameOver();
+  rightPaddle.gameOver();
 }
 /////////////// END NEW ///////////////
