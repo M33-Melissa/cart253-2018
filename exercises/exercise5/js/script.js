@@ -39,10 +39,10 @@ function setup() {
   // Create a ball
   ball = new Ball(width/2,height/2,6,6,20,6);
   // Create the right paddle with UP and DOWN as controls
-  rightPaddle = new Paddle(width-paddleInset,height/2,20,60,10,DOWN_ARROW,UP_ARROW,0,255);
+  rightPaddle = new Paddle(width-paddleInset,height/2,20,60,15,DOWN_ARROW,UP_ARROW,0,255);
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
-  leftPaddle = new Paddle(paddleInset,height/2,20,60,10,83,87,255,0);
+  leftPaddle = new Paddle(paddleInset,height/2,20,60,15,83,87,255,0);
 }
 /////////////// END NEW ///////////////
 
@@ -71,7 +71,7 @@ function draw() {
   }
 
   // Winning condition: 10 score resets the game
-  if (leftPaddle.score > 10 || rightPaddle.score > 10) {
+  if (leftPaddle.score > 1 || rightPaddle.score > 1) {
     newGame();
   }
   /////////////// END NEW ///////////////
@@ -129,8 +129,8 @@ function scoreRight() {
 function newGame() {
   bgRed = 0;
   bgBlue = 0;
-  // ball.gameOver();
-  // leftPaddle.gameOver();
-  // rightPaddle.gameOver();
+  leftPaddle.gameOver();
+  rightPaddle.gameOver();
+  ball.gameOver();
 }
 /////////////// END NEW ///////////////

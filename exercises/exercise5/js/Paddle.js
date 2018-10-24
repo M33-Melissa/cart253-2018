@@ -69,9 +69,12 @@ Paddle.prototype.updateScore = function() {
   this.score++;
   this.h += 10;
 }
-// 
-// Paddle.prototype.gameOver = function() {
-//   this.h = 70;
-//   this.score = 0;
-// }
+
+// gameOver()
+//
+// Game over reset game values, paddle height and score
+Paddle.prototype.gameOver = function() {
+  this.h = 70;
+  this.score = 0;
+}
 /////////////// END NEW ///////////////
