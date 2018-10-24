@@ -99,10 +99,20 @@ Ball.prototype.handleCollision = function(paddle) {
 // reset()
 //
 // Set position back to the middle of the screen
+// Size increase every reset, randomized speed
+// Ball goes in the direction of the winner
 Ball.prototype.reset = function () {
-  
-  this.x = width/2;
-  this.y = height/2;
-  this.vx = this.speed;
-  this.vy = this.speed;
+  ball.size += 2;
+  if (ball.isOffScreen() === 1) {
+    this.x = width/2;
+    this.y = height/2;
+    this.vx = random(7,10);
+    this.vy = random(-9,9);
+
+  } else if (ball.isOffScreen() === 2) {
+    this.x = width/2;
+    this.y = height/2;
+    this.vx = random(-10,-7);
+    this.vy = random(-9,9);
+  }
 }
