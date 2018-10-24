@@ -2,7 +2,7 @@
 //
 // A class to define how a ball behaves. Including bouncing on the top
 // and bottom edges of the canvas, going off the left and right sides,
-// and bouncing off paddles.
+// and bouncing off paddles. Adding sound effects.
 
 ///////////////// NEW /////////////////
 // A variable to hold the SFX sounds we will play
