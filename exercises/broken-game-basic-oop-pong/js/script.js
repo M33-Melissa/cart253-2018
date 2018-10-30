@@ -51,7 +51,7 @@ function draw() {
   //////////////// FIXED added missing {
   //////////////// FIXED function reference "isOffTheScreen" to "isOffScreen"
   if (ball.isOffScreen()) {
-    //////////////// FIXED reference "reset()" to "ball.reset()";
+    //////////////// FIXED reference "reset()" to "ball.reset()"
     ball.reset();
   }
 

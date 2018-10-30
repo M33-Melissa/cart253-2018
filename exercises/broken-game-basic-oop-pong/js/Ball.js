@@ -55,8 +55,8 @@ Ball.prototype.isOffScreen = function () {
 //
 // Draw the ball as a rectangle on the screen
 Ball.prototype.display = function () {
-  //////////////// FIXED missing comma
-  rect(this.x,this.y);
+  //////////////// FIXED missing comma & missing size arguments
+  rect(this.x,this.y,this.size,this.size);
 }
 
 // handleCollision(paddle)
