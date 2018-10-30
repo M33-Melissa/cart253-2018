@@ -32,7 +32,8 @@ Paddle.prototype.handleInput = function() {
     this.vy = -this.speed;
   }
   //////////////// FIXED p5.js function reference "keyDown" to "keyIsDown"
-  else if (keyIsDown(downKey)) {
+  //////////////// FIXED added "this." before downKey
+  else if (keyIsDown(this.downKey)) {
     this.vy = -this.speed;
   }
 }
