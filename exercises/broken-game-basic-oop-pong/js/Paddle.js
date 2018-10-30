@@ -26,10 +26,12 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
 // appropriately
 //////////////// FIXED completed word "proto" to "prototype"
 Paddle.prototype.handleInput = function() {
-  if (keyDown(upKey)) {
+  //////////////// FIXED p5.js function reference "keyDown" to "keyIsDown"
+  if (keyIsDown(upKey)) {
     this.vy = -this.speed;
   }
-  else if (keyDown(downKey)) {
+  //////////////// FIXED p5.js function reference "keyDown" to "keyIsDown"
+  else if (keyIsDown(downKey)) {
     this.vy = -this.speed;
   }
 }
