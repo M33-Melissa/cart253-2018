@@ -45,7 +45,7 @@ Paddle.prototype.update = function() {
 // display()
 //
 // Draw the paddle as a rectangle on the screen
-//////////////// FIXED extra paranthesis "function())"
-Paddle.prototype.disploy = function() {
+//////////////// FIXED extra paranthesis "function())" & "disploy" to "display"
+Paddle.prototype.display = function() {
   rectangle(this.x,this.y,this.w,this.h);
 }
