@@ -6,7 +6,8 @@
 // Paddle constructor
 //
 // Sets the properties with the provided arguments or defaults
-function Pladdle(x,y,w,h,speed,downKey,upKey) {
+//////////////// FIXED typo "Pladdle" to "Paddle"
+function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.x = x;
   this.y = y;
   this.xv = 0;
