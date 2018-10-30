@@ -44,7 +44,8 @@ Paddle.prototype.handleInput = function() {
 Paddle.prototype.update = function() {
   this.y += this.vy;
   //////////////// FIXED typo "hight" to "height"
-  this.y = constraint(this.y,0,height-this.h);
+  //////////////// FIXED p5.js function reference "constraint" to "constrain"
+  this.y = constrain(this.y,0,height-this.h);
 }
 
 // display()
