@@ -42,7 +42,8 @@ function draw() {
   leftPaddle.handleInput();
   rightPaddle.handleInput();
 
-  ball.update;
+  //////////////// FIXED added missing parenthesis
+  ball.update();
   leftPaddle.update();
   rightPaddle.update();
 
