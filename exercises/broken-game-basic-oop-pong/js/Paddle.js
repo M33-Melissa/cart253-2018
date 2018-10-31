@@ -34,7 +34,8 @@ Paddle.prototype.handleInput = function() {
   //////////////// FIXED p5.js function reference "keyDown" to "keyIsDown"
   //////////////// FIXED added "this." before downKey
   else if (keyIsDown(this.downKey)) {
-    this.vy = -this.speed;
+  //////////////// FIXED removed '-' before this.speed for non-inverted movement
+    this.vy = this.speed;
   }
   //////////////// FIXED added condition to stop moving when key isn't down
   else {
