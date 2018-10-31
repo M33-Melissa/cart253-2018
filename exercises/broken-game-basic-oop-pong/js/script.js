@@ -26,8 +26,8 @@ function setup() {
   //////////////// FIXED corrected velocity vx, vy
   ball = new Ball(width/2,height/2,5,5,10,50);
   // Create the right paddle with UP and DOWN as controls
-  //////////////// FIXED corrected height size
-  rightPaddle = new Paddle(width-10,height/2,10,60,10,UP_ARROW,DOWN_ARROW);
+  //////////////// FIXED corrected height size & inverted controls (DOWN,UP)
+  rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW);
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
   //////////////// FIXED added missing parenthesis
