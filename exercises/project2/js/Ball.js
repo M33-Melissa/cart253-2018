@@ -54,7 +54,7 @@ Ball.prototype.isOffScreen = function () {
 // Draw the ball as a rectangle on the screen
 Ball.prototype.display = function () {
   fill(255);
-  rect(this.x,this.y,this.size,this.size);
+  ellipse(this.x,this.y,this.size,this.size);
 }
 
 // handleCollision(paddle)
@@ -62,10 +62,23 @@ Ball.prototype.display = function () {
 // Check if this ball overlaps the paddle passed as an argument
 // and if so reverse x velocity to bounce
 Ball.prototype.handleCollision = function(paddle) {
+
+  // Calculate edges of ball for clearer if statements below
+  var ballRight = this.x + this.size/2;
+  var ballLeft = this.x - this.size/2;
+  var ballTop = this.y - this.size/2;
+  var ballBottom = this.y + this.size/2;
+
+  // Calculate edges of paddle for clearer if statements below
+  var paddleRight = paddle.x + paddle.w/2;
+  var paddleLeft = paddle.x - paddle.w/2;
+  var paddleTop = paddle.y - paddle.h/2;
+  var paddleBottom = paddle.y + paddle.h/2;
+
   // Check if the ball overlaps the paddle on x axis
-  if (this.x + this.size > paddle.x && this.x < paddle.x + paddle.w) {
+  if (ballRight > paddleLeft && ballLeft < paddleRight) {
     // Check if the ball overlaps the paddle on y axis
-    if (this.y + this.size > paddle.y && this.y < paddle.y + paddle.h) {
+    if (ballBottom > paddleTop && ballTop < paddleBottom) {
       // If so, move ball back to previous position (by subtracting current velocity)
       this.x -= this.vx;
       this.y -= this.vy;
