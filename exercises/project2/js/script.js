@@ -18,6 +18,7 @@ var rightPaddle;
 var start = false;
 var gameOver = false;
 var winner = "Default";
+var winningScore = 2;
 
 // How far in from the walls the paddles should be drawn on x
 var paddleInset = 20;
@@ -30,7 +31,7 @@ function setup() {
   rectMode(CENTER);
   ellipseMode(CENTER);
   // Create a ball
-  ball = new Ball(width/2,height/2,6,6,20,7);
+  ball = new Ball(width/2,height/2,7,7,20,7);
   // Create the right paddle with UP and DOWN as controls
   rightPaddle = new Paddle(width-paddleInset,height/2,20,60,10,DOWN_ARROW,UP_ARROW);
   // Create the left paddle with W and S as controls
@@ -79,16 +80,7 @@ function play() {
     scoreLeft();
   }
 
-  if (leftPaddle.score >= 2) {
-    winner = "Left";
-    gameOverScreen();
-  } else if (rightPaddle.score >= 2) {
-    winner = "Right";
-    gameOverScreen();
-  } else {
-    winner = "Default";
-  }
-
+  determineWinner();
 }
 
 // scoreLeft()
@@ -111,6 +103,17 @@ function scoreRight() {
   console.log("R: " + rightPaddle.score);
 }
 
+function determineWinner() {
+  if (leftPaddle.score === winningScore && rightPaddle.score < winningScore) {
+    winner = "Left";
+    gameOverScreen();
+  } else if (rightPaddle.score === winningScore && leftPaddle.score < winningScore) {
+    winner = "Right";
+    gameOverScreen();
+  } else {
+    winner = "Default";
+  }
+}
 // titleScreen()
 //
 // Sets up title screen
@@ -141,17 +144,27 @@ function gameOverScreen() {
   text(winner + " WINS!", width/2, height/2);
   textSize(width/20);
   text("Press SHIFT to play again!", width/2, height*3/4);
+  ball.vx = 0;
+  ball.vy = 0;
+  ball.speed = 0;
 }
 
 // resetGame()
 //
 // resets game values and goes back to the title screen
 function resetGame() {
-  titleScreen();
+
   ball.reset();
+  rightPaddle.x = width-paddleInset;
+  rightPaddle.y = height/2;
+  leftPaddle.x = paddleInset;
+  leftPaddle.y = height/2;
+
   ball.gameOver();
   leftPaddle.gameOver();
   rightPaddle.gameOver();
+
+  titleScreen();
 }
 
 // keyPressed()
@@ -160,11 +173,15 @@ function resetGame() {
 function keyPressed() {
   if (keyCode === ENTER) {
     start = true;
+    ball.vx = 7;
+    ball.vy = 7;
+    ball.speed = 7;
     play();
   }
 
   if (keyCode === SHIFT) {
     gameOver = false;
+    start = false;
     resetGame();
   }
   return false;
