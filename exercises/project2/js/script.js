@@ -37,6 +37,8 @@ function setup() {
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
   leftPaddle = new Paddle(paddleInset,height/2,20,60,10,83,87);
+
+  projectile = new Projectile(width/2,height/2,5,5,20,5);
 }
 
 // draw()
@@ -64,13 +66,17 @@ function play() {
   rightPaddle.handleInput();
 
   ball.update();
+  projectile.update();
   leftPaddle.update();
   rightPaddle.update();
 
   ball.handleCollision(leftPaddle);
   ball.handleCollision(rightPaddle);
+  projectile.handleCollision(leftPaddle);
+  projectile.handleCollision(rightPaddle);
 
   ball.display();
+  projectile.display();
   leftPaddle.display();
   rightPaddle.display();
 
@@ -147,6 +153,9 @@ function gameOverScreen() {
   ball.vx = 0;
   ball.vy = 0;
   ball.speed = 0;
+  projectile.vx = 0;
+  projectile.vy = 0;
+  projectile.speed = 0;
 }
 
 // resetGame()
@@ -155,6 +164,7 @@ function gameOverScreen() {
 function resetGame() {
 
   ball.reset();
+  projectile.reset();
   rightPaddle.x = width-paddleInset;
   rightPaddle.y = height/2;
   leftPaddle.x = paddleInset;
@@ -176,6 +186,9 @@ function keyPressed() {
     ball.vx = 7;
     ball.vy = 7;
     ball.speed = 7;
+    projectile.vx = 5;
+    projectile.vy = 5;
+    projectile.speed = 5;
     play();
   }
 
