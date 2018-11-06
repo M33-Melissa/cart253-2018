@@ -14,11 +14,13 @@ var ball;
 var leftPaddle;
 var rightPaddle;
 
+var start = false;
+
 // setup()
 //
 // Creates the ball and paddles
 function setup() {
-  createCanvas(640,480);
+  createCanvas(windowWidth-3,windowHeight-3);
   // Create a ball
   ball = new Ball(width/2,height/2,5,5,10,5);
   // Create the right paddle with UP and DOWN as controls
@@ -33,6 +35,14 @@ function setup() {
 // Handles input, updates all the elements, checks for collisions
 // and displays everything.
 function draw() {
+  if (start===false) {
+    titleScreen();
+  } else {
+    play();
+  }
+}
+
+function play() {
   background(0);
 
   leftPaddle.handleInput();
@@ -52,4 +62,25 @@ function draw() {
   ball.display();
   leftPaddle.display();
   rightPaddle.display();
+}
+
+function titleScreen() {
+  background(255);
+  textFont("Helvetica");
+  textSize(width/15);
+  textAlign(CENTER,CENTER);
+
+  noStroke();
+  fill(0);
+
+  text("THE LEGEND OF PONG", width/2, height/2);
+  textSize(width/20);
+  text("Press P to play", width/2, height*3/4);
+}
+
+function keyPressed() {
+  if (key === 'P'|| key === 'p') {
+    play();
+    start = true;
+  }
 }
