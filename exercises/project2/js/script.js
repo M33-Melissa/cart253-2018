@@ -15,6 +15,8 @@ var leftPaddle;
 var rightPaddle;
 
 var start = false;
+var gameOver = false;
+var winner = "Default";
 
 // setup()
 //
@@ -40,6 +42,9 @@ function draw() {
   } else {
     play();
   }
+  if (gameOver===true) {
+    gameOverScreen();
+  }
 }
 
 function play() {
@@ -62,6 +67,12 @@ function play() {
   ball.display();
   leftPaddle.display();
   rightPaddle.display();
+
+  if (ball.checkWin()) {
+    gameOver = true;
+  } else {
+    gameOver = false;
+  }
 }
 
 function titleScreen() {
@@ -72,15 +83,37 @@ function titleScreen() {
 
   noStroke();
   fill(0);
-
-  text("THE LEGEND OF PONG", width/2, height/2);
+  text("Welcome to PONG", width/2, height/2);
   textSize(width/20);
-  text("Press P to play", width/2, height*3/4);
+  text("Press ENTER to play", width/2, height*3/4);
+}
+
+function gameOverScreen() {
+  background(255);
+  textFont("Helvetica");
+  textSize(width/15);
+  textAlign(CENTER,CENTER);
+
+  noStroke();
+  fill(0);
+  text(winner + " WINS!", width/2, height/2);
+  textSize(width/20);
+  text("Press SHIFT to play again!", width/2, height*3/4);
 }
 
 function keyPressed() {
-  if (key === 'P'|| key === 'p') {
-    play();
+  if (keyCode === ENTER) {
     start = true;
+    play();
   }
+
+  if (keyCode === SHIFT) {
+    gameOver = false;
+    resetGame();
+  }
+  return false;
+}
+
+function resetGame() {
+  titleScreen();
 }

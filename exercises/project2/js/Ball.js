@@ -75,6 +75,10 @@ Ball.prototype.handleCollision = function(paddle) {
   }
 }
 
+Ball.prototype.checkWin = function () {
+  return false;
+}
+
 // reset()
 //
 // Set position back to the middle of the screen
