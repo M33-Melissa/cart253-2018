@@ -16,6 +16,7 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.speed = speed;
   this.downKey = downKey;
   this.upKey = upKey;
+  this.score = 0;
 }
 
 // handleInput()
@@ -48,4 +49,21 @@ Paddle.prototype.update = function() {
 Paddle.prototype.display = function() {
   fill(255);
   rect(this.x,this.y,this.w,this.h);
+}
+
+// updateScore()
+//
+// Increment scores and adds height to paddle to display scores
+// Longest paddle has highest score
+Paddle.prototype.updateScore = function() {
+  this.score++;
+  this.h += 10;
+}
+
+// gameOver()
+//
+// Game over reset game values, paddle height and score
+Paddle.prototype.gameOver = function() {
+  this.h = 70;
+  this.score = 0;
 }

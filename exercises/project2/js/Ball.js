@@ -40,12 +40,18 @@ Ball.prototype.update = function () {
 // Checks if the ball has moved off the screen and, if so, returns true.
 // Otherwise it returns false.
 Ball.prototype.isOffScreen = function () {
+  var ballRight = this.x + this.size/2;
+  var ballLeft = this.x - this.size/2;
+
   // Check for going off screen and reset if so
-  if (this.x + this.size < 0 || this.x > width) {
-    return true;
-  }
-  else {
-    return false;
+  if (ballRight < 0) {
+    return 1;
+
+  } else if (ballLeft > width) {
+    return 2;
+
+  } else {
+    return 0;
   }
 }
 
@@ -62,7 +68,6 @@ Ball.prototype.display = function () {
 // Check if this ball overlaps the paddle passed as an argument
 // and if so reverse x velocity to bounce
 Ball.prototype.handleCollision = function(paddle) {
-
   // Calculate edges of ball for clearer if statements below
   var ballRight = this.x + this.size/2;
   var ballLeft = this.x - this.size/2;
@@ -88,14 +93,28 @@ Ball.prototype.handleCollision = function(paddle) {
   }
 }
 
-Ball.prototype.checkWin = function () {
-  return false;
-}
-
 // reset()
 //
 // Set position back to the middle of the screen
 Ball.prototype.reset = function () {
-  this.x = width/2;
-  this.y = height/2;
+  if (ball.isOffScreen() === 1) {
+    this.x = width/2;
+    this.y = height/2;
+    this.vx = random(7,10);
+    this.vy = random(-9,9);
+
+  } else if (ball.isOffScreen() === 2) {
+    this.x = width/2;
+    this.y = height/2;
+    this.vx = random(-10,-7);
+    this.vy = random(-9,9);
+  }
+}
+
+// gameOver()
+//
+// Game over reset values of speed and size to default.
+Ball.prototype.gameOver = function() {
+  this.speed = 7;
+  this.size = 20;
 }

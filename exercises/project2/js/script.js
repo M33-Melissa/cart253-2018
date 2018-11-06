@@ -30,7 +30,7 @@ function setup() {
   rectMode(CENTER);
   ellipseMode(CENTER);
   // Create a ball
-  ball = new Ball(width/2,height/2,6,6,20,6);
+  ball = new Ball(width/2,height/2,6,6,20,7);
   // Create the right paddle with UP and DOWN as controls
   rightPaddle = new Paddle(width-paddleInset,height/2,20,60,10,DOWN_ARROW,UP_ARROW);
   // Create the left paddle with W and S as controls
@@ -66,10 +66,6 @@ function play() {
   leftPaddle.update();
   rightPaddle.update();
 
-  if (ball.isOffScreen()) {
-    ball.reset();
-  }
-
   ball.handleCollision(leftPaddle);
   ball.handleCollision(rightPaddle);
 
@@ -77,11 +73,42 @@ function play() {
   leftPaddle.display();
   rightPaddle.display();
 
-  if (ball.checkWin()) {
-    gameOver = true;
-  } else {
-    gameOver = false;
+  if (ball.isOffScreen() === 1) {
+    scoreRight();
+  } else if (ball.isOffScreen() === 2) {
+    scoreLeft();
   }
+
+  if (leftPaddle.score >= 2) {
+    winner = "Left";
+    gameOverScreen();
+  } else if (rightPaddle.score >= 2) {
+    winner = "Right";
+    gameOverScreen();
+  } else {
+    winner = "Default";
+  }
+
+}
+
+// scoreLeft()
+//
+// Sets background to red because the left paddle got the point
+// Updates and display scores, resets the ball to the center
+function scoreLeft() {
+  ball.reset();
+  leftPaddle.updateScore();
+  console.log("L: " + leftPaddle.score);
+}
+
+// scoreRight()
+//
+// Sets background to blue because the right paddle got the point
+// Updates and display scores, resets the ball to the center
+function scoreRight() {
+  ball.reset();
+  rightPaddle.updateScore();
+  console.log("R: " + rightPaddle.score);
 }
 
 // titleScreen()
@@ -121,6 +148,10 @@ function gameOverScreen() {
 // resets game values and goes back to the title screen
 function resetGame() {
   titleScreen();
+  ball.reset();
+  ball.gameOver();
+  leftPaddle.gameOver();
+  rightPaddle.gameOver();
 }
 
 // keyPressed()
