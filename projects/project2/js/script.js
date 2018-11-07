@@ -25,6 +25,7 @@ var paddleInset = 50;
 var bgRed = 135;
 var bgGreen = 206;
 var bgBlue = 250;
+var collectables = [];
 
 // setup()
 //
@@ -43,7 +44,10 @@ function setup() {
   leftPaddle = new Paddle(paddleInset,height/2,20,60,10,83,87);
 
   projectile = new Projectile(width/2,height/2,5,5,20,5);
-  collectable = new Collectable(random(50,width-50),0,3,3,50,3);
+
+  for (var i = 0; i < 5; i++) {
+    collectables.push(new Collectable(random(50,width-50),0,3,3,random(15,40),3));
+  }
 }
 
 // draw()
@@ -71,7 +75,6 @@ function play() {
   rightPaddle.handleInput();
 
   ball.update();
-  collectable.update();
   projectile.update();
   leftPaddle.update();
   rightPaddle.update();
@@ -80,13 +83,16 @@ function play() {
   ball.handleCollision(rightPaddle);
   projectile.handleCollision(leftPaddle);
   projectile.handleCollision(rightPaddle);
-  collectable.handleCollision(ball);
 
   ball.display();
-  collectable.display();
   projectile.display();
   leftPaddle.display();
   rightPaddle.display();
+  for (var i = 0; i < 5; i++) {
+    collectables[i].update();
+    collectables[i].handleCollision(ball);
+    collectables[i].display();
+  }
 
   if (ball.isOffScreen() === 1) {
     scoreRight();

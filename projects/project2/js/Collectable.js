@@ -1,6 +1,6 @@
 // Collectable
 //
-//
+// Adds snowfalls
 
 var growth = 2;
 function preload() {
@@ -60,7 +60,7 @@ Collectable.prototype.handleCollision = function(ball) {
       // If so, move ball back to previous position (by subtracting current velocity)
       ball.size += growth;
       this.vx += growth/10;
-      collectable.reset();
+      this.reset();
     }
   }
 }
