@@ -4,7 +4,7 @@
 // When collected by the ball, the ball augments in size and speed.
 
 // Variable used for snowball growth
-var growth = 2;
+var growth = 3;
 
 // Collectable Constructor
 //

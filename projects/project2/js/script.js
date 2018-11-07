@@ -172,7 +172,7 @@ function determineWinner() {
     gameOver = true;
 
   } else {
-    gameOver = false;
+    winner = "Error";
   }
 }
 
@@ -269,7 +269,6 @@ function gameOverScreen() {
   ball.vx = 0;
   ball.vy = 0;
   ball.speed = 0;
-  ball.size = 0;
   projectile.vx = 0;
   projectile.vy = 0;
   projectile.speed = 0;
