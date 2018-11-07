@@ -18,10 +18,13 @@ var rightPaddle;
 var start = false;
 var gameOver = false;
 var winner = "Default";
-var winningScore = 2;
+var winningScore = 11;
 
 // How far in from the walls the paddles should be drawn on x
-var paddleInset = 20;
+var paddleInset = 50;
+var bgRed = 135;
+var bgGreen = 206;
+var bgBlue = 250;
 
 // setup()
 //
@@ -30,6 +33,7 @@ function setup() {
   createCanvas(windowWidth-3,windowHeight-3);
   rectMode(CENTER);
   ellipseMode(CENTER);
+  imageMode(CENTER);
   // Create a ball
   ball = new Ball(width/2,height/2,7,7,20,7);
   // Create the right paddle with UP and DOWN as controls
@@ -39,6 +43,7 @@ function setup() {
   leftPaddle = new Paddle(paddleInset,height/2,20,60,10,83,87);
 
   projectile = new Projectile(width/2,height/2,5,5,20,5);
+  collectable = new Collectable(random(50,width-50),0,3,3,50,3);
 }
 
 // draw()
@@ -60,12 +65,13 @@ function draw() {
 //
 // Sets up play screen
 function play() {
-  background(0);
+  background(bgRed,bgGreen,bgBlue);
 
   leftPaddle.handleInput();
   rightPaddle.handleInput();
 
   ball.update();
+  collectable.update();
   projectile.update();
   leftPaddle.update();
   rightPaddle.update();
@@ -74,8 +80,10 @@ function play() {
   ball.handleCollision(rightPaddle);
   projectile.handleCollision(leftPaddle);
   projectile.handleCollision(rightPaddle);
+  collectable.handleCollision(ball);
 
   ball.display();
+  collectable.display();
   projectile.display();
   leftPaddle.display();
   rightPaddle.display();
@@ -109,6 +117,9 @@ function scoreRight() {
   console.log("R: " + rightPaddle.score);
 }
 
+// determineWinner()
+//
+// Verifies scores to determine winner and calls the game over screen
 function determineWinner() {
   if (leftPaddle.score === winningScore && rightPaddle.score < winningScore) {
     winner = "Left";
