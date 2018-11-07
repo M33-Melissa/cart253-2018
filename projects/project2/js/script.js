@@ -157,16 +157,19 @@ function titleScreen() {
   noStroke();
   fill(255);
 
-  // Title screen text
-  text("Welcome to the Snowfight!", width/2, height/2);
+  // Title screen text, instructions, and prompt to begin game
+  text("Welcome to the Snowfight!", width/2, height/3);
+  textSize(width/35);
+  text("Build up the snowball, widen your snow fort, but avoid the rocks!", width/2, height/2);
   textSize(width/30);
-  text("Press ENTER to play", width/2, height*3/4);
+  text("Press ENTER to play", width/2, height*2.5/4);
 }
 
 // gameOverScreen()
 //
 // Sets up game over screen, display winner
 function gameOverScreen() {
+  // Setting up style
   background(bgRed,bgGreen,bgBlue);
   textFont("Helvetica");
   textSize(width/15);
@@ -179,7 +182,7 @@ function gameOverScreen() {
     textSize(width/22);
     text("THE SNOWBALL TOOK OVER THE WORLD\nNO ONE WINS!", width/2, height/2);
   } else {
-    text(winner + " WINS!", width/2, height/2);
+    text(winner + " snowfort WINS!", width/2, height/2);
   }
   textSize(width/30);
   text("Press SHIFT to play again!", width/2, height*3/4);
