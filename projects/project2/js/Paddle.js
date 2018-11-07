@@ -17,6 +17,9 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.downKey = downKey;
   this.upKey = upKey;
   this.score = 0;
+  this.red = 135;
+  this.green = 190;
+  this.blue = 235;
 }
 
 // handleInput()
@@ -47,8 +50,24 @@ Paddle.prototype.update = function() {
 //
 // Draw the paddle as a rectangle on the screen
 Paddle.prototype.display = function() {
-  fill(255);
+  fill(this.red,this.green,this.blue);
   rect(this.x,this.y,this.w,this.h);
+
+  // Adding white blocks for aesthetics to make the paddle feel like snowforts
+  fill(255);
+  rect(this.x-this.w/3.5,this.y-this.h/3,this.w/2.2,this.h/3.5);
+  rect(this.x-this.w/3.5,this.y,this.w/2.2,this.h/3.5);
+  rect(this.x-this.w/3.5,this.y+this.h/3,this.w/2.2,this.h/3.5);
+
+  rect(this.x+this.w/3.5,this.y-this.h/3,this.w/2.2,this.h/3.5);
+  rect(this.x+this.w/3.5,this.y,this.w/2.2,this.h/3.5);
+  rect(this.x+this.w/3.5,this.y+this.h/3,this.w/2.2,this.h/3.5);
+  rect(leftPaddle.x-leftPaddle.w/1.2,leftPaddle.y-leftPaddle.h/3,leftPaddle.w/2.2,leftPaddle.h/3.5);
+  rect(leftPaddle.x-leftPaddle.w/1.2,leftPaddle.y+leftPaddle.h/3,leftPaddle.w/2.2,leftPaddle.h/3.5);
+
+  rect(rightPaddle.x+rightPaddle.w/1.2,rightPaddle.y-rightPaddle.h/3,rightPaddle.w/2.2,rightPaddle.h/3.5);
+  rect(rightPaddle.x+rightPaddle.w/1.2,rightPaddle.y+rightPaddle.h/3,rightPaddle.w/2.2,rightPaddle.h/3.5);
+
 }
 
 // updateScore()
