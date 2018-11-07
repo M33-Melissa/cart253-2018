@@ -8,6 +8,9 @@
 // Arrow keys control the right hand paddle, W and S control
 // the left hand paddle.
 //
+// Gameplay altered by visual elements, snowflake collectable objects,
+// rock projectiles and snow fort paddles in a snowstorm.
+//
 // Written with JavaScript OOP.
 //
 // White snowstorm code taken and modified from:
