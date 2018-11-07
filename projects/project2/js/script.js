@@ -100,6 +100,9 @@ function play() {
     scoreLeft();
   }
 
+  if (ball.size >= windowWidth) {
+    gameOverScreen();
+  }
   determineWinner();
 }
 
@@ -149,7 +152,7 @@ function titleScreen() {
   noStroke();
   fill(255);
   text("Welcome to the snowfight!", width/2, height/2);
-  textSize(width/20);
+  textSize(width/30);
   text("Press ENTER to play", width/2, height*3/4);
 }
 
@@ -164,8 +167,13 @@ function gameOverScreen() {
 
   noStroke();
   fill(255);
-  text(winner + " WINS!", width/2, height/2);
-  textSize(width/20);
+  if (ball.size >= windowWidth) {
+    textSize(width/22);
+    text("THE SNOWBALL TOOK OVER THE WORLD\nNO ONE WINS!", width/2, height/2);
+  } else {
+    text(winner + " WINS!", width/2, height/2);
+  }
+  textSize(width/30);
   text("Press SHIFT to play again!", width/2, height*3/4);
   ball.vx = 0;
   ball.vy = 0;
@@ -173,10 +181,6 @@ function gameOverScreen() {
   projectile.vx = 0;
   projectile.vy = 0;
   projectile.speed = 0;
-
-  // if (ball.size >= windowWidth) {
-  //   text("THE SNOWBALL TOOK OVER THE WORLD\nNO ONE WINS!", width/2, height/2);
-  // }
 }
 
 // resetGame()
