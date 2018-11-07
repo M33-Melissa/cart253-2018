@@ -27,18 +27,20 @@ Ball.prototype.update = function () {
   this.y += this.vy;
 
   // Constrain y position to be on screen
-  this.y = constrain(this.y,0,height-this.size);
+  this.y = constrain(this.y,this.size/2,height-this.size/2);
 
   // Check for touching upper or lower edge and reverse velocity if so
-  if (this.y === 0 || this.y + this.size === height) {
+  if (this.y === this.size/2 || this.y + this.size/2 === height) {
     this.vy = -this.vy;
   }
 }
 
 // isOffScreen()
 //
-// Checks if the ball has moved off the screen and, if so, returns true.
-// Otherwise it returns false.
+// Checks if the ball has moved off the screen
+// If so, returns 1 when off to the left
+// and returns 2 when off to the right
+// Otherwise it returns 0.
 Ball.prototype.isOffScreen = function () {
   var ballRight = this.x + this.size/2;
   var ballLeft = this.x - this.size/2;
@@ -46,10 +48,8 @@ Ball.prototype.isOffScreen = function () {
   // Check for going off screen and reset if so
   if (ballRight < 0) {
     return 1;
-
   } else if (ballLeft > width) {
     return 2;
-
   } else {
     return 0;
   }
@@ -57,7 +57,7 @@ Ball.prototype.isOffScreen = function () {
 
 // display()
 //
-// Draw the ball as a rectangle on the screen
+// Draw the ball as a ahite ellipse on the screen (snowball)
 Ball.prototype.display = function () {
   fill(255);
   ellipse(this.x,this.y,this.size,this.size);
@@ -95,7 +95,9 @@ Ball.prototype.handleCollision = function(paddle) {
 
 // reset()
 //
-// Set position back to the middle of the screen
+// Set ball position back to the middle of the screen
+// At randomized velocity
+// Going towards the winning paddle
 Ball.prototype.reset = function () {
   if (ball.isOffScreen() === 1) {
     this.x = width/2;
@@ -113,8 +115,8 @@ Ball.prototype.reset = function () {
 
 // gameOver()
 //
-// Game over reset values of speed and size to default.
+// Game over reset values of velocity and size to default.
 Ball.prototype.gameOver = function() {
-  this.speed = 7;
-  this.size = 20;
+  this.vx = 7;
+  this.size = 30;
 }
