@@ -48,7 +48,7 @@ Paddle.prototype.update = function() {
 
 // display()
 //
-// Draw the paddle as a rectangle on the screen
+// Draw the paddle as a snow fort/castle on the screen
 Paddle.prototype.display = function() {
   fill(this.red,this.green,this.blue);
   rect(this.x,this.y,this.w,this.h);
@@ -58,16 +58,15 @@ Paddle.prototype.display = function() {
   rect(this.x-this.w/3.5,this.y-this.h/3,this.w/2.2,this.h/3.5);
   rect(this.x-this.w/3.5,this.y,this.w/2.2,this.h/3.5);
   rect(this.x-this.w/3.5,this.y+this.h/3,this.w/2.2,this.h/3.5);
-
   rect(this.x+this.w/3.5,this.y-this.h/3,this.w/2.2,this.h/3.5);
   rect(this.x+this.w/3.5,this.y,this.w/2.2,this.h/3.5);
   rect(this.x+this.w/3.5,this.y+this.h/3,this.w/2.2,this.h/3.5);
+
+  // Fort tops on each paddle sides
   rect(leftPaddle.x-leftPaddle.w/1.2,leftPaddle.y-leftPaddle.h/3,leftPaddle.w/2.2,leftPaddle.h/3.5);
   rect(leftPaddle.x-leftPaddle.w/1.2,leftPaddle.y+leftPaddle.h/3,leftPaddle.w/2.2,leftPaddle.h/3.5);
-
   rect(rightPaddle.x+rightPaddle.w/1.2,rightPaddle.y-rightPaddle.h/3,rightPaddle.w/2.2,rightPaddle.h/3.5);
   rect(rightPaddle.x+rightPaddle.w/1.2,rightPaddle.y+rightPaddle.h/3,rightPaddle.w/2.2,rightPaddle.h/3.5);
-
 }
 
 // updateScore()

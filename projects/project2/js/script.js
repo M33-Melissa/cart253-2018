@@ -1,8 +1,8 @@
-// Basic OO Pong
-// by Pippin Barr
+// OO Pong Derivative, Snowfight themed
+// by Melissa Lim
 //
-// A primitive implementation of Pong with no scoring system
-// just the ability to play the game with the keyboard.
+// An implementation of Pong with a scoring system
+// Ability to play the game with the keyboard.
 //
 // Arrow keys control the right hand paddle, W and S control
 // the left hand paddle.
@@ -52,8 +52,7 @@ function setup() {
 
 // draw()
 //
-// Handles input, updates all the elements, checks for collisions
-// and displays everything.
+// Calls appropriate screen methods according to game state
 function draw() {
   if (start===false) {
     titleScreen();
@@ -67,7 +66,8 @@ function draw() {
 
 // play()
 //
-// Sets up play screen
+// Sets up play screen, set background, update objects positions, displays and collisions.
+// Checks score conditions, determine winner/game over conditions, and handles input
 function play() {
   background(bgRed,bgGreen,bgBlue);
 
@@ -88,21 +88,26 @@ function play() {
   projectile.display();
   leftPaddle.display();
   rightPaddle.display();
+
+  // Set up loop to handle array of collectible objects
   for (var i = 0; i < 5; i++) {
     collectables[i].update();
     collectables[i].handleCollision(ball);
     collectables[i].display();
   }
 
+  // Scores on appropritate side when ball is off screen
   if (ball.isOffScreen() === 1) {
     scoreRight();
   } else if (ball.isOffScreen() === 2) {
     scoreLeft();
   }
 
+  // If size gets "too" big, game over condition reached
   if (ball.size >= windowWidth) {
     gameOverScreen();
   }
+  // Calls function to determine winner at endgame
   determineWinner();
 }
 
@@ -142,16 +147,18 @@ function determineWinner() {
 }
 // titleScreen()
 //
-// Sets up title screen
+// Sets up title screen, prompt text
 function titleScreen() {
+  // Style set up
   background(bgRed,bgGreen,bgBlue);
   textFont("Helvetica");
   textSize(width/15);
   textAlign(CENTER,CENTER);
-
   noStroke();
   fill(255);
-  text("Welcome to the snowfight!", width/2, height/2);
+
+  // Title screen text
+  text("Welcome to the Snowfight!", width/2, height/2);
   textSize(width/30);
   text("Press ENTER to play", width/2, height*3/4);
 }
@@ -164,9 +171,10 @@ function gameOverScreen() {
   textFont("Helvetica");
   textSize(width/15);
   textAlign(CENTER,CENTER);
-
   noStroke();
   fill(255);
+
+  // Uses text according to game over condition
   if (ball.size >= windowWidth) {
     textSize(width/22);
     text("THE SNOWBALL TOOK OVER THE WORLD\nNO ONE WINS!", width/2, height/2);
@@ -175,6 +183,8 @@ function gameOverScreen() {
   }
   textSize(width/30);
   text("Press SHIFT to play again!", width/2, height*3/4);
+
+  // Sets the game values to a halt
   ball.vx = 0;
   ball.vy = 0;
   ball.speed = 0;
@@ -188,24 +198,27 @@ function gameOverScreen() {
 // resets game values and goes back to the title screen
 function resetGame() {
 
+  // Resets game values for new game
   ball.reset();
   projectile.reset();
   rightPaddle.x = width-paddleInset;
   rightPaddle.y = height/2;
   leftPaddle.x = paddleInset;
   leftPaddle.y = height/2;
-
   ball.gameOver();
   leftPaddle.gameOver();
   rightPaddle.gameOver();
 
+  // Calls title screen function to be displayed
   titleScreen();
 }
 
 // keyPressed()
 //
 // Changes display depending on which key is pressed
+// Reset game values for a new game
 function keyPressed() {
+  // Title screen prompts for ENTER key to begin play
   if (keyCode === ENTER) {
     start = true;
     ball.vx = 7;
@@ -217,6 +230,7 @@ function keyPressed() {
     play();
   }
 
+  // Game Over screen prompts for SHIFT key to reset game
   if (keyCode === SHIFT) {
     gameOver = false;
     start = false;
