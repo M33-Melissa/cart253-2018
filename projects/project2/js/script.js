@@ -141,14 +141,14 @@ function determineWinner() {
 //
 // Sets up title screen
 function titleScreen() {
-  background(255);
+  background(bgRed,bgGreen,bgBlue);
   textFont("Helvetica");
   textSize(width/15);
   textAlign(CENTER,CENTER);
 
   noStroke();
-  fill(0);
-  text("Welcome to PONG", width/2, height/2);
+  fill(255);
+  text("Welcome to the snowfight!", width/2, height/2);
   textSize(width/20);
   text("Press ENTER to play", width/2, height*3/4);
 }
@@ -157,13 +157,13 @@ function titleScreen() {
 //
 // Sets up game over screen, display winner
 function gameOverScreen() {
-  background(255);
+  background(bgRed,bgGreen,bgBlue);
   textFont("Helvetica");
   textSize(width/15);
   textAlign(CENTER,CENTER);
 
   noStroke();
-  fill(0);
+  fill(255);
   text(winner + " WINS!", width/2, height/2);
   textSize(width/20);
   text("Press SHIFT to play again!", width/2, height*3/4);
@@ -173,6 +173,10 @@ function gameOverScreen() {
   projectile.vx = 0;
   projectile.vy = 0;
   projectile.speed = 0;
+
+  // if (ball.size >= windowWidth) {
+  //   text("THE SNOWBALL TOOK OVER THE WORLD\nNO ONE WINS!", width/2, height/2);
+  // }
 }
 
 // resetGame()
