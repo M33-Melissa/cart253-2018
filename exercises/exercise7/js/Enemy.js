@@ -1,5 +1,10 @@
 // Player
 
+
+// Variables to contain hit values
+var hit;
+var enemyHit = 5;
+
 // Player constructor
 //
 // Sets the properties with the provided arguments or defaults
@@ -32,7 +37,7 @@ Enemy.prototype.update = function() {
 Enemy.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
-    player.size-=5;
+    player.size -= enemyHit;
     this.reset();
   }
 }
