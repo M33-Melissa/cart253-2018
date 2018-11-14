@@ -1,5 +1,7 @@
-// Player
-
+// Enemy
+//
+// Object moving across the screen from top to bottom.
+// Affects player negatively in size and darkens color if collision occurs.
 
 // Variables to contain hit values
 var hit;
@@ -17,13 +19,14 @@ function Enemy(x,y,vx,vy,size) {
   this.size = size;
 }
 
-// update()
+// update()s
 //
 // Update x and y positions based on velocities
 Enemy.prototype.update = function() {
   // Update y position with velocity
   this.y += this.vy;
   this.x += this.vx;
+  this.size = constrain(this.size,0,20);
   this.resetted = false;
   // When enemy reaches the bottom, it resets at the top
   if (this.y > height) {
@@ -34,7 +37,7 @@ Enemy.prototype.update = function() {
 // handleCollision(player)
 //
 // Using the collision library, verify if collision occured
-// If so, player size reduces
+// If so, player size reduces, color darkens, and enemy resets
 Enemy.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
@@ -56,7 +59,7 @@ Enemy.prototype.display = function() {
 
 // reset()
 //
-// Reset player position
+// Reset enemy position at the top
 Enemy.prototype.reset = function() {
   this.resetted = true;
   this.x = random(0,width);

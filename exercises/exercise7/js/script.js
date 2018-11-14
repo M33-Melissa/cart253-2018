@@ -2,13 +2,16 @@
 // by Melissa Lim
 //
 // Arrow keys to move the player.
-// Avoid red circles (enemies) or else player reduced size and dies.
+// Avoid red circles (enemies) and particles spreading around them.
+// or else player reduces in size, darkens in color, until he loses(disappears).
+//
 // Written with JavaScript OOP.
 
-// Variables to contain objects
+// Variables to contain player, enemies, and projectiles objects.
 var player1;
 var enemies = [];
 var projectiles = [];
+// var arrows = [];
 
 // Default number of enemies and projectiles
 var numEnemies = 10;
@@ -25,7 +28,7 @@ function setup() {
   rectMode(CENTER);
   noStroke();
 
-  player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW);
+  player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW,32);
 
   for (var j = 0; j < numEnemies; j++) {
     enemies.push(new Enemy(random(0,width),random(-height*2,0),0,1.5,20));
@@ -36,10 +39,16 @@ function setup() {
   }
 }
 
+// // createArrow()
+// //
+// // Creates arrows shooting up when spacebar is pressed in keyPressed()
+// function createArrow() {
+//   arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,0,-10,player1.size*0.5,40));
+// }
+
 // draw()
 //
-// Handles input, updates all the elements, checks for collisions
-// and displays everything.
+// Calls appropriate screen methods according to game state
 function draw() {
   if (start === false) {
     titleScreen();
@@ -51,12 +60,18 @@ function draw() {
   }
 }
 
+// play()
+//
+// Handles input, updates all the elements, checks for collisions
+// and displays everything (player, enemies, projectiles).
+// Verifies end game condition
 function play() {
   background(78, 0, 127);
   player1.handleInput();
   player1.update();
   player1.display();
 
+  // Update and display enemies with projectiles spreading around them
   for (var i = 0; i < numEnemies; i++) {
     enemies[i].update();
     enemies[i].display();
@@ -68,37 +83,49 @@ function play() {
     }
   }
 
+  // Update and display projectiles
   for (var i = 0; i < projectiles.length; i++) {
-    projectiles[i].handleCollision(player1);
     projectiles[i].update();
     projectiles[i].display();
+    projectiles[i].handleCollision(player1);
   }
 
-  if (player1.size <= 0) {
+  // // Update and display arrow values
+  // for (var i = 0; i < arrows.length-1; i++) {
+  //     arrows[i].update();
+  //     arrows[i].display();
+  //     arrows[i].handleCollision(enemies);
+  // }
+
+  // Game ends when player takes too much damage (size reduces to lower than 0)
+  if (player1.size <= 2) {
     gameOver = true;
   }
 }
 
 // titleScreen()
 //
-// Sets up title screen elements, prompt text, and appearance elements
+// Sets up title screen elements, prompt text
 function titleScreen() {
   // Style set up, decorative elements
   textSize(width/15);
   textAlign(CENTER,CENTER);
-  background(233, 226, 255);
+  background(233,226,255);
 
   // Title screen text, instructions, and prompt to begin game
   text("Avoid Everything!", width/2, height/3);
   textSize(width/40);
   // Instructions
   text("Red dots are enemies!", width/2, height*1/2);
-  text("Confettis are evil!", width/2, height*1.2/2);
+  text("The confetti are evil!", width/2, height*1.2/2);
   // Play prompt
   textSize(width/30);
   text("Press ENTER to play", width/2, height*3/4);
 }
 
+// gameOverScreen()
+//
+// Displays text of a game over and prompts to restart
 function gameOverScreen() {
   push();
   background(233, 226, 255);
@@ -109,14 +136,22 @@ function gameOverScreen() {
   pop();
 }
 
+// resetGame()
+//
+// Reset game values for a new game
+// Missing projectiles reset
 function resetGame() {
   player1.x = width/2;
   player1.y = height-50;
   player1.size = 20;
   player1.color = 255;
+
+  // Enemy reset values
   for (var i = 0; i < enemies.length; i++) {
     enemies[i].reset();
   }
+
+  // Display title screen
   titleScreen();
 }
 
@@ -136,6 +171,11 @@ function keyPressed() {
     start = false;
     resetGame();
   }
+
+  // // Pressing Space shoots arrows off the player
+  // if (keyCode === 32) {
+  //   createArrow();
+  // }
 
   return false;
 }

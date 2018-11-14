@@ -29,7 +29,7 @@ Projectile.prototype.update = function() {
 // handleCollision(player)
 //
 // Using the collision library, verify if collision occured
-// If so, player size reduces
+// If so, player size reduces, color darkens, and projectile resets
 Projectile.prototype.handleCollision = function(player) {
   hit = collideRectCircle(this.x,this.y,this.size,this.size,player.x,player.y,player.size);
   if (hit) {
@@ -41,7 +41,7 @@ Projectile.prototype.handleCollision = function(player) {
 
 // display()
 //
-// Draw the particles as a green squares on the screen
+// Draw the particles as a multicolored squares on the screen (confetti)
 Projectile.prototype.display = function() {
   push();
   fill(random(0,255),random(0,255),random(0,255));

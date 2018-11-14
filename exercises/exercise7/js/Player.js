@@ -1,4 +1,8 @@
 // Player
+//
+// Player object, controlled by the user with arrow keys.
+// Player constrained within window size.
+// Default position at the middle, bottom of the screen.
 
 // Player constructor
 //
@@ -59,7 +63,7 @@ Player.prototype.update = function() {
 // Draw the paddle as a rectangle on the screen
 Player.prototype.display = function() {
   push();
-  fill(this.color);
+  fill(0,0,this.color);
   ellipse(this.x,this.y,this.size);
   pop();
 }
