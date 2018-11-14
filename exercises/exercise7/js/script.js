@@ -26,5 +26,6 @@ function draw() {
   for (var i = 0; i < numEnemies; i++) {
     enemies[i].update();
     enemies[i].display();
+    enemies[i].handleCollision(player1);
   }
 }

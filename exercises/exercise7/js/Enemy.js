@@ -25,6 +25,18 @@ Enemy.prototype.update = function() {
   }
 }
 
+// handleCollision(player)
+//
+// Using the collision library, verify if collision occured
+// If so, player size reduces
+Enemy.prototype.handleCollision = function(player) {
+  hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
+  if (hit) {
+    player.size-=5;
+    this.reset();
+  }
+}
+
 // display()
 //
 // Draw the enemy as a red circle on the screen
@@ -39,6 +51,6 @@ Enemy.prototype.display = function() {
 //
 // Reset player position
 Enemy.prototype.reset = function() {
-  this.y = random(-height,0);
   this.x = random(0,width);
+  this.y = random(-height,0);
 }
