@@ -13,6 +13,7 @@ function Enemy(x,y,vx,vy,size) {
   this.y = y;
   this.vx = vx;
   this.vy = vy;
+  this.resetted = false;
   this.size = size;
 }
 
@@ -23,7 +24,7 @@ Enemy.prototype.update = function() {
   // Update y position with velocity
   this.y += this.vy;
   this.x += this.vx;
-
+  this.resetted = false;
   // When enemy reaches the bottom, it resets at the top
   if (this.y > height) {
     this.reset();
@@ -56,6 +57,8 @@ Enemy.prototype.display = function() {
 //
 // Reset player position
 Enemy.prototype.reset = function() {
+  console.log("true");
+  this.resetted = true;
   this.x = random(0,width);
   this.y = random(-height,0);
 }

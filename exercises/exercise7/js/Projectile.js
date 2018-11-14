@@ -24,6 +24,10 @@ function Projectile(x,y,vx,vy,size) {
 Projectile.prototype.update = function() {
   this.x += this.vx;
   this.y += this.vy;
+
+  if (this.y > height) {
+    this.reset();
+  }
 }
 
 // handleCollision(player)

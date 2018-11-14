@@ -29,7 +29,7 @@ function setup() {
     enemies.push(new Enemy(random(0,width),random(-height,0),0,2,20));
 
     for (var i = 0; i < numProjectiles; i++) {
-      projectiles.push(new Projectile(enemies[j].x,enemies[j].y,random(-1,1),random(1,2),5));
+      projectiles.push(new Projectile(enemies[j].x,enemies[j].y,random(-1,1),random(2,3),5));
     }
   }
 }
@@ -44,16 +44,20 @@ function draw() {
   player1.update();
   player1.display();
 
-  for (var j = 0; j < numEnemies; j++) {
-    enemies[j].update();
-    enemies[j].display();
-    enemies[j].handleCollision(player1);
+  for (var i = 0; i < numEnemies; i++) {
+    enemies[i].update();
+    enemies[i].display();
+    enemies[i].handleCollision(player1);
+    if (enemies[i].resetted) {
+      for (var j = 0; j < numProjectiles; j++) {
+        projectiles.push(new Projectile(enemies[i].x,enemies[i].y,random(-1,1),random(1,3),5));
+      }
+    }
   }
-  
+
   for (var i = 0; i < projectiles.length; i++) {
     projectiles[i].handleCollision(player1);
     projectiles[i].update();
     projectiles[i].display();
   }
-
 }
