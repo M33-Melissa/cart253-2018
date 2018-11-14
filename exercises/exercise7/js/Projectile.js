@@ -24,10 +24,6 @@ function Projectile(x,y,vx,vy,size) {
 Projectile.prototype.update = function() {
   this.x += this.vx;
   this.y += this.vy;
-
-  if (this.y > height) {
-    this.reset();
-  }
 }
 
 // handleCollision(player)
@@ -47,7 +43,7 @@ Projectile.prototype.handleCollision = function(player) {
 // Draw the particles as a green squares on the screen
 Projectile.prototype.display = function() {
   push();
-  fill(0,255,0);
+  fill(random(0,255),random(0,255),random(0,255));
   rect(this.x,this.y,this.size,this.size);
   pop();
 }
