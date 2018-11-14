@@ -113,6 +113,7 @@ function resetGame() {
   player1.x = width/2;
   player1.y = height-50;
   player1.size = 20;
+  player1.color = 255;
   for (var i = 0; i < enemies.length; i++) {
     enemies[i].reset();
   }

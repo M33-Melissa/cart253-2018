@@ -34,6 +34,7 @@ Projectile.prototype.handleCollision = function(player) {
   hit = collideRectCircle(this.x,this.y,this.size,this.size,player.x,player.y,player.size);
   if (hit) {
     player.size -= projectileHit;
+    player.color -= 30;
     this.reset();
   }
 }

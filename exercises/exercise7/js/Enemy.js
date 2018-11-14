@@ -39,6 +39,7 @@ Enemy.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
     player.size -= enemyHit;
+    player.color -= 50;
     this.reset();
   }
 }

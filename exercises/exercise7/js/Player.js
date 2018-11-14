@@ -14,6 +14,7 @@ function Player(x,y,speed,size,leftKey,rightKey,downKey,upKey) {
   this.rightKey = rightKey;
   this.downKey = downKey;
   this.upKey = upKey;
+  this.color = 255;
 }
 
 // handleInput()
@@ -57,7 +58,10 @@ Player.prototype.update = function() {
 //
 // Draw the paddle as a rectangle on the screen
 Player.prototype.display = function() {
+  push();
+  fill(this.color);
   ellipse(this.x,this.y,this.size);
+  pop();
 }
 
 // reset()
