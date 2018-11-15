@@ -6,6 +6,7 @@
 // Variables to contain hit values
 var hit;
 var enemyHit = 5;
+var resetValue = true;
 
 // Player constructor
 //
@@ -28,8 +29,12 @@ Enemy.prototype.update = function() {
   this.x += this.vx;
   this.size = constrain(this.size,0,20);
   this.resetted = false;
+  resetValue = true;
   // When enemy reaches the bottom, it resets at the top
-  if (this.y > height) {
+  if (this.y > height && resetValue) {
+    this.reset();
+  }
+  if (this.size <= 0 && resetValue) {
     this.reset();
   }
 }
@@ -61,7 +66,9 @@ Enemy.prototype.display = function() {
 //
 // Reset enemy position at the top
 Enemy.prototype.reset = function() {
+  resetValue = false;
   this.resetted = true;
   this.x = random(0,width);
   this.y = random(-height,0);
+  this.size = 20;
 }

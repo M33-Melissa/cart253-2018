@@ -11,7 +11,7 @@
 var player1;
 var enemies = [];
 var projectiles = [];
-// var arrows = [];
+var arrows = [];
 
 // Default number of enemies and projectiles
 var numEnemies = 10;
@@ -39,12 +39,12 @@ function setup() {
   }
 }
 
-// // createArrow()
-// //
-// // Creates arrows shooting up when spacebar is pressed in keyPressed()
-// function createArrow() {
-//   arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,0,-10,player1.size*0.5,40));
-// }
+// createArrow()
+//
+// Creates arrows shooting up when spacebar is pressed in keyPressed()
+function createArrow() {
+  arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,0,-10,player1.size*0.5,40));
+}
 
 // draw()
 //
@@ -90,12 +90,14 @@ function play() {
     projectiles[i].handleCollision(player1);
   }
 
-  // // Update and display arrow values
-  // for (var i = 0; i < arrows.length-1; i++) {
-  //     arrows[i].update();
-  //     arrows[i].display();
-  //     arrows[i].handleCollision(enemies);
-  // }
+  // Update and display arrow values
+  for (var i = 0; i < arrows.length; i++) {
+    arrows[i].update();
+    if (arrows.length > 0) {
+      arrows[i].display();
+      arrows[i].handleCollision(enemies);
+    }
+  }
 
   // Game ends when player takes too much damage (size reduces to lower than 0)
   if (player1.size <= 2) {
@@ -172,10 +174,10 @@ function keyPressed() {
     resetGame();
   }
 
-  // // Pressing Space shoots arrows off the player
-  // if (keyCode === 32) {
-  //   createArrow();
-  // }
+  // Pressing Space shoots arrows off the player
+  if (keyCode === 32) {
+    createArrow();
+  }
 
   return false;
 }
