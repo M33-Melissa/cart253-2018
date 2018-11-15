@@ -119,9 +119,11 @@ function titleScreen() {
   textSize(width/40);
   // Instructions
   text("Red dots are enemies!", width/2, height*1/2);
-  text("The confetti are evil!", width/2, height*1.2/2);
+  text("The confetti are evil!", width/2, height*1.15/2);
+  textSize(width/35);
+  text("Press SPACE to shoot!", width/2, height*1.3/2);
   // Play prompt
-  textSize(width/30);
+  textSize(width/25);
   text("Press ENTER to play", width/2, height*3/4);
 }
 
