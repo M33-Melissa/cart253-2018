@@ -2,14 +2,18 @@
 // by Melissa Lim
 //
 // Arrow keys to move the player.
-// Avoid red circles (enemies) and particles spreading around them.
-// or else player reduces in size, darkens in color, until he loses(disappears).
+// Adding collectables to modify gameplay.
 //
 // Written with JavaScript OOP.
 
-// Variables to contain player, enemies, and projectiles objects.
+// Variables to contain player and arrow objects.
 var player1;
 var arrows = [];
+var shields = [];
+
+var bgRed = 255;
+var bgGreen = 255;
+var bgBlue = 255;
 
 // setup()
 //
@@ -21,6 +25,10 @@ function setup() {
   noStroke();
 
   player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW,32);
+
+  for (var i = 0; i < 5; i++) {
+    shields.push(new Shield(random(0,width),random(-2*height,0),0,3,20));
+  }
 
 }
 
@@ -44,23 +52,24 @@ function draw() {
 // and displays everything (player, enemies, projectiles).
 // Verifies end game condition
 function play() {
-  background(255);
+  background(bgRed,bgGreen,bgBlue);
   player1.handleInput();
   player1.update();
   player1.display();
+
+  // Update and display arrow values
+  for (var i = 0; i < shields.length; i++) {
+    shields[i].update();
+    shields[i].display(player1);
+    shields[i].handleCollision(player1);
+  }
 
   // Update and display arrow values
   for (var i = 0; i < arrows.length; i++) {
     arrows[i].update();
     if (arrows.length > 0) {
       arrows[i].display();
-      arrows[i].handleCollision(enemies);
     }
-  }
-
-  // Game ends when player takes too much damage (size reduces to lower than 0)
-  if (player1.size <= 2) {
-    gameOver = true;
   }
 }
 
