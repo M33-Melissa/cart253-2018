@@ -10,10 +10,12 @@
 var player1;
 var arrows = [];
 var shields = [];
+var powerup;
 
 var bgRed = 255;
 var bgGreen = 255;
 var bgBlue = 255;
+var arrowVX;
 
 // setup()
 //
@@ -30,13 +32,17 @@ function setup() {
     shields.push(new Shield(random(0,width),random(-2*height,0),0,3,20));
   }
 
+  // for (var i = 0; i < 5; i++) {
+  //   powerup.push(new Powerup(random(0,width),random(-2*height,0),0,3,20));
+  // }
+  powerup = new Powerup(random(0,width),random(-2*height,0),0,3,20);
 }
 
 // createArrow()
 //
 // Creates arrows shooting up when spacebar is pressed in keyPressed()
-function createArrow() {
-  arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,0,-10,player1.size*0.5,40));
+function createArrow(arrowVX) {
+  arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,arrowVX,-10,player1.size*0.5,40));
 }
 
 // draw()
@@ -63,7 +69,15 @@ function play() {
     shields[i].display(player1);
     shields[i].handleCollision(player1);
   }
-
+  // Update and display arrow values
+  // for (var i = 0; i < powerup.length; i++) {
+  //   powerup[i].update();
+  //   powerup[i].display();
+  //   powerup[i].handleCollision(player1);
+  // }
+  powerup.update();
+  powerup.display();
+  powerup.handleCollision(player1);
   // Update and display arrow values
   for (var i = 0; i < arrows.length; i++) {
     arrows[i].update();
@@ -80,7 +94,11 @@ function keyPressed() {
 
   // Pressing Space shoots arrows off the player
   if (keyCode === 32) {
-    createArrow();
+    createArrow(0);
+    if (powerup.collided) {
+      createArrow(5);
+      createArrow(-5);
+    }
   }
 
   return false;

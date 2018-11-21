@@ -49,7 +49,7 @@ Arrow.prototype.update = function () {
 // Draw the enemy as a blue rectangle on the screen
 Arrow.prototype.display = function () {
     push();
-    fill(0,210,255);
+    fill(200,250,205);
     rect(this.x, this.y, this.width, this.height);
     pop();
 }
@@ -58,6 +58,6 @@ Arrow.prototype.display = function () {
 //
 // Removes arrow from array
 Arrow.prototype.reset = function () {
-  index = arrows.indexOf(this);
-  arrows.splice(index,1);
+  // index = arrows.indexOf(this);
+  // arrows.splice(index,1);
 }
