@@ -3,20 +3,24 @@
 //
 // Arrow keys to move the player.
 // Adding collectables to modify gameplay.
+// This prototype focuses on theme, appearance and collectables (power-ups).
+// Collecting blue umbrellas (Shield) grants an umbrella shield that will be
+// useful against particles.
 //
 // Written with JavaScript OOP.
 
 // Variables to contain player and arrow objects.
 var player1;
 var arrows = [];
-var shields = [];
+var shield;
 var powerup;
+var raining = [];
 
-var bgRed = 255;
-var bgGreen = 255;
-var bgBlue = 255;
+var bgRed = 135;
+var bgGreen = 206;
+var bgBlue = 235;
 var arrowVX;
-var numShields = 5;
+var arrowHeight = 20;
 
 // setup()
 //
@@ -27,29 +31,39 @@ function setup() {
   rectMode(CENTER);
   noStroke();
 
-  player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW,32);
+  player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW);
 
-  for (var i = 0; i < numShields; i++) {
-    shields.push(new Shield(random(0,width),random(-2*height,0),0,3,20));
-  }
+
+  shield = new Shield(random(0,width),random(-2*height,0),0,2,15);
 
   // for (var i = 0; i < 5; i++) {
   //   powerup.push(new Powerup(random(0,width),random(-2*height,0),0,3,20));
   // }
-  powerup = new Powerup(random(0,width),random(-2*height,0),0,3,20);
+  powerup = new Powerup(random(0,width),random(-2*height,0),0,3,15);
 }
 
 // createArrow()
 //
 // Creates arrows shooting up when spacebar is pressed in keyPressed()
 function createArrow(arrowVX) {
-  arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,arrowVX,-10,player1.size*0.5,40));
+  arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,arrowVX,-10,player1.size*0.5,arrowHeight));
 }
 
 // draw()
 //
 // Calls appropriate screen methods according to game state
 function draw() {
+  push();
+  var c1 = color(bgRed,bgGreen,bgBlue);
+  var c2 = color(0,72,102);
+  for (let i = 0; i <= height; i++) {
+    var inter = map(i, 0, height, 0, 1);
+    var c = lerpColor(c1, c2, inter);
+    stroke(c);
+    line(0, i, width, i);
+  }
+  pop();
+  makeItRain();
   play();
 }
 
@@ -59,17 +73,14 @@ function draw() {
 // and displays everything (player, enemies, projectiles).
 // Verifies end game condition
 function play() {
-  background(bgRed,bgGreen,bgBlue);
   player1.handleInput();
   player1.update();
   player1.display();
 
   // Update and display arrow values
-  for (var i = 0; i < shields.length; i++) {
-    shields[i].update();
-    shields[i].display(player1);
-    shields[i].handleCollision(player1);
-  }
+  shield.update();
+  shield.display(player1);
+  shield.handleCollision(player1);
 
   powerup.update();
   powerup.display();
@@ -98,4 +109,19 @@ function keyPressed() {
   }
 
   return false;
+}
+
+function makeItRain() {
+  push();
+  ellipseMode(RADIUS);
+  noFill();
+  if (raining.length < 100) {
+    raining.push(new Rain());
+  }
+  for (var i = 0; i < raining.length; i++) {
+    raining[i].update();
+    raining[i].display();
+    raining[i].handleCollision(shield,player1);
+  }
+  pop();
 }

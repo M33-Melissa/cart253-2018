@@ -1,5 +1,6 @@
+// Powerup
 //
-//
+// Collect sun pieces to be able to shoot multiple sun rays at the sky.
 
 // Shield constructor
 //

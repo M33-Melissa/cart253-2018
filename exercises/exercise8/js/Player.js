@@ -26,20 +26,20 @@ function Player(x,y,speed,size,leftKey,rightKey,downKey,upKey) {
 // Check if the up or down keys are pressed and update velocity appropriately
 Player.prototype.handleInput = function() {
 
-  if (keyIsDown(this.leftKey)) {
+  if (keyIsDown(this.leftKey)||keyIsDown(65)) {
     this.vx = -this.speed;
 
-  } else if (keyIsDown(this.rightKey)) {
+  } else if (keyIsDown(this.rightKey)||keyIsDown(68)) {
     this.vx = this.speed;
 
   } else {
     this.vx = 0;
   }
 
-  if (keyIsDown(this.upKey)) {
+  if (keyIsDown(this.upKey)||keyIsDown(87)) {
     this.vy = -this.speed;
 
-  } else if (keyIsDown(this.downKey)) {
+  } else if (keyIsDown(this.downKey)||keyIsDown(83)) {
     this.vy = this.speed;
 
   } else {
@@ -63,8 +63,18 @@ Player.prototype.update = function() {
 // Draw the paddle as a rectangle on the screen
 Player.prototype.display = function() {
   push();
-  fill(0,0,this.color);
-  ellipse(this.x,this.y,this.size);
+  fill(this.color);
+  quad(this.x-5, this.y, this.x+5, this.y, this.x+20, this.y+40, this.x-20, this.y+40);
+  ellipse(this.x,this.y,this.size,this.size);
+  fill(0);
+  ellipse(this.x+this.size/5,this.y-this.size/5,this.size/6);
+  ellipse(this.x-this.size/5,this.y-this.size/5,this.size/6);
+  stroke(0);
+  noFill();
+  arc(this.x,this.y+this.size/10,this.size/4,this.size/4,0,PI);
+  strokeWeight(3);
+  stroke(0,0,255);
+  arc(this.x,this.y+2,this.size,this.size,QUARTER_PI,HALF_PI+QUARTER_PI);
   pop();
 }
 

@@ -1,6 +1,7 @@
 // Arrow
 //
 // A particle that affects the enemy negatively when collision occured.
+// Sun rays that will be defeating cloud enemies.
 
 // Variable to hold arrow collision boolean
 var hitArrow;
@@ -9,25 +10,25 @@ var hitArrow;
 //
 // Sets the properties with the provided arguments or defaults
 function Arrow(x, y, vx, vy, width, height) {
-    this.x = x;
-    this.y = y;
-    this.vx = vx;
-    this.vy = vy;
-    this.width = width;
-    this.height = height;
+  this.x = x;
+  this.y = y;
+  this.vx = vx;
+  this.vy = vy;
+  this.width = width;
+  this.height = height;
 }
 
 // update()
 //
 // Update x and y positions based on velocities
 Arrow.prototype.update = function () {
-    this.x += this.vx;
-    this.y += this.vy;
+  this.x += this.vx;
+  this.y += this.vy;
 
-    // Resets arrow if it's out of screen
-    if (this.y <= 0) {
-      this.reset();
-    }
+  // Resets arrow if it's out of screen
+  if (this.y <= 0) {
+    this.reset();
+  }
 }
 
 // // handleCollision(player)
@@ -48,10 +49,10 @@ Arrow.prototype.update = function () {
 //
 // Draw the enemy as a blue rectangle on the screen
 Arrow.prototype.display = function () {
-    push();
-    fill(200,250,205);
-    rect(this.x, this.y, this.width, this.height);
-    pop();
+  push();
+  fill(255,255,0);
+  rect(this.x, this.y, this.width, this.height);
+  pop();
 }
 
 // reset()

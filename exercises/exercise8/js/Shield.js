@@ -11,7 +11,7 @@ function Shield(x,y,vx,vy,size) {
   this.vy = vy;
   this.size = size;
   this.trigger = false;
-  this.shieldSize = 10;
+  this.shieldSize = 50;
 }
 
 // update()s
@@ -51,10 +51,22 @@ Shield.prototype.handleCollision = function(player) {
 // Draw the drop as a green circle on the screen
 Shield.prototype.display = function(player) {
   push();
-  fill(0,200,255);
-  ellipse(this.x,this.y,this.size);
+  fill(0,0,255,200);
+  arc(this.x,this.y,this.size,this.size,PI,2*PI);
+  stroke(0,0,255,200);
+  noFill();
+  line(this.x,this.y-this.size*0.6,this.x,this.y+this.size/4);
+  arc(this.x+this.size/4,this.y+this.size/4,this.size/2,this.size/2,QUARTER_PI,PI);
+  
   if (this.trigger) {
-    rect(player.x,player.y-20,50,this.shieldSize);
+    fill(0,0,255);
+    noStroke();
+    arc(player.x,player.y-20,this.shieldSize,this.shieldSize,PI,2*PI);
+    stroke(0,0,255);
+    strokeWeight(2);
+    noFill();
+    line(player.x-this.shieldSize/4,player.y-this.shieldSize*0.9,player.x-this.shieldSize/4,player.y+this.shieldSize/4);
+    arc(player.x-this.shieldSize/10,player.y+this.shieldSize/4,this.shieldSize/4,this.shieldSize/4,QUARTER_PI,PI);
   }
   pop();
 }
