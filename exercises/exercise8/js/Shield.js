@@ -1,5 +1,6 @@
+// Shield
 //
-//
+// Blue umbrella-shaped collectable, grants a player-sized umbrella as a shield.
 
 // Shield constructor
 //
@@ -22,7 +23,7 @@ Shield.prototype.update = function() {
   this.y += this.vy;
   this.x += this.vx;
 
-  // When drop reaches the bottom, it resets at the top
+  // When shield drop reaches the bottom, it resets at the top
   if (this.y > height) {
     this.reset();
   }
@@ -31,24 +32,20 @@ Shield.prototype.update = function() {
 // handleCollision(player)
 //
 // Using the collision library, verify if collision occured
-// If so, player size reduces, color darkens, and enemy resets
+// If the umbrella collided with the player, it sets the trigger to true
 Shield.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
-    // do-something
     this.trigger = true;
     this.reset();
   }
-  // hitShield = collideRectCircle(player.x,player.y-20,50,10,enemy.x,enemy.y,enemy.size);
-  // if (hitShield) {
-  //   this.shieldSize -= 2;
-  //   enemy.vy = -enemy.vy;
-  // }
 }
 
 // display()
 //
-// Draw the drop as a green circle on the screen
+// Draw the shield drop as a blue umbrella on the screen
+// Verifies if trigger is set to true (see handleCollision())
+// If so, draws a player-sized blue umbrella over the player
 Shield.prototype.display = function(player) {
   push();
   fill(0,0,255,200);
@@ -57,7 +54,7 @@ Shield.prototype.display = function(player) {
   noFill();
   line(this.x,this.y-this.size*0.6,this.x,this.y+this.size/4);
   arc(this.x+this.size/4,this.y+this.size/4,this.size/2,this.size/2,QUARTER_PI,PI);
-  
+
   if (this.trigger) {
     fill(0,0,255);
     noStroke();
@@ -73,11 +70,8 @@ Shield.prototype.display = function(player) {
 
 // reset()
 //
-// Reset drop position at the top
+// Reset shield drop position at the top
 Shield.prototype.reset = function() {
-  // index = shields.indexOf(this);
-  // shields.splice(index,1);
-
   this.x = random(0,width);
   this.y = random(-2*height,0);
 }

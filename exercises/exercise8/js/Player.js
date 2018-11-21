@@ -1,8 +1,11 @@
 // Player
 //
-// Player object, controlled by the user with arrow keys.
+// Player object, controlled by the user with arrow keys or WASD.
 // Player constrained within window size.
 // Default position at the middle, bottom of the screen.
+//
+// Player represents a "teru teru bozu", a japanese traditional doll
+// made of white paper or cloth that was thought to stop or prevent the rain.
 
 // Player constructor
 //
@@ -60,7 +63,7 @@ Player.prototype.update = function() {
 
 // display()
 //
-// Draw the paddle as a rectangle on the screen
+// Draw the player as a white ghost with a blue ribbon on the screen.
 Player.prototype.display = function() {
   push();
   fill(this.color);

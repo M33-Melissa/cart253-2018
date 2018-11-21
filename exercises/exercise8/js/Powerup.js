@@ -2,7 +2,7 @@
 //
 // Collect sun pieces to be able to shoot multiple sun rays at the sky.
 
-// Shield constructor
+// Powerup constructor
 //
 // Sets the properties with the provided arguments or defaults
 function Powerup(x,y,vx,vy,size) {
@@ -20,11 +20,10 @@ function Powerup(x,y,vx,vy,size) {
 //
 // Update x and y positions based on velocities
 Powerup.prototype.update = function() {
-  // Update y position with velocity
   this.y += this.vy;
   this.x += this.vx;
 
-  // When drop reaches the bottom, it resets at the top
+  // When powerup reaches the bottom, it resets at the top
   if (this.y > height) {
     this.reset();
   }
@@ -33,7 +32,8 @@ Powerup.prototype.update = function() {
 // handleCollision(player)
 //
 // Using the collision library, verify if collision occured
-// If so, player size reduces, color darkens, and enemy resets
+// If so, return a boolean value to activate the powerup in script
+// It will allow player to shoot 3 arrows(sunrays) at the same time
 Powerup.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
@@ -45,7 +45,7 @@ Powerup.prototype.handleCollision = function(player) {
 
 // display()
 //
-// Draw the drop as a green circle on the screen
+// Draw the powerup as a yellow circle on the screen
 Powerup.prototype.display = function() {
   push();
   fill(255,255,0);
