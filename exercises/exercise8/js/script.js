@@ -16,6 +16,7 @@ var bgRed = 255;
 var bgGreen = 255;
 var bgBlue = 255;
 var arrowVX;
+var numShields = 5;
 
 // setup()
 //
@@ -28,7 +29,7 @@ function setup() {
 
   player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW,32);
 
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < numShields; i++) {
     shields.push(new Shield(random(0,width),random(-2*height,0),0,3,20));
   }
 
@@ -69,12 +70,7 @@ function play() {
     shields[i].display(player1);
     shields[i].handleCollision(player1);
   }
-  // Update and display arrow values
-  // for (var i = 0; i < powerup.length; i++) {
-  //   powerup[i].update();
-  //   powerup[i].display();
-  //   powerup[i].handleCollision(player1);
-  // }
+
   powerup.update();
   powerup.display();
   powerup.handleCollision(player1);

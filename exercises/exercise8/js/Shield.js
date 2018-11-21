@@ -65,4 +65,7 @@ Shield.prototype.display = function(player) {
 Shield.prototype.reset = function() {
   // index = shields.indexOf(this);
   // shields.splice(index,1);
+
+  this.x = random(0,width);
+  this.y = random(-2*height,0);
 }

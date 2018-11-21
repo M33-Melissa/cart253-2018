@@ -37,6 +37,8 @@ Powerup.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
     this.collided = true;
+    this.x = random(0,width);
+    this.y = random(-2*height,0);
   }
 }
 
@@ -54,6 +56,6 @@ Powerup.prototype.display = function() {
 //
 // Reset drop position at the top
 Powerup.prototype.reset = function() {
-  // index = shields.indexOf(this);
-  // shields.splice(index,1);
+  this.x = random(0,width);
+  this.y = random(-2*height,0);
 }
