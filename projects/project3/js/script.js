@@ -43,7 +43,7 @@ function setup() {
   // Yellow Circle, sun particle that grants a power-up
   powerup = new Powerup(random(0,width),random(-2*height,0),0,3,15);
 
-  enemy = new Enemy(random(0,width),random(-height*2,0),0,1.5,40);
+  enemy = new Enemy(random(0,width),random(-height*2,0),0,1.5,70);
 }
 
 // createArrow()
@@ -112,6 +112,7 @@ function play() {
     arrows[i].update();
     if (arrows.length > 0) {
       arrows[i].display();
+      arrows[i].handleCollision(enemy);
     }
   }
 }
@@ -125,8 +126,8 @@ function keyPressed() {
   if (keyCode === 32) {
     createArrow(0);
     if (powerup.collided) {
-      createArrow(5);
-      createArrow(-5);
+      createArrow(3);
+      createArrow(-3);
     }
   }
   return false;

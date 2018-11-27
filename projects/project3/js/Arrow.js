@@ -13,6 +13,7 @@ function Arrow(x, y, vx, vy, width, height) {
   this.vy = vy;
   this.width = width;
   this.height = height;
+  this.hitArrow = false;
 }
 
 // update()
@@ -31,6 +32,19 @@ Arrow.prototype.display = function () {
   fill(255,255,0);
   rect(this.x, this.y, this.width, this.height);
   pop();
+}
+
+// handleCollision(player)
+//
+// Using the collision library, verify if collision occured
+// If so, enemy size reduces and arrow resets
+Arrow.prototype.handleCollision = function (enemies) {
+  this.hitArrow = collideRectCircle(this.x, this.y, this.width, this.height, enemies.x, enemies.y, enemies.size);
+  if (this.hitArrow) {
+    enemies.size -= 10;
+    this.reset();
+    this.hitArrow = false;
+  }
 }
 
 // reset()

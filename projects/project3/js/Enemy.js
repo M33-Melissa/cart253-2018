@@ -53,7 +53,7 @@ Enemy.prototype.handleCollision = function(player) {
 // Draw the enemy as a red circle on the screen
 Enemy.prototype.display = function() {
   push();
-  fill(110,110,110);
+  fill(120,120,120);
   ellipse(this.x,this.y,this.size,this.size-this.size/4);
   ellipse(this.x-this.size/1.7,this.y,this.size-this.size/3,this.size-this.size/2);
   ellipse(this.x+this.size/1.7,this.y,this.size-this.size/3,this.size-this.size/2);
@@ -68,5 +68,5 @@ Enemy.prototype.reset = function() {
   this.resetted = true;
   this.x = random(0,width);
   this.y = random(-height,0);
-  this.size = 50;
+  this.size = 70;
 }
