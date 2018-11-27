@@ -42,16 +42,8 @@ function setup() {
   shield = new Shield(random(0,width),random(-5*height,0),0,2,15);
   // Yellow Circle, sun particle that grants a power-up
   powerup = new Powerup(random(0,width),random(-2*height,0),0,3,15);
-
-  enemy = new Enemy(random(0,width),random(-height*2,0),0,1.5,70);
-}
-
-// createArrow()
-//
-// Creates arrows shooting up when spacebar is pressed in keyPressed()
-// Arrow direction can change upon argument
-function createArrow(arrowVX) {
-  arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,arrowVX,-10,player1.size*0.5,arrowHeight));
+  // Grey set of circles, cloud enemy that damages player
+  enemy = new Enemy(random(0,width),random(-height*2,0),0,1.5,80);
 }
 
 // draw()
@@ -131,6 +123,14 @@ function keyPressed() {
     }
   }
   return false;
+}
+
+// createArrow()
+//
+// Creates arrows shooting up when spacebar is pressed in keyPressed()
+// Arrow direction can change upon argument
+function createArrow(arrowVX) {
+  arrows.push(new Arrow(player1.x,player1.y-player1.size*1.5,arrowVX,-10,player1.size*0.5,arrowHeight));
 }
 
 // makeItRain()

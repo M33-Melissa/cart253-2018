@@ -3,6 +3,7 @@
 // Object moving across the screen from top to bottom.
 // Affects player negatively in size and darkens color if collision occurs.
 
+var initialSize;
 // Player constructor
 //
 // Sets the properties with the provided arguments or defaults
@@ -15,6 +16,7 @@ function Enemy(x,y,vx,vy,size) {
   this.size = size;
   this.hit = false;
   this.resetValue = true;
+  initialSize = size;
 }
 
 // update()s
@@ -68,5 +70,5 @@ Enemy.prototype.reset = function() {
   this.resetted = true;
   this.x = random(0,width);
   this.y = random(-height,0);
-  this.size = 70;
+  this.size = initialSize;
 }
