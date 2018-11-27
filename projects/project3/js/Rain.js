@@ -7,7 +7,6 @@
 // Code taken from p5.js example:
 // https://editor.p5js.org/zygugi/sketches/H1-5-1p5W
 
-
 // Rain constructor
 function Rain() {
   this.reset();
@@ -24,6 +23,9 @@ Rain.prototype.reset = function() {
   this.r = 0;
   this.tr = 50;
   this.weight = random(0.1, 2);
+
+  this.hit = false;
+  this.hitShield = false;
 }
 
 // update()
@@ -49,12 +51,17 @@ Rain.prototype.update = function() {
 // If so, raindrop resets to a random position at the top.
 Rain.prototype.handleCollision = function(shield,player) {
   if (shield.trigger) {
-    hit = collideCircleCircle(this.x,this.y,5,player.x,player.y-20,shield.shieldSize);
+    this.hitShield = collideCircleCircle(this.x,this.y,5,player.x,player.y-20,shield.shieldSize);
   } else {
-    hit = collideCircleCircle(this.x,this.y,5,player.x,player.y,player.size);
+    this.hit = collideCircleCircle(this.x,this.y,5,player.x,player.y,player.size);
   }
-  if (hit) {
+  if (this.hit) {
     this.reset();
+  }
+  if (this.hitShield) {
+    this.reset();
+    shield.shieldHP = shield.shieldHP -1;
+    hitShield = false;
   }
 }
 

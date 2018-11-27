@@ -13,6 +13,7 @@ function Shield(x,y,vx,vy,size) {
   this.size = size;
   this.trigger = false;
   this.shieldSize = 50;
+  this.shieldHP = 10;
 }
 
 // update()s
@@ -22,6 +23,11 @@ Shield.prototype.update = function() {
   // Update y position with velocity
   this.y += this.vy;
   this.x += this.vx;
+
+  if (this.shieldHP <= 0) {
+    this.trigger = false;
+    this.shieldHP = 10;
+  }
 
   // When shield drop reaches the bottom, it resets at the top
   if (this.y > height) {

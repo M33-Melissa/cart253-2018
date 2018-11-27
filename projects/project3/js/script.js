@@ -38,7 +38,7 @@ function setup() {
   player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW);
 
   // Blue Umbrella-shaped particle
-  shield = new Shield(random(0,width),random(-2*height,0),0,2,15);
+  shield = new Shield(random(0,width),random(-5*height,0),0,2,15);
   // Yellow Circle, sun particle that grants a power-up
   powerup = new Powerup(random(0,width),random(-2*height,0),0,3,15);
 }
