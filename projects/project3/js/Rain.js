@@ -56,6 +56,7 @@ Rain.prototype.handleCollision = function(shield,player) {
     this.hit = collideCircleCircle(this.x,this.y,5,player.x,player.y,player.size);
   }
   if (this.hit) {
+    player.color -= 10;
     this.reset();
   }
   if (this.hitShield) {

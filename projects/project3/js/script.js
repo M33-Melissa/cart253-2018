@@ -18,6 +18,7 @@ var arrows = [];
 var shield;
 var powerup;
 var raining = [];
+var enemy;
 
 // Variables for default bg colors, arrow directions and arrow heights
 var bgRed = 135;
@@ -41,6 +42,8 @@ function setup() {
   shield = new Shield(random(0,width),random(-5*height,0),0,2,15);
   // Yellow Circle, sun particle that grants a power-up
   powerup = new Powerup(random(0,width),random(-2*height,0),0,3,15);
+
+  enemy = new Enemy(random(0,width),random(-height*2,0),0,1.5,40);
 }
 
 // createArrow()
@@ -89,6 +92,11 @@ function play() {
   player1.handleInput();
   player1.update();
   player1.display();
+
+  // Update and display enemy values
+  enemy.update();
+  enemy.display();
+  enemy.handleCollision(player1);
 
   // Update and display shield values
   shield.update();
