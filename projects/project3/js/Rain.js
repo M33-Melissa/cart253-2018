@@ -1,13 +1,15 @@
 // Rain
 //
-// The rain particles would later be attached to cloud enemies.
-// They will have a negative effect on the player if player is sheilded.
+//
 // Has a collider interaction with the player and the shield object.
+// Have a negative effect on the player if player isn't sheilded.
 //
 // Code taken from p5.js example:
 // https://editor.p5js.org/zygugi/sketches/H1-5-1p5W
 
 // Rain constructor
+//
+// refers to the reset function
 function Rain() {
   this.reset();
 }
@@ -23,7 +25,6 @@ Rain.prototype.reset = function() {
   this.r = 0;
   this.tr = 50;
   this.weight = random(0.1, 2);
-
   this.hit = false;
   this.hitShield = false;
 }
@@ -35,11 +36,9 @@ Rain.prototype.reset = function() {
 Rain.prototype.update = function() {
   if (this.y < this.maxy) {
     this.y += this.vy;
-
   } else {
     this.r++;
   }
-
   if (this.r > this.tr) {
     this.reset();
   }
@@ -47,8 +46,8 @@ Rain.prototype.update = function() {
 
 // handleCollision(shield,player)
 //
-// Using the collision library, verify if collision occured
-// If so, raindrop resets to a random position at the top.
+// Using the collision library, verify if collision with shield or player
+// has occured. If so, raindrop resets to a random position at the top.
 Rain.prototype.handleCollision = function(shield,player) {
   if (shield.trigger) {
     this.hitShield = collideCircleCircle(this.x,this.y,5,player.x,player.y-20,shield.shieldSize);
@@ -70,7 +69,7 @@ Rain.prototype.handleCollision = function(shield,player) {
 
 // display()
 //
-// Display raindrops in teardrop shapes
+// Display raindrops in teardrop shapes or fading rings.
 Rain.prototype.display = function() {
   strokeWeight(this.weight);
   if (this.y < this.maxy) {

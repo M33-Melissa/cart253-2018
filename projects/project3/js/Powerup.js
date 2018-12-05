@@ -1,6 +1,7 @@
 // Powerup
 //
 // Collect sun pieces to be able to shoot multiple sun rays at the sky.
+// Displays as a yellow circle falling down from top to bottom of the screen.
 
 // Powerup constructor
 //
@@ -12,7 +13,6 @@ function Powerup(x,y,vx,vy,size) {
   this.vy = vy;
   this.size = size;
   this.trigger = false;
-  this.shieldSize = 10;
   this.collided = false;
 }
 
@@ -66,5 +66,5 @@ Powerup.prototype.display = function() {
 // Reset drop position at the top
 Powerup.prototype.reset = function() {
   this.x = random(0,width);
-  this.y = random(-2*height,0);
+  this.y = random(-3*height,0);
 }

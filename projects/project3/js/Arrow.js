@@ -1,14 +1,15 @@
 // Arrow
 //
-// A particle that would affect the enemy negatively when collided.
-// Sun rays that will be defeating cloud enemies.
+// A particle that affects the enemy negatively when collided.
+// Clouds reduce in size to eventually get cleared.
+// Sun rays sent to clear cloud enemies.
 
 // Arrow constructor
 //
 // Sets the properties with the provided arguments or defaults
 function Arrow(x, y, vx, vy, width, height) {
-  this.x = x-width/2;
-  this.y = y+height/2;
+  this.x = x - width/2;
+  this.y = y + height/2;
   this.vx = vx;
   this.vy = vy;
   this.width = width;
@@ -27,7 +28,7 @@ Arrow.prototype.update = function () {
 
 // display()
 //
-// Draw the enemy as a yellow rectangle on the screen
+// Draw the arrow as a yellow rectangle on the screen (sun ray)
 Arrow.prototype.display = function () {
   push();
   fill(255,255,0);
@@ -39,9 +40,10 @@ Arrow.prototype.display = function () {
 //
 // Using the collision library, verify if collision occured
 // If so, enemy size reduces and arrow resets
+// Colliders are the clouds and top border of the window.
 Arrow.prototype.handleCollision = function (enemies) {
   this.hitArrow = collideRectRect(this.x,this.y,this.width,this.height,enemies.x-enemies.size,enemies.y+enemies.size/4.9,enemies.size*2,enemies.size/5);
-  this.hitBorder = collideLineRect(0,0,width,0,this.x,this.y,this.width,this.height);
+  this.hitBorder = collideLineRect(-width,0,width*2,0,this.x,this.y,this.width,this.height);
   if (this.hitArrow) {
     enemies.size -= 10;
     this.reset();

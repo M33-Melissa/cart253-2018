@@ -7,6 +7,7 @@
 // Player represents a "teru teru bozu", a japanese traditional doll
 // made of white paper or cloth that was thought to stop or prevent the rain.
 
+// Variable that holds the initial size of the player
 var playerSize;
 
 // Player constructor
@@ -31,7 +32,6 @@ function Player(x,y,speed,size,leftKey,rightKey,downKey,upKey) {
 //
 // Check if the up or down keys are pressed and update velocity appropriately
 Player.prototype.handleInput = function() {
-
   if (keyIsDown(this.leftKey)||keyIsDown(65)) {
     this.vx = -this.speed;
 
@@ -41,7 +41,6 @@ Player.prototype.handleInput = function() {
   } else {
     this.vx = 0;
   }
-
   if (keyIsDown(this.upKey)||keyIsDown(87)) {
     this.vy = -this.speed;
 
@@ -67,7 +66,7 @@ Player.prototype.update = function() {
 
 // display()
 //
-// Draw the player as a white ghost with a blue ribbon on the screen.
+// Draw the player as a white ghost/charm with a blue ribbon on the screen.
 Player.prototype.display = function() {
   push();
   fill(this.color);
@@ -87,7 +86,7 @@ Player.prototype.display = function() {
 
 // reset()
 //
-// Reset player position
+// Reset player position, size, and color.
 Player.prototype.reset = function() {
   this.size = playerSize;
   this.x = width/2;

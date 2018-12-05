@@ -24,6 +24,7 @@ Shield.prototype.update = function() {
   this.y += this.vy;
   this.x += this.vx;
 
+  // Shield gets removed after 10 colisions with rain
   if (this.shieldHP <= 0) {
     this.trigger = false;
     this.shieldHP = 10;
@@ -54,6 +55,7 @@ Shield.prototype.handleCollision = function(player) {
 // Draw the shield drop as a blue umbrella on the screen
 // Verifies if trigger is set to true (see handleCollision())
 // If so, draws a player-sized blue umbrella over the player
+// Shield will collide with rain particles, protecting the player
 Shield.prototype.display = function(player) {
   push();
   fill(0,0,255,200);
@@ -81,5 +83,5 @@ Shield.prototype.display = function(player) {
 // Reset shield drop position at the top
 Shield.prototype.reset = function() {
   this.x = random(0,width);
-  this.y = random(-2*height,0);
+  this.y = random(-3*height,0);
 }

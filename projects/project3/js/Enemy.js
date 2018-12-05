@@ -1,6 +1,6 @@
 // Enemy
 //
-// Object moving across the screen from top to bottom.
+// Object moving across the screen horizontally, on a sine wave.
 // Affects player negatively in size and darkens color if collision occurs.
 
 // Variable that holds the initial size of the cloud
@@ -32,8 +32,9 @@ function Enemy(x,y,vx,vy,size) {
 // update()
 //
 // Update x and y positions based on velocities
+// Handles reset of object on certain conditions
 Enemy.prototype.update = function() {
-  // Update y position with velocity
+  // Update x and y position with velocity on a sine wave movement
   this.y += 0.5 * sin(frameCount*this.vy);
   if (this.side > 0.5) {
     this.x -= this.vx;
@@ -43,14 +44,15 @@ Enemy.prototype.update = function() {
   this.size = constrain(this.size,0,this.size);
   this.resetted = false;
   this.resetValue = true;
-  
-  // When enemy reaches the bottom, it resets at the top
+
+  // When enemy reaches the far left or right, it resets
   if (this.x > width+width/2 && this.resetValue) {
     this.reset();
   }
   if (this.x < -width/2 && this.resetValue) {
     this.reset();
   }
+  // When the enemy size reaches 5, it is cleared and reset
   if (this.size < 5 && this.resetValue) {
     this.enemyCleared++;
     bgRed+=20;
@@ -77,7 +79,7 @@ Enemy.prototype.handleCollision = function(player) {
 
 // display()
 //
-// Draw the enemy as a red circle on the screen
+// Draw the enemy as a grey cloud (set of circles on a rectangle)
 Enemy.prototype.display = function() {
   push();
   fill(120,120,120);
@@ -92,7 +94,7 @@ Enemy.prototype.display = function() {
 
 // reset()
 //
-// Reset enemy position at the top
+// Reset enemy size and position on the left or right side randomly
 Enemy.prototype.reset = function() {
   this.resetValue = false;
   this.resetted = true;

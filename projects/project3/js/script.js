@@ -1,30 +1,40 @@
-// Bullet Hell game (Avoid the particles)
+// Stop the Rain! (Shoot and avoid the particles)
 // by Melissa Lim
 //
 // Arrow keys or WASD to move the player.
-// Adding collectables to modify gameplay.
-// This prototype focuses on theme, appearance and collectables (power-ups).
 // The player represents a "teru teru bozu", a traditional doll that is thought
 // to be able to stop or prevent rain.
+// Defeating the clouds makes the sky brighter.
+// To win the game, defeat 8 clouds using sunrays (SPACEBAR).
 // Collecting blue umbrellas (Shield object) grants an umbrella shield
-// that will protect the player against rain particles.
-// In this prototype, there is no negative consequences to collisions.
+// that will protect the player against (10) rain particles.
+// Collecting sun particles (Powerup object)
+// grants a 3-shooter sunray (Arrow object) that has 10 uses;
+// Collision with enemies and raindrops darkends and reduces player's size.
+// Which results, at a certain point, in the player being defeated.
+//
+// Uses p5.collide2D.js library for collisions
+// Background music from: https://www.youtube.com/watch?v=CpghoNAz9Y4
+// Menu music is made by my friend!
+// SFX taken from https://freesound.org
 //
 // Written with JavaScript OOP.
 
-// Variables to contain player and array objects.
+// Variables to contain player, powerup, arrow, shield, rain, and enemy objects.
 var player1;
 var arrows = [];
 var shield;
 var powerup;
 var raining = [];
+var numDrops;
 var enemy;
 var arrowVX;
+
+// Variables to initialize arrow and rain values.
 var arrowHeight = 20;
-var numDrops = 100;
 var numArrow = 0;
 
-// Variables for default bg colors, arrow directions and arrow heights
+// Variables for default bg colors for gradient
 var bgRed = 35;
 var bgGreen = 106;
 var bgBlue = 135;
@@ -32,6 +42,7 @@ var endRed = 0;
 var endGreen = 32;
 var endBlue = 62;
 
+// Default game values
 var gameWon = false;
 var gameLost = false;
 var gameOver = false;
@@ -47,6 +58,9 @@ var obtainedShieldSFX;
 var menuMusic;
 var obtainedShieldSFX;
 
+// preload()
+//
+// Preloads sound effects, background music, and fonts
 function preload() {
   bgMusic = loadSound("assets/sounds/rain_song.mp3");
   menuMusic = loadSound("assets/sounds/Sweet_Dream.mp3");
@@ -60,7 +74,7 @@ function preload() {
 
 // setup()
 //
-// Create player object and collectable objects
+// Create player, enemy, and collectable objects
 function setup() {
   createCanvas(windowWidth,windowHeight);
   ellipseMode(CENTER);
@@ -68,9 +82,10 @@ function setup() {
   noStroke();
   textFont(myFont);
 
+  // Initialize music and number of raindrops on the page
   numDrops = windowWidth/12;
   bgMusic.amp(0.5);
-  menuMusic.amp(0.5);
+  menuMusic.amp(0.3);
   shieldSFX.amp(0.3);
   arrowSFX.amp(0.3);
   powerupSFX.amp(0.3);
@@ -94,7 +109,6 @@ function draw() {
   if (start === false) {
     titleScreen();
   } else {
-    // Game Scene
     play();
   }
   if (gameOver === true) {
@@ -111,14 +125,15 @@ function titleScreen() {
   }
   push();
   bgGradient();
+
   // On-screen Instructions
   fill(255,150);
   noStroke();
   textSize(width/70);
   textAlign(RIGHT,CENTER);
-  text("Press SPACE to shoot sunrays!",width-10,height-20);
+  text("Press SPACE to shoot sunrays!",width-15,height-30);
   textAlign(LEFT,CENTER);
-  text("WASD or ARROW KEYS to move",15,30);
+  text("WASD or ARROW KEYS to move",15,25);
 
   // Style set up, decorative elements
   textSize(width/15);
@@ -147,9 +162,10 @@ function play() {
   noStroke();
   textSize(width/70);
   textAlign(RIGHT,CENTER);
-  text("Press SPACE to shoot sunrays!",width-10,height-20);
+  text("Press SPACE to shoot sunrays!",width-15,height-30);
   textAlign(LEFT,CENTER);
-  text("WASD or ARROW KEYS to move",15,30);
+  text("WASD or ARROW KEYS to move",15,25);
+
   // Rain Visuals
   makeItRain();
   pop();
@@ -163,11 +179,6 @@ function play() {
   enemy.update();
   enemy.display();
   enemy.handleCollision(player1);
-
-  // // Update and display enemy values
-  // enemy2.update();
-  // enemy2.display();
-  // enemy2.handleCollision(player1);
 
   // Update and display shield values
   shield.update();
@@ -188,11 +199,12 @@ function play() {
     }
   }
 
+  // Verifies end game conditions
   if (player1.color <= 10 || player1.size <= 5) {
     gameLost = true;
     gameOver = true;
 
-  } else if (enemy.enemyCleared > 6) {
+  } else if (enemy.enemyCleared > 7) {
     gameWon = true;
     gameOver = true;
     wonSFX.currentTime = 0;
@@ -203,15 +215,17 @@ function play() {
 // gameOverScreen()
 //
 // Displays text of a game over and prompts to restart
+// Uses end game status verified in play
 function gameOverScreen() {
-  bgGradient();
   // Setting up style
+  bgGradient();
   textSize(width/15);
   textAlign(CENTER,CENTER);
   noStroke();
   fill(255,150);
-  bgMusic.stop();
 
+  // Update game music
+  bgMusic.stop();
   if (menuMusic.isPlaying() === false) {
     menuMusic.currentTime = 0;
     menuMusic.play();
@@ -220,6 +234,7 @@ function gameOverScreen() {
   // Uses text and styling according to game over condition and prompts for new game
   if (gameLost) {
     resetGame();
+    // Replay prompt
     push();
     textSize(width/19);
     text("Aww, the charm didn't stop the rain...", width/2, height*1/4);
@@ -233,20 +248,25 @@ function gameOverScreen() {
   } else if (gameWon) {
     resetGame();
     push();
-      fill(255,255,0,30);
-      quad(0,height/13,width+width/20,0,width+width/20,0,0,height*2/5);
-      quad(0,height*2.25/5,width+width/20,0,width+width/20,0,0,height*4/5);
-      quad(0,height*4.5/5,width+width/20,0,width+width/20,0,0,height+height*1.5/5);
-      quad(0,height+height*2.5/5,width+width/20,0,width+width/20,0,0,height*2);
-      fill(50,50);
-      noStroke();
-      rect(0,0,width,height/13);
-      rect(0,height/13,width/25,height-height*2/13);
-      rect(width-width/25,height/13,width/25,height-height*2/13);
-      rect(width/2-width/25/2,height/13,width/25,height-height*2/13);
-      rect(width/25,height/2-height/13/2,width-width*2/25,height/13);
-      rect(0,height-height/13,width,height/13);
+    // Sunshine appearance from the window
+    fill(255,255,0,30);
+    quad(0,height/13,width+width/20,0,width+width/20,0,0,height*2/5);
+    quad(0,height*2.25/5,width+width/20,0,width+width/20,0,0,height*4/5);
+    quad(0,height*4.5/5,width+width/20,0,width+width/20,0,0,height+height*1.5/5);
+    quad(0,height+height*2.5/5,width+width/20,0,width+width/20,0,0,height*2);
+
+    // Window appearance
+    fill(50,50);
+    noStroke();
+    rect(0,0,width,height/13);
+    rect(0,height/13,width/25,height-height*2/13);
+    rect(width-width/25,height/13,width/25,height-height*2/13);
+    rect(width/2-width/25/2,height/13,width/25,height-height*2/13);
+    rect(width/25,height/2-height/13/2,width-width*2/25,height/13);
+    rect(0,height-height/13,width,height/13);
     pop();
+
+    // Replay prompt
     push();
     fill(255);
     textSize(width/20);
@@ -303,8 +323,11 @@ function resetGame() {
 //
 // Creates arrow when space is pressed.
 // If the player obtained a power-up, shoots 3 arrows in different directions.
+// Goes back to title screen if SHIFT is pressed in game over screen
+// Enter play screen if ENTER pressed in title screen
 function keyPressed() {
-  // Title screen prompts for ENTER key to begin play
+  // ENTER key to begin play, during title titleScreen
+  // Music and objects are reset for a new game
   if (keyCode === ENTER && start === false) {
     start = true;
     menuMusic.stop();
@@ -316,7 +339,8 @@ function keyPressed() {
     play();
   }
 
-  // Game Over screen prompts for SHIFT key to reset game
+  // SHIFT key to reset game, during the game over screen.
+  // Fixed values to keep the game from continuing.
   if (keyCode === SHIFT && gameOver === true) {
     gameOver = false;
     gameWon = false;
@@ -355,7 +379,7 @@ function createArrow(arrowVX) {
 
 // makeItRain()
 //
-// creates rainfall visuals
+// creates rainfall visuals and handles collision with player and shield
 function makeItRain() {
   push();
   ellipseMode(RADIUS);
