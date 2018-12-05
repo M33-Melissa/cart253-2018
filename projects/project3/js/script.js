@@ -59,7 +59,7 @@ function setup() {
   noStroke();
   textFont(myFont);
 
-  numDrops = windowWidth/10;
+  numDrops = windowWidth/12;
   bgMusic.amp(0.5);
   shieldSFX.amp(0.3);
   arrowSFX.amp(0.3);
@@ -107,10 +107,10 @@ function titleScreen() {
   textAlign(CENTER,CENTER);
 
   // Title screen text and prompt to begin game
-  text("Please Stop the Rain!", width/2, height/3);
+  text("Please Stop the Rain!", width/2, height/4);
   textSize(width/40);
-  text("I made a rain charm to stop the rain,", width/2, height*0.9/2);
-  text("I wish that it would work...", width/2, height*1.05/2);
+  text("I made a rain charm to stop the rain,", width/2, height/2);
+  text("I wish that it would work...", width/2, height*2.5/4);
   textSize(width/30);
   text("Press ENTER to make my wish come true!", width/2, height*3/4);
   pop();
@@ -203,7 +203,7 @@ function gameOverScreen() {
     textSize(width/25);
     text("Maybe they don't work after all...", width/2, height/2);
     textSize(width/35);
-    text("Press SHIFT and maybe I should try again with another charm!", width/2, height*3/4);
+    text("Press SHIFT and... I will try again with another charm!", width/2, height*3/4);
     pop();
 
     // winning condition: one of the two players get 11 points
@@ -244,6 +244,9 @@ function keyPressed() {
     enemy.reset();
     shield.reset();
     powerup.reset();
+    for (var i = 0; i < raining.length; i++) {
+      raining.pop();
+    }
     play();
   }
 
@@ -253,6 +256,13 @@ function keyPressed() {
     gameWon = false;
     gameLost = false;
     start = false;
+    bgRed = 35;
+    bgGreen = 106;
+    bgBlue = 135;
+    endRed = 0;
+    endGreen = 32;
+    endBlue = 62;
+    enemy.enemyCleared = 0;
     player1.reset();
     titleScreen();
   }
