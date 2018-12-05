@@ -19,6 +19,14 @@ function Enemy(x,y,vx,vy,size) {
   initialSize = size;
   this.hitBot = false;
   this.enemyCleared = 0;
+  this.side = random();
+  if (this.side > 0.5) {
+    this.x = random(width+width/6,width+width/2);
+    this.y = random(0, height/3);
+  } else {
+    this.x = random(-width/2,-width/6);
+    this.y = random(0, height/3);
+  }
 }
 
 // update()s
@@ -26,11 +34,16 @@ function Enemy(x,y,vx,vy,size) {
 // Update x and y positions based on velocities
 Enemy.prototype.update = function() {
   // Update y position with velocity
-  this.y += this.vy;
-  this.x += this.vx;
+  this.y += 0.5 * sin(frameCount*this.vy);
+  if (this.side > 0.5) {
+    this.x -= this.vx;
+  } else {
+    this.x += this.vx;
+  }
   this.size = constrain(this.size,0,this.size);
   this.resetted = false;
   this.resetValue = true;
+  console.log(this.x);
   // When enemy reaches the bottom, it resets at the top
   if (this.x > width+width/2 && this.resetValue) {
     this.reset();
@@ -56,6 +69,7 @@ Enemy.prototype.update = function() {
 Enemy.prototype.handleCollision = function(player) {
   this.hitBot = collideRectCircle(this.x-this.size,this.y+this.size/4.9,this.size*2,this.size/5,player.x,player.y,player.size);
   if (this.hitBot) {
+    player.size -= 5;
     player.color -= 50;
     this.reset();
   }
@@ -82,7 +96,13 @@ Enemy.prototype.display = function() {
 Enemy.prototype.reset = function() {
   this.resetValue = false;
   this.resetted = true;
-  this.x = random(-width/2,0);
-  this.y = random(0, height/4);
+  this.side = random();
+  if (this.side > 0.5) {
+    this.x = random(width+width/6,width+width/2);
+    this.y = random(0, height/3);
+  } else {
+    this.x = random(-width/2,-width/6);
+    this.y = random(0, height/3);
+  }
   this.size = initialSize;
 }

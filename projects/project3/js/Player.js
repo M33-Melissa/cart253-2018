@@ -59,7 +59,7 @@ Player.prototype.handleInput = function() {
 // Constrain the resulting position to be within the canvas
 Player.prototype.update = function() {
     this.y += this.vy;
-    this.y = constrain(this.y,this.size/2,height-this.size/2);
+    this.y = constrain(this.y,this.size/2,height-this.size*2);
     this.x += this.vx;
     this.x = constrain(this.x,this.size/2,width-this.size/2);
     this.size = constrain(this.size,5,this.size);

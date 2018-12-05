@@ -19,6 +19,10 @@ var shield;
 var powerup;
 var raining = [];
 var enemy;
+var arrowVX;
+var arrowHeight = 20;
+var numDrops = 100;
+var numArrow = 0;
 
 // Variables for default bg colors, arrow directions and arrow heights
 var bgRed = 35;
@@ -27,10 +31,7 @@ var bgBlue = 135;
 var endRed = 0;
 var endGreen = 32;
 var endBlue = 62;
-var arrowVX;
-var arrowHeight = 20;
-var numDrops = 100;
-var numArrow = 0;
+
 var gameWon = false;
 var gameLost = false;
 var gameOver = false;
@@ -41,9 +42,17 @@ var bgMusic;
 var shieldSFX;
 var endMusic;
 var arrowSFX;
+var powerupSFX;
+var obtainedShieldSFX;
+var menuMusic;
+var obtainedShieldSFX;
 
 function preload() {
   bgMusic = loadSound("assets/sounds/rain_song.mp3");
+  menuMusic = loadSound("assets/sounds/Sweet_Dream.mp3");
+  powerupSFX = loadSound("assets/sounds/warp.wav");
+  obtainedShieldSFX = loadSound("assets/sounds/obtained.wav");
+  wonSFX = loadSound("assets/sounds/finished.wav");
   shieldSFX = loadSound("assets/sounds/ding.wav");
   arrowSFX = loadSound("assets/sounds/lazer.wav");
   myFont = loadFont('assets/fonts/Kalam-Regular.ttf');
@@ -61,18 +70,21 @@ function setup() {
 
   numDrops = windowWidth/12;
   bgMusic.amp(0.5);
+  menuMusic.amp(0.5);
   shieldSFX.amp(0.3);
   arrowSFX.amp(0.3);
+  powerupSFX.amp(0.3);
+  obtainedShieldSFX.amp(0.3);
+  wonSFX.amp(0.5);
 
+  // Charm, ghost-shaped player
   player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW);
-
   // Blue Umbrella-shaped particle
   shield = new Shield(random(0,width),random(-5*height,0),0,2,15);
   // Yellow Circle, sun particle that grants a power-up
   powerup = new Powerup(random(0,width),random(-3*height,0),0,3,15);
   // Grey set of circles, cloud enemy that damages player
-  enemy = new Enemy(random(-width/2,0),random(0, height/4),random(1,3),0,width/8);
-  // enemy2 = new Enemy(random(width,width+width/2),random(0, height/4),random(-3,-1),0,width/7);
+  enemy = new Enemy(random(-width/2,-width/6),random(0, height/3),random(1,3),0.02,width/8);
 }
 
 // draw()
@@ -90,7 +102,13 @@ function draw() {
   }
 }
 
+// titleScreen()
+//
+//
 function titleScreen() {
+  if (menuMusic.isPlaying() === false) {
+    menuMusic.play();
+  }
   push();
   bgGradient();
   // On-screen Instructions
@@ -110,7 +128,7 @@ function titleScreen() {
   text("Please Stop the Rain!", width/2, height/4);
   textSize(width/40);
   text("I made a rain charm to stop the rain,", width/2, height/2);
-  text("I wish that it would work...", width/2, height*2.5/4);
+  text("I wish it would work...", width/2, height*2.5/4);
   textSize(width/30);
   text("Press ENTER to make my wish come true!", width/2, height*3/4);
   pop();
@@ -132,10 +150,8 @@ function play() {
   text("Press SPACE to shoot sunrays!",width-10,height-20);
   textAlign(LEFT,CENTER);
   text("WASD or ARROW KEYS to move",15,30);
-
   // Rain Visuals
   makeItRain();
-
   pop();
 
   // Update and display player values
@@ -175,11 +191,12 @@ function play() {
   if (player1.color <= 10 || player1.size <= 5) {
     gameLost = true;
     gameOver = true;
-  } else if (enemy.enemyCleared > 6) {
+
+  } else if (enemy.enemyCleared > 3) {
     gameWon = true;
     gameOver = true;
-  } else {
-    gameOver = false;
+    wonSFX.currentTime = 0;
+    wonSFX.play();
   }
 }
 
@@ -195,8 +212,14 @@ function gameOverScreen() {
   fill(255,150);
   bgMusic.stop();
 
+  if (menuMusic.isPlaying() === false) {
+    menuMusic.currentTime = 0;
+    menuMusic.play();
+  }
+
   // Uses text and styling according to game over condition and prompts for new game
   if (gameLost) {
+    resetGame();
     push();
     textSize(width/19);
     text("Aww, the charm didn't stop the rain...", width/2, height*1/4);
@@ -208,9 +231,26 @@ function gameOverScreen() {
 
     // winning condition: one of the two players get 11 points
   } else if (gameWon) {
+    resetGame();
     push();
-    textSize(width/15);
-    text("Yay! It stopped raining!", width/2, height/2);
+      fill(255,255,0,30);
+      quad(0,height/13,width+width/20,0,width+width/20,0,0,height*2/5);
+      quad(0,height*2.25/5,width+width/20,0,width+width/20,0,0,height*4/5);
+      quad(0,height*4.5/5,width+width/20,0,width+width/20,0,0,height+height*1.5/5);
+      quad(0,height+height*2.5/5,width+width/20,0,width+width/20,0,0,height*2);
+      fill(50,50);
+      noStroke();
+      rect(0,0,width,height/13);
+      rect(0,height/13,width/25,height-height*2/13);
+      rect(width-width/25,height/13,width/25,height-height*2/13);
+      rect(width/2-width/25/2,height/13,width/25,height-height*2/13);
+      rect(width/25,height/2-height/13/2,width-width*2/25,height/13);
+      rect(0,height-height/13,width,height/13);
+    pop();
+    push();
+    fill(255);
+    textSize(width/20);
+    text("Yay! It stopped raining! It really worked!", width/2, height/4);
     textSize(width/30);
     text("Press SHIFT to help someone else stop the rain!", width/2, height*3/4);
     pop();
@@ -220,15 +260,42 @@ function gameOverScreen() {
 // bgGradient()
 //
 // Uses given values to make a gradient background
+// Seems to be the cause of what's making the game lagg on firefox
 function bgGradient() {
   // Colors used for gradient background
   var startingColor = color(bgRed,bgGreen,bgBlue);
   var endingColor = color(endRed,endGreen,endBlue);
-  for (let i = 0; i <= height; i++) {
+  for (var i = 0; i <= height; i++) {
     var intermediateColors = map(i, 0, height, 0, 1);
     var strokeColor = lerpColor(startingColor, endingColor, intermediateColors);
     stroke(strokeColor);
     line(0, i, width, i);
+  }
+  // Window appearance
+  fill(0,80);
+  noStroke();
+  rect(0,0,width,height/13);
+  rect(0,height/13,width/25,height-height*2/13);
+  rect(width-width/25,height/13,width/25,height-height*2/13);
+  rect(width/2-width/25/2,height/13,width/25,height-height*2/13);
+  rect(width/25,height/2-height/13/2,width-width*2/25,height/13);
+  rect(0,height-height/13,width,height/13);
+}
+
+// resetGame()
+//
+// Reinitialize game values for new game
+function resetGame() {
+  player1.color = 255;
+  player1.size = 20;
+  enemy.x = 0;
+  powerup.y = 0;
+  shield.y = 0;
+  shield.trigger = false;
+  enemy.enemyCleared = 0;
+  numArrow = 0;
+  for (var i = 0; i < raining.length; i++) {
+    raining.pop();
   }
 }
 
@@ -240,13 +307,12 @@ function keyPressed() {
   // Title screen prompts for ENTER key to begin play
   if (keyCode === ENTER && start === false) {
     start = true;
+    menuMusic.stop();
     bgMusic.loop();
     enemy.reset();
     shield.reset();
     powerup.reset();
-    for (var i = 0; i < raining.length; i++) {
-      raining.pop();
-    }
+    player1.reset();
     play();
   }
 
@@ -262,8 +328,6 @@ function keyPressed() {
     endRed = 0;
     endGreen = 32;
     endBlue = 62;
-    enemy.enemyCleared = 0;
-    player1.reset();
     titleScreen();
   }
 

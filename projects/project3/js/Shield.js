@@ -42,6 +42,8 @@ Shield.prototype.update = function() {
 Shield.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
+    obtainedShieldSFX.currentTime = 0;
+    obtainedShieldSFX.play();
     this.trigger = true;
     this.reset();
   }

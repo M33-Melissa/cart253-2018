@@ -56,7 +56,7 @@ Rain.prototype.handleCollision = function(shield,player) {
     this.hit = collideCircleCircle(this.x,this.y,5,player.x,player.y,player.size);
   }
   if (this.hit) {
-    player.size-=1;
+    player.size -= 1;
     player.color -= 15;
     this.reset();
   }
@@ -64,8 +64,7 @@ Rain.prototype.handleCollision = function(shield,player) {
     shieldSFX.currentTime = 0;
     shieldSFX.play();
     this.reset();
-    shield.shieldHP = shield.shieldHP -1;
-    hitShield = false;
+    shield.shieldHP -= 1;
   }
 }
 

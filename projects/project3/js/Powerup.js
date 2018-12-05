@@ -43,6 +43,8 @@ Powerup.prototype.update = function() {
 Powerup.prototype.handleCollision = function(player) {
   hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
   if (hit) {
+    powerupSFX.currentTime = 0;
+    powerupSFX.play();
     this.collided = true;
     this.x = random(0,width);
     this.y = random(-2*height,0);
