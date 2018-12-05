@@ -47,7 +47,6 @@ function preload() {
   shieldSFX = loadSound("assets/sounds/ding.wav");
   arrowSFX = loadSound("assets/sounds/lazer.wav");
   myFont = loadFont('assets/fonts/Kalam-Regular.ttf');
-  // endMusic = new Audio("assets/sounds/");
 }
 
 // setup()
@@ -61,7 +60,6 @@ function setup() {
   textFont(myFont);
 
   numDrops = windowWidth/10;
-  bgMusic.loop();
   bgMusic.amp(0.5);
   shieldSFX.amp(0.3);
   arrowSFX.amp(0.3);
@@ -94,16 +92,7 @@ function draw() {
 
 function titleScreen() {
   push();
-  // Colors used for gradient background
-  var startingColor = color(bgRed,bgGreen,bgBlue);
-  var endingColor = color(endRed,endGreen,endBlue);
-  for (let i = 0; i <= height; i++) {
-    var intermediateColors = map(i, 0, height, 0, 1);
-    var strokeColor = lerpColor(startingColor, endingColor, intermediateColors);
-    stroke(strokeColor);
-    line(0, i, width, i);
-  }
-
+  bgGradient();
   // On-screen Instructions
   fill(255,150);
   noStroke();
@@ -127,65 +116,14 @@ function titleScreen() {
   pop();
 }
 
-// gameOverScreen()
-//
-// Displays text of a game over and prompts to restart
-function gameOverScreen() {
-  // Setting up style
-  textSize(width/15);
-  textAlign(CENTER,CENTER);
-  noStroke();
-  fill(255);
-
-  // Uses text and styling according to game over condition and prompts for new game
-  if (gameLost) {
-    push();
-    textSize(width/19);
-    noFill();
-    strokeWeight(5);
-    text("Aww, the charm didn't stop the rain...", width/2, height/2);
-    textSize(width/35);
-    fill(255);
-    noStroke();
-    text("Press SHIFT and I'll make another charm!", width/2, height*14/15);
-    pop();
-
-    // winning condition: one of the two players get 11 points
-  } else if (gameWon) {
-    makeItRain();
-    push();
-    strokeWeight(3);
-    noFill();
-    textSize(width/15);
-    text("Yay! It stopped raining!", width/2, height/2);
-    noStroke();
-    fill(100,120,220);
-    textSize(width/30);
-    text("Press SHIFT to help another raining place!", width/2, height*3/4);
-    pop();
-  }
-}
-
-function resetGame() {
-  player.reset();
-  titleScreen();
-}
-
 // play()
 //
 // Handles input, updates all the elements, checks for collisions
 // and displays everything (player, shields, arrows, and power-ups).
 function play() {
   push();
-  // Colors used for gradient background
-  var startingColor = color(bgRed,bgGreen,bgBlue);
-  var endingColor = color(endRed,endGreen,endBlue);
-  for (let i = 0; i <= height; i++) {
-    var intermediateColors = map(i, 0, height, 0, 1);
-    var strokeColor = lerpColor(startingColor, endingColor, intermediateColors);
-    stroke(strokeColor);
-    line(0, i, width, i);
-  }
+  bgGradient();
+
   // On-screen Instructions
   fill(255,150);
   noStroke();
@@ -234,11 +172,64 @@ function play() {
     }
   }
 
-  // if (player1.color <= 10 || player1.size <= 5) {
-  //   gameOver = true;
-  // } else {
-  //   gameOver = false;
-  // }
+  if (player1.color <= 10 || player1.size <= 5) {
+    gameLost = true;
+    gameOver = true;
+  } else if (enemy.enemyCleared > 6) {
+    gameWon = true;
+    gameOver = true;
+  } else {
+    gameOver = false;
+  }
+}
+
+// gameOverScreen()
+//
+// Displays text of a game over and prompts to restart
+function gameOverScreen() {
+  bgGradient();
+  // Setting up style
+  textSize(width/15);
+  textAlign(CENTER,CENTER);
+  noStroke();
+  fill(255,150);
+  bgMusic.stop();
+
+  // Uses text and styling according to game over condition and prompts for new game
+  if (gameLost) {
+    push();
+    textSize(width/19);
+    text("Aww, the charm didn't stop the rain...", width/2, height*1/4);
+    textSize(width/25);
+    text("Maybe they don't work after all...", width/2, height/2);
+    textSize(width/35);
+    text("Press SHIFT and maybe I should try again with another charm!", width/2, height*3/4);
+    pop();
+
+    // winning condition: one of the two players get 11 points
+  } else if (gameWon) {
+    push();
+    textSize(width/15);
+    text("Yay! It stopped raining!", width/2, height/2);
+    textSize(width/30);
+    text("Press SHIFT to help someone else stop the rain!", width/2, height*3/4);
+    pop();
+  }
+}
+
+// bgGradient()
+//
+// Uses given values to make a gradient background
+function bgGradient() {
+  // Colors used for gradient background
+  var startingColor = color(bgRed,bgGreen,bgBlue);
+  var endingColor = color(endRed,endGreen,endBlue);
+  for (let i = 0; i <= height; i++) {
+    var intermediateColors = map(i, 0, height, 0, 1);
+    var strokeColor = lerpColor(startingColor, endingColor, intermediateColors);
+    stroke(strokeColor);
+    line(0, i, width, i);
+  }
 }
 
 // keyPressed()
@@ -249,14 +240,21 @@ function keyPressed() {
   // Title screen prompts for ENTER key to begin play
   if (keyCode === ENTER && start === false) {
     start = true;
+    bgMusic.loop();
+    enemy.reset();
+    shield.reset();
+    powerup.reset();
     play();
   }
 
   // Game Over screen prompts for SHIFT key to reset game
   if (keyCode === SHIFT && gameOver === true) {
     gameOver = false;
+    gameWon = false;
+    gameLost = false;
     start = false;
-    resetGame();
+    player1.reset();
+    titleScreen();
   }
 
   // Pressing Space shoots arrows off the player
