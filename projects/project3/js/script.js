@@ -30,17 +30,24 @@ var endBlue = 62;
 var arrowVX;
 var arrowHeight = 20;
 var numDrops = 100;
-var endGame = false;
+var numArrow = 0;
+var gameWon = false;
+var gameLost = false;
+var gameOver = false;
+var start = false;
 
 // Variables for sound and music
 var bgMusic;
 var shieldSFX;
 var endMusic;
+var arrowSFX;
 
 function preload() {
-  bgMusic = new Audio("assets/sounds/");
-  shieldSFX = new Audio("assets/sounds/");
-  endMusic = new Audio("assets/sounds/");
+  bgMusic = loadSound("assets/sounds/rain_song.mp3");
+  shieldSFX = loadSound("assets/sounds/ding.wav");
+  arrowSFX = loadSound("assets/sounds/lazer.wav");
+  myFont = loadFont('assets/fonts/Kalam-Regular.ttf');
+  // endMusic = new Audio("assets/sounds/");
 }
 
 // setup()
@@ -51,13 +58,20 @@ function setup() {
   ellipseMode(CENTER);
   rectMode(CORNER);
   noStroke();
+  textFont(myFont);
+
+  numDrops = windowWidth/10;
+  bgMusic.loop();
+  bgMusic.amp(0.5);
+  shieldSFX.amp(0.3);
+  arrowSFX.amp(0.3);
 
   player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW);
 
   // Blue Umbrella-shaped particle
   shield = new Shield(random(0,width),random(-5*height,0),0,2,15);
   // Yellow Circle, sun particle that grants a power-up
-  powerup = new Powerup(random(0,width),random(-2*height,0),0,3,15);
+  powerup = new Powerup(random(0,width),random(-3*height,0),0,3,15);
   // Grey set of circles, cloud enemy that damages player
   enemy = new Enemy(random(-width/2,0),random(0, height/4),random(1,3),0,width/8);
   // enemy2 = new Enemy(random(width,width+width/2),random(0, height/4),random(-3,-1),0,width/7);
@@ -67,6 +81,101 @@ function setup() {
 //
 // Sets up scene and calls appropriate screen methods according to game state
 function draw() {
+  if (start === false) {
+    titleScreen();
+  } else {
+    // Game Scene
+    play();
+  }
+  if (gameOver === true) {
+    gameOverScreen();
+  }
+}
+
+function titleScreen() {
+  push();
+  // Colors used for gradient background
+  var startingColor = color(bgRed,bgGreen,bgBlue);
+  var endingColor = color(endRed,endGreen,endBlue);
+  for (let i = 0; i <= height; i++) {
+    var intermediateColors = map(i, 0, height, 0, 1);
+    var strokeColor = lerpColor(startingColor, endingColor, intermediateColors);
+    stroke(strokeColor);
+    line(0, i, width, i);
+  }
+
+  // On-screen Instructions
+  fill(255,150);
+  noStroke();
+  textSize(width/70);
+  textAlign(RIGHT,CENTER);
+  text("Press SPACE to shoot sunrays!",width-10,height-20);
+  textAlign(LEFT,CENTER);
+  text("WASD or ARROW KEYS to move",15,30);
+
+  // Style set up, decorative elements
+  textSize(width/15);
+  textAlign(CENTER,CENTER);
+
+  // Title screen text and prompt to begin game
+  text("Please Stop the Rain!", width/2, height/3);
+  textSize(width/40);
+  text("I made a rain charm to stop the rain,", width/2, height*0.9/2);
+  text("I wish that it would work...", width/2, height*1.05/2);
+  textSize(width/30);
+  text("Press ENTER to make my wish come true!", width/2, height*3/4);
+  pop();
+}
+
+// gameOverScreen()
+//
+// Displays text of a game over and prompts to restart
+function gameOverScreen() {
+  // Setting up style
+  textSize(width/15);
+  textAlign(CENTER,CENTER);
+  noStroke();
+  fill(255);
+
+  // Uses text and styling according to game over condition and prompts for new game
+  if (gameLost) {
+    push();
+    textSize(width/19);
+    noFill();
+    strokeWeight(5);
+    text("Aww, the charm didn't stop the rain...", width/2, height/2);
+    textSize(width/35);
+    fill(255);
+    noStroke();
+    text("Press SHIFT and I'll make another charm!", width/2, height*14/15);
+    pop();
+
+    // winning condition: one of the two players get 11 points
+  } else if (gameWon) {
+    makeItRain();
+    push();
+    strokeWeight(3);
+    noFill();
+    textSize(width/15);
+    text("Yay! It stopped raining!", width/2, height/2);
+    noStroke();
+    fill(100,120,220);
+    textSize(width/30);
+    text("Press SHIFT to help another raining place!", width/2, height*3/4);
+    pop();
+  }
+}
+
+function resetGame() {
+  player.reset();
+  titleScreen();
+}
+
+// play()
+//
+// Handles input, updates all the elements, checks for collisions
+// and displays everything (player, shields, arrows, and power-ups).
+function play() {
   push();
   // Colors used for gradient background
   var startingColor = color(bgRed,bgGreen,bgBlue);
@@ -85,18 +194,12 @@ function draw() {
   text("Press SPACE to shoot sunrays!",width-10,height-20);
   textAlign(LEFT,CENTER);
   text("WASD or ARROW KEYS to move",15,30);
-  pop();
+
   // Rain Visuals
   makeItRain();
-  // Game Scene
-  play();
-}
 
-// play()
-//
-// Handles input, updates all the elements, checks for collisions
-// and displays everything (player, shields, arrows, and power-ups).
-function play() {
+  pop();
+
   // Update and display player values
   player1.handleInput();
   player1.update();
@@ -121,6 +224,7 @@ function play() {
   powerup.update();
   powerup.display();
   powerup.handleCollision(player1);
+
   // Update and display arrow values
   for (var i = 0; i < arrows.length; i++) {
     arrows[i].update();
@@ -129,6 +233,12 @@ function play() {
       arrows[i].handleCollision(enemy);
     }
   }
+
+  // if (player1.color <= 10 || player1.size <= 5) {
+  //   gameOver = true;
+  // } else {
+  //   gameOver = false;
+  // }
 }
 
 // keyPressed()
@@ -136,12 +246,28 @@ function play() {
 // Creates arrow when space is pressed.
 // If the player obtained a power-up, shoots 3 arrows in different directions.
 function keyPressed() {
+  // Title screen prompts for ENTER key to begin play
+  if (keyCode === ENTER && start === false) {
+    start = true;
+    play();
+  }
+
+  // Game Over screen prompts for SHIFT key to reset game
+  if (keyCode === SHIFT && gameOver === true) {
+    gameOver = false;
+    start = false;
+    resetGame();
+  }
+
   // Pressing Space shoots arrows off the player
-  if (keyCode === 32) {
+  if (keyCode === 32 && start === true) {
+    arrowSFX.currentTime = 0;
+    arrowSFX.play();
     createArrow(0);
     if (powerup.collided) {
       createArrow(3);
       createArrow(-3);
+      numArrow++;
     }
   }
   return false;

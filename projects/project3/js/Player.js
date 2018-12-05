@@ -7,6 +7,8 @@
 // Player represents a "teru teru bozu", a japanese traditional doll
 // made of white paper or cloth that was thought to stop or prevent the rain.
 
+var playerSize;
+
 // Player constructor
 //
 // Sets the properties with the provided arguments or defaults
@@ -22,7 +24,7 @@ function Player(x,y,speed,size,leftKey,rightKey,downKey,upKey) {
   this.downKey = downKey;
   this.upKey = upKey;
   this.color = 255;
-  this.transparency = 0;
+  playerSize = size;
 }
 
 // handleInput()
@@ -60,11 +62,7 @@ Player.prototype.update = function() {
     this.y = constrain(this.y,this.size/2,height-this.size/2);
     this.x += this.vx;
     this.x = constrain(this.x,this.size/2,width-this.size/2);
-    if (this.color > 10) {
-      endGame = true;
-    } else {
-      endGame = false;
-    }
+    this.size = constrain(this.size,5,this.size);
 }
 
 // display()
@@ -73,7 +71,7 @@ Player.prototype.update = function() {
 Player.prototype.display = function() {
   push();
   fill(this.color);
-  quad(this.x-5, this.y, this.x+5, this.y, this.x+20, this.y+40, this.x-20, this.y+40);
+  quad(this.x-this.size/4, this.y, this.x+this.size/4, this.y, this.x+this.size, this.y+this.size*2, this.x-this.size, this.y+this.size*2);
   ellipse(this.x,this.y,this.size,this.size);
   fill(0);
   ellipse(this.x+this.size/5,this.y-this.size/5,this.size/6);
@@ -91,6 +89,8 @@ Player.prototype.display = function() {
 //
 // Reset player position
 Player.prototype.reset = function() {
+  this.size = playerSize;
   this.x = width/2;
   this.y = height-this.size/2;
+  this.color = 255;
 }

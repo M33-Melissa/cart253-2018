@@ -69,7 +69,7 @@ Shield.prototype.display = function(player) {
     strokeWeight(2);
     noFill();
     line(player.x-this.shieldSize/4,player.y-this.shieldSize*0.9,player.x-this.shieldSize/4,player.y+this.shieldSize/4);
-    arc(player.x-this.shieldSize/10,player.y+this.shieldSize/4,this.shieldSize/4,this.shieldSize/4,QUARTER_PI,PI);
+    arc(player.x-this.shieldSize/8,player.y+this.shieldSize/4,this.shieldSize/4,this.shieldSize/4,QUARTER_PI,PI);
   }
   pop();
 }

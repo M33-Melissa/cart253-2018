@@ -27,6 +27,12 @@ Powerup.prototype.update = function() {
   if (this.y > height) {
     this.reset();
   }
+
+  // Powerup runs out after 10 shots
+  if (numArrow >= 10) {
+    this.collided = false;
+    numArrow = 0;
+  }
 }
 
 // handleCollision(player)

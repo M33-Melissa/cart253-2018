@@ -14,6 +14,7 @@ function Arrow(x, y, vx, vy, width, height) {
   this.width = width;
   this.height = height;
   this.hitArrow = false;
+  this.hitBorder = false;
 }
 
 // update()
@@ -39,11 +40,16 @@ Arrow.prototype.display = function () {
 // Using the collision library, verify if collision occured
 // If so, enemy size reduces and arrow resets
 Arrow.prototype.handleCollision = function (enemies) {
-  this.hitArrow = collideRectRect(this.x, this.y, this.width, this.height,enemies.x-enemies.size,enemies.y+enemies.size/4.9,enemies.size*2,enemies.size/5);
+  this.hitArrow = collideRectRect(this.x,this.y,this.width,this.height,enemies.x-enemies.size,enemies.y+enemies.size/4.9,enemies.size*2,enemies.size/5);
+  this.hitBorder = collideLineRect(0,0,width,0,this.x,this.y,this.width,this.height);
   if (this.hitArrow) {
     enemies.size -= 10;
     this.reset();
     this.hitArrow = false;
+  }
+  if (this.hitBorder) {
+    this.reset();
+    this.hitBorder = false;
   }
 }
 

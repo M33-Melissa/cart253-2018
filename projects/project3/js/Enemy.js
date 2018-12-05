@@ -38,7 +38,7 @@ Enemy.prototype.update = function() {
   if (this.x < -width/2 && this.resetValue) {
     this.reset();
   }
-  if (this.size <= 0 && this.resetValue) {
+  if (this.size < 5 && this.resetValue) {
     this.enemyCleared++;
     bgRed+=20;
     bgGreen+=20;
