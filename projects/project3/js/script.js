@@ -84,7 +84,7 @@ function setup() {
   // Yellow Circle, sun particle that grants a power-up
   powerup = new Powerup(random(0,width),random(-3*height,0),0,3,15);
   // Grey set of circles, cloud enemy that damages player
-  enemy = new Enemy(random(-width/2,-width/6),random(0, height/3),random(1,3),0.02,width/8);
+  enemy = new Enemy(random(-width/2,-width/6),random(width/8, height/3),random(1,3),0.02,width/8);
 }
 
 // draw()
@@ -192,7 +192,7 @@ function play() {
     gameLost = true;
     gameOver = true;
 
-  } else if (enemy.enemyCleared > 3) {
+  } else if (enemy.enemyCleared > 6) {
     gameWon = true;
     gameOver = true;
     wonSFX.currentTime = 0;

@@ -3,7 +3,9 @@
 // Object moving across the screen from top to bottom.
 // Affects player negatively in size and darkens color if collision occurs.
 
+// Variable that holds the initial size of the cloud
 var initialSize;
+
 // Player constructor
 //
 // Sets the properties with the provided arguments or defaults
@@ -22,14 +24,12 @@ function Enemy(x,y,vx,vy,size) {
   this.side = random();
   if (this.side > 0.5) {
     this.x = random(width+width/6,width+width/2);
-    this.y = random(0, height/3);
   } else {
     this.x = random(-width/2,-width/6);
-    this.y = random(0, height/3);
   }
 }
 
-// update()s
+// update()
 //
 // Update x and y positions based on velocities
 Enemy.prototype.update = function() {
@@ -43,7 +43,7 @@ Enemy.prototype.update = function() {
   this.size = constrain(this.size,0,this.size);
   this.resetted = false;
   this.resetValue = true;
-  console.log(this.x);
+  
   // When enemy reaches the bottom, it resets at the top
   if (this.x > width+width/2 && this.resetValue) {
     this.reset();
@@ -99,10 +99,9 @@ Enemy.prototype.reset = function() {
   this.side = random();
   if (this.side > 0.5) {
     this.x = random(width+width/6,width+width/2);
-    this.y = random(0, height/3);
   } else {
     this.x = random(-width/2,-width/6);
-    this.y = random(0, height/3);
   }
+  this.y = random(0, height/3);
   this.size = initialSize;
 }
