@@ -22,6 +22,7 @@ function Player(x,y,speed,size,leftKey,rightKey,downKey,upKey) {
   this.downKey = downKey;
   this.upKey = upKey;
   this.color = 255;
+  this.transparency = 0;
 }
 
 // handleInput()
@@ -59,6 +60,11 @@ Player.prototype.update = function() {
     this.y = constrain(this.y,this.size/2,height-this.size/2);
     this.x += this.vx;
     this.x = constrain(this.x,this.size/2,width-this.size/2);
+    if (this.color > 10) {
+      endGame = true;
+    } else {
+      endGame = false;
+    }
 }
 
 // display()

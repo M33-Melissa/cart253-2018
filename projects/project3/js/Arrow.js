@@ -7,8 +7,8 @@
 //
 // Sets the properties with the provided arguments or defaults
 function Arrow(x, y, vx, vy, width, height) {
-  this.x = x;
-  this.y = y;
+  this.x = x-width/2;
+  this.y = y+height/2;
   this.vx = vx;
   this.vy = vy;
   this.width = width;
@@ -39,7 +39,7 @@ Arrow.prototype.display = function () {
 // Using the collision library, verify if collision occured
 // If so, enemy size reduces and arrow resets
 Arrow.prototype.handleCollision = function (enemies) {
-  this.hitArrow = collideRectCircle(this.x, this.y, this.width, this.height, enemies.x, enemies.y, enemies.size);
+  this.hitArrow = collideRectRect(this.x, this.y, this.width, this.height,enemies.x-enemies.size,enemies.y+enemies.size/4.9,enemies.size*2,enemies.size/5);
   if (this.hitArrow) {
     enemies.size -= 10;
     this.reset();

@@ -17,6 +17,8 @@ function Enemy(x,y,vx,vy,size) {
   this.hit = false;
   this.resetValue = true;
   initialSize = size;
+  this.hitBot = false;
+  this.enemyCleared = 0;
 }
 
 // update()s
@@ -30,10 +32,19 @@ Enemy.prototype.update = function() {
   this.resetted = false;
   this.resetValue = true;
   // When enemy reaches the bottom, it resets at the top
-  if (this.y > height && this.resetValue) {
+  if (this.x > width+width/2 && this.resetValue) {
+    this.reset();
+  }
+  if (this.x < -width/2 && this.resetValue) {
     this.reset();
   }
   if (this.size <= 0 && this.resetValue) {
+    this.enemyCleared++;
+    bgRed+=20;
+    bgGreen+=20;
+    bgBlue+=20;
+    endBlue+=20;
+    endGreen+=20;
     this.reset();
   }
 }
@@ -43,8 +54,8 @@ Enemy.prototype.update = function() {
 // Using the collision library, verify if collision occured
 // If so, player size reduces, color darkens, and enemy resets
 Enemy.prototype.handleCollision = function(player) {
-  this.hit = collideCircleCircle(this.x,this.y,this.size,player.x,player.y,player.size);
-  if (this.hit) {
+  this.hitBot = collideRectCircle(this.x-this.size,this.y+this.size/4.9,this.size*2,this.size/5,player.x,player.y,player.size);
+  if (this.hitBot) {
     player.color -= 50;
     this.reset();
   }
@@ -59,6 +70,9 @@ Enemy.prototype.display = function() {
   ellipse(this.x,this.y,this.size,this.size-this.size/4);
   ellipse(this.x-this.size/1.7,this.y,this.size-this.size/3,this.size-this.size/2);
   ellipse(this.x+this.size/1.7,this.y,this.size-this.size/3,this.size-this.size/2);
+  ellipse(this.x+this.size,this.y+this.size/5,this.size-this.size/2,this.size-this.size/1.7);
+  ellipse(this.x-this.size,this.y+this.size/5,this.size-this.size/2,this.size-this.size/1.7);
+  rect(this.x-this.size,this.y+this.size/4.9,this.size*2,this.size/5);
   pop();
 }
 
@@ -68,7 +82,7 @@ Enemy.prototype.display = function() {
 Enemy.prototype.reset = function() {
   this.resetValue = false;
   this.resetted = true;
-  this.x = random(0,width);
-  this.y = random(-height,0);
+  this.x = random(-width/2,0);
+  this.y = random(0, height/4);
   this.size = initialSize;
 }

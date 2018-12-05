@@ -21,11 +21,27 @@ var raining = [];
 var enemy;
 
 // Variables for default bg colors, arrow directions and arrow heights
-var bgRed = 135;
-var bgGreen = 206;
-var bgBlue = 235;
+var bgRed = 35;
+var bgGreen = 106;
+var bgBlue = 135;
+var endRed = 0;
+var endGreen = 32;
+var endBlue = 62;
 var arrowVX;
 var arrowHeight = 20;
+var numDrops = 100;
+var endGame = false;
+
+// Variables for sound and music
+var bgMusic;
+var shieldSFX;
+var endMusic;
+
+function preload() {
+  bgMusic = new Audio("assets/sounds/");
+  shieldSFX = new Audio("assets/sounds/");
+  endMusic = new Audio("assets/sounds/");
+}
 
 // setup()
 //
@@ -33,7 +49,7 @@ var arrowHeight = 20;
 function setup() {
   createCanvas(windowWidth,windowHeight);
   ellipseMode(CENTER);
-  rectMode(CENTER);
+  rectMode(CORNER);
   noStroke();
 
   player1 = new Player(width/2,height-50,5,20,LEFT_ARROW,RIGHT_ARROW,DOWN_ARROW,UP_ARROW);
@@ -43,7 +59,8 @@ function setup() {
   // Yellow Circle, sun particle that grants a power-up
   powerup = new Powerup(random(0,width),random(-2*height,0),0,3,15);
   // Grey set of circles, cloud enemy that damages player
-  enemy = new Enemy(random(0,width),random(-height*2,0),0,1.5,80);
+  enemy = new Enemy(random(-width/2,0),random(0, height/4),random(1,3),0,width/8);
+  // enemy2 = new Enemy(random(width,width+width/2),random(0, height/4),random(-3,-1),0,width/7);
 }
 
 // draw()
@@ -53,7 +70,7 @@ function draw() {
   push();
   // Colors used for gradient background
   var startingColor = color(bgRed,bgGreen,bgBlue);
-  var endingColor = color(0,72,102);
+  var endingColor = color(endRed,endGreen,endBlue);
   for (let i = 0; i <= height; i++) {
     var intermediateColors = map(i, 0, height, 0, 1);
     var strokeColor = lerpColor(startingColor, endingColor, intermediateColors);
@@ -89,6 +106,11 @@ function play() {
   enemy.update();
   enemy.display();
   enemy.handleCollision(player1);
+
+  // // Update and display enemy values
+  // enemy2.update();
+  // enemy2.display();
+  // enemy2.handleCollision(player1);
 
   // Update and display shield values
   shield.update();
@@ -140,7 +162,7 @@ function makeItRain() {
   push();
   ellipseMode(RADIUS);
   noFill();
-  if (raining.length < 100) {
+  if (raining.length < numDrops) {
     raining.push(new Rain());
   }
   for (var i = 0; i < raining.length; i++) {
