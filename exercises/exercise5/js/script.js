@@ -34,7 +34,7 @@ var paddleInset = 50;
 //
 // Creates the ball and paddles
 function setup() {
-  createCanvas(windowWidth-3,windowHeight-3);
+  createCanvas(windowWidth,windowHeight);
   rectMode(CENTER);
   ellipseMode(CENTER);
   noStroke();

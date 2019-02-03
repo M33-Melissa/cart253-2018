@@ -129,6 +129,8 @@ Ball.prototype.handleCollision = function(paddle) {
       this.blue = paddle.blue;
       // Reverse x velocity to bounce
       this.vx *= -1.03;
+      this.x += this.vx;
+      this.y += this.vy;
       // Play our bouncing sound effect by rewinding and then playing
       collideSFX.currentTime = 0;
       collideSFX.play();
