@@ -147,7 +147,6 @@ function play() {
 function scoreLeft() {
   ball.reset();
   leftPaddle.updateScore();
-  console.log("L: " + leftPaddle.score);
 }
 
 // scoreRight()
@@ -156,7 +155,6 @@ function scoreLeft() {
 function scoreRight() {
   ball.reset();
   rightPaddle.updateScore();
-  console.log("R: " + rightPaddle.score);
 }
 
 // determineWinner()

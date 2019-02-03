@@ -72,11 +72,11 @@ Ball.prototype.handleCollision = function(paddle) {
   // Check if the ball collides with paddle
   var paddleHit = collideRectCircle(paddle.x-paddle.w/2,paddle.y-paddle.h/2,paddle.w,paddle.h,this.x,this.y,this.size);
   if (paddleHit) {
-    // If so, move ball back to previous position (by subtracting current velocity)
-    this.x -= this.vx;
-    this.y -= this.vy;
     // Reverse x velocity to bounce
-    this.vx *= -1;
+    this.vx = -this.vx;
+    // If so, move ball back to previous position (by subtracting current velocity)
+    this.x += this.vx;
+    this.y += this.vy;
   }
 }
 
