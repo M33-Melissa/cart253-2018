@@ -52,37 +52,27 @@ Projectile.prototype.display = function () {
 // Check if this ball overlaps the paddle passed as an argument
 // and if so, apply penalty and resets position upon paddle hit
 Projectile.prototype.handleCollision = function(paddle) {
-  // Calculate edges of ball for clearer if statements below
-  var projectileRight = this.x + this.size/2;
-  var projectileLeft = this.x - this.size/2;
-  var projectileTop = this.y - this.size/2;
-  var projectileBottom = this.y + this.size/2;
-
-  // Calculate edges of paddle for clearer if statements below
-  var paddleRight = paddle.x + paddle.w/2;
-  var paddleLeft = paddle.x - paddle.w/2;
-  var paddleTop = paddle.y - paddle.h/2;
-  var paddleBottom = paddle.y + paddle.h/2;
 
   // Check if the ball overlaps the paddle on x axis
-  if (projectileRight > paddleLeft && projectileLeft < paddleRight) {
-    // Check if the ball overlaps the paddle on y axis
-    if (projectileBottom > paddleTop && projectileTop < paddleBottom) {
-      // If so, paddle gets smaller, vertical velocity slows down
-      // Velocity never gets lower than 3 and height never gets smaller than 10
-      if (paddle.h <= 10) {
-        paddle.h = paddle.h;
-      } else {
-        paddle.h -= penalty;
-      }
-      if (paddle.speed <= 3) {
-        paddle.speed = paddle.speed;
-      } else {
-        paddle.speed -= penalty/10;
-      }
-      this.reset();
+  var projectileHit = collideRectRect(this.x-this.size/2,this.y-this.size/2,this.size,this.size,paddle.x-paddle.w/2,paddle.y-paddle.h/2,paddle.w,paddle.h);
+  if (projectileHit) {
+    // If so, paddle gets smaller, vertical velocity slows down
+    // Velocity never gets lower than 3 and height never gets smaller than 10
+    if (paddle.h <= 10) {
+      paddle.h = paddle.h;
+    } else {
+      paddle.h -= penalty;
     }
+    if (paddle.speed <= 3) {
+      paddle.speed = paddle.speed;
+    } else {
+      paddle.speed -= penalty/10;
+    }
+    this.reset();
   }
+
+  var projectileRight = this.x + this.size/2;
+  var projectileLeft = this.x - this.size/2;
   // Projectile spawns back at the origin (width/2) when out of screen
   if (projectileRight < 0 || projectileLeft > width) {
     this.reset();

@@ -45,27 +45,13 @@ Collectable.prototype.display = function () {
 // and if so, increment ball size and velocity using growth factor
 // and resets snowflake position
 Collectable.prototype.handleCollision = function(ball) {
-  // Calculate edges of ball for clearer if statements below
-  var collectableRight = this.x + this.size/2;
-  var collectableLeft = this.x - this.size/2;
-  var collectableTop = this.y - this.size/2;
-  var collectableBottom = this.y + this.size/2;
-
-  // Calculate edges of paddle for clearer if statements below
-  var ballRight = ball.x + ball.size/2;
-  var ballLeft = ball.x - ball.size/2;
-  var ballTop = ball.y - ball.size/2;
-  var ballBottom = ball.y + ball.size/2;
-
-  // Check if the ball overlaps the paddle on x axis
-  if (collectableRight > ballLeft && collectableLeft < ballRight) {
-    // Check if the ball overlaps the paddle on y axis
-    if (collectableBottom > ballTop && collectableTop < ballBottom) {
+  // Check if the ball collides with the collectable
+  var collectableHit = collideCircleCircle(this.x,this.y,this.size,ball.x,ball.y,ball.size);
+  if (collectableHit) {
       // If so, increment ball size and velocity using growth variable
       ball.size += growth;
       this.vx += growth/10;
       this.reset();
-    }
   }
 }
 

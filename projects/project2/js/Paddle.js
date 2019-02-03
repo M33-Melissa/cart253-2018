@@ -52,6 +52,7 @@ Paddle.prototype.update = function() {
 //
 // Draw the paddle as a snow fort/castle on the screen
 Paddle.prototype.display = function() {
+  push();
   // Actual paddle properties
   fill(this.red,this.green,this.blue);
   rect(this.x,this.y,this.w,this.h);
@@ -70,6 +71,7 @@ Paddle.prototype.display = function() {
   rect(leftPaddle.x-leftPaddle.w/1.2,leftPaddle.y+leftPaddle.h/3,leftPaddle.w/2.2,leftPaddle.h/3.5);
   rect(rightPaddle.x+rightPaddle.w/1.2,rightPaddle.y-rightPaddle.h/3,rightPaddle.w/2.2,rightPaddle.h/3.5);
   rect(rightPaddle.x+rightPaddle.w/1.2,rightPaddle.y+rightPaddle.h/3,rightPaddle.w/2.2,rightPaddle.h/3.5);
+  pop();
 }
 
 // updateScore()

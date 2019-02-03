@@ -55,7 +55,7 @@ function preload() {
 //
 // Creates the ball, paddles, projectiles and collectibles
 function setup() {
-  createCanvas(windowWidth-3,windowHeight-3);
+  createCanvas(windowWidth,windowHeight);
   rectMode(CENTER);
   ellipseMode(CENTER);
   imageMode(CENTER);
@@ -134,7 +134,7 @@ function play() {
   }
 
   // If size gets "too" big, game over condition reached
-  if (ball.size >= windowWidth) {
+  if (ball.size >= windowWidth && winner!="Right" && winner!="Left") {
     gameOver = true;
   }
   // Calls function to determine winner at endgame
@@ -244,7 +244,7 @@ function gameOverScreen() {
     text("Press SHIFT to go back in time!", width/2, height*14/15);
     pop();
 
-  // winning condition: one of the two players get 11 points
+    // winning condition: one of the two players get 11 points
   } else {
     push();
     fill(255,20);
@@ -315,6 +315,7 @@ function keyPressed() {
   if (keyCode === SHIFT) {
     gameOver = false;
     start = false;
+    winner = "Default";
     resetGame();
   }
   return false;

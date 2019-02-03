@@ -43,5 +43,6 @@ Snowstorm.prototype.update = function(time) {
 //
 // Display individual snowflakes as an ellipse
 Snowstorm.prototype.display = function() {
+  fill(255);
   ellipse(this.x,this.y,this.size,this.size);
 }
