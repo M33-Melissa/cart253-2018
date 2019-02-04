@@ -115,7 +115,7 @@ function draw() {
   textAlign(LEFT,CENTER);
   text('Use arrow keys to move',10,height/30);
   textAlign(RIGHT,CENTER);
-  text('Or touch screen on mobile',width-10,height/30);
+  text('Touch screen on mobile',width-10,height/30);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
